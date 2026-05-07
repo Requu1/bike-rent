@@ -1,12 +1,14 @@
 # Bike renting page
 
-## Authors:
+### Authors:
 
 Krzysztof Patla, Szymon Potępa
 
-### Database: MySQL
+#### Technologies used: JavaScript + React + Vite + Tailwind
 
-### Technologies: JavaScript + React + Vite + Tailwind
+#### Database: MySQL
+
+---
 
 aby pobrać wszystkie potrzebne pakiety trzeba uruchomić
 
