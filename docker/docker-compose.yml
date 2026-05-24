@@ -5,9 +5,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: bike-rent
+      MYSQL_ROOT_HOST: "%"
       MYSQL_USER: avnadmin
       MYSQL_PASSWORD: garek123
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - ./init_utf8.sql:/docker-entrypoint-initdb.d/init_utf8.sql
