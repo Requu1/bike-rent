@@ -10,16 +10,17 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
+@Table(name="Customers")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="FirstName",nullable = false)
+    @Column(name="Firstname",nullable = false)
     private String firstName;
 
-    @Column(name="LastName",nullable = false)
-    private String lastName;
+    @Column(name="Surrname",nullable = false)
+    private String surrname;
 
     @Column(name="Phone",nullable = false)
     @Size(min=15,max=15)
