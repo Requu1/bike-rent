@@ -32,7 +32,7 @@ export default function RentsPage() {
 
   async function handleCustomerFilter() {
     if (!customerId.trim()) {
-      setCustomerError("Podaj Customer ID.");
+      setCustomerError("Missing Input Data.");
       return;
     }
     setCustomerLoading(true);
@@ -59,7 +59,7 @@ export default function RentsPage() {
 
   async function handleAddRent() {
     if (!arBikeId || !arCustomerId) {
-      setArError("Wypełnij oba pola.");
+      setArError("Missing Input Data.");
       return;
     }
     setArLoading(true);
@@ -83,7 +83,7 @@ export default function RentsPage() {
 
   async function handleEndRent() {
     if (!erRentId) {
-      setErError("Podaj Rent ID.");
+      setErError("Missing Input Data.");
       return;
     }
     setErLoading(true);
@@ -118,7 +118,7 @@ export default function RentsPage() {
               setCustomerError(null);
             }}
             onKeyDown={(e) => e.key === "Enter" && handleCustomerFilter()}
-            placeholder="np. 1"
+            placeholder="e.g. 1"
             className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 w-36"
           />
         </div>
@@ -149,9 +149,7 @@ export default function RentsPage() {
       {customerRents !== null &&
         (customerRents.length === 0 ? (
           <div className="text-center py-8 bg-slate-900 rounded-xl border border-slate-800 mb-6">
-            <p className="text-slate-400">
-              Ten klient nie ma żadnych wypożyczeń.
-            </p>
+            <p className="text-slate-400">No rents for this client</p>
           </div>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-slate-800 mb-6">
@@ -204,10 +202,10 @@ export default function RentsPage() {
       {/* Active rents */}
       <h2 className="text-lg font-semibold text-white mb-4">Active rents</h2>
       {loading ? (
-        <div className="text-slate-400 py-8 text-center">Ładowanie...</div>
+        <div className="text-slate-400 py-8 text-center">Loading...</div>
       ) : activeRents.length === 0 ? (
         <div className="text-center py-10 bg-slate-900 rounded-xl border border-slate-800">
-          <p className="text-slate-400">Brak aktywnych wypożyczeń.</p>
+          <p className="text-slate-400">No active rents.</p>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-slate-800">
@@ -282,7 +280,7 @@ export default function RentsPage() {
           </div>
           {arError && <p className="text-red-400 text-xs mb-2">{arError}</p>}
           {arSuccess && (
-            <p className="text-green-400 text-xs mb-2">Wypożyczenie dodane!</p>
+            <p className="text-green-400 text-xs mb-2">Rend added!</p>
           )}
           <button
             onClick={handleAddRent}
@@ -313,9 +311,7 @@ export default function RentsPage() {
           </div>
           {erError && <p className="text-red-400 text-xs mb-2">{erError}</p>}
           {erSuccess && (
-            <p className="text-green-400 text-xs mb-2">
-              Wypożyczenie zakończone!
-            </p>
+            <p className="text-green-400 text-xs mb-2">Rent ended!</p>
           )}
           <button
             onClick={handleEndRent}

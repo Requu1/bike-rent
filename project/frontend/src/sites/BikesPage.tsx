@@ -73,7 +73,7 @@ export default function BikesPage() {
 
   async function handleAddQuantity() {
     if (!qBikeId || !qQty) {
-      setQError("Wypełnij oba pola.");
+      setQError("Missing Input Data.");
       return;
     }
     setQLoading(true);
@@ -97,7 +97,7 @@ export default function BikesPage() {
 
   async function handleChangePrice() {
     if (!pBikeId || !pPrice) {
-      setPError("Wypełnij oba pola.");
+      setPError("Missing Input Data.");
       return;
     }
     setPLoading(true);
@@ -226,7 +226,7 @@ export default function BikesPage() {
             type="text"
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            placeholder="np. Mountain"
+            placeholder="e.g. Mountain"
             className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 w-40"
           />
         </div>
@@ -237,7 +237,7 @@ export default function BikesPage() {
             value={filterBrand}
             onChange={(e) => setFilterBrand(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleFilter()}
-            placeholder="np. Trek"
+            placeholder="e.g. Trek"
             className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 w-40"
           />
         </div>
@@ -266,13 +266,13 @@ export default function BikesPage() {
 
       {/* Bike grid */}
       {loading ? (
-        <div className="text-slate-400 py-12 text-center">Ładowanie...</div>
+        <div className="text-slate-400 py-12 text-center">Loading...</div>
       ) : displayedBikes.length === 0 ? (
         <div className="text-center py-12 bg-slate-900 rounded-xl border border-slate-800">
           <p className="text-slate-400">
             {filterResults !== null
-              ? "Brak wyników dla podanego filtra."
-              : "Brak rowerów w bazie."}
+              ? "No Bikes found."
+              : "No Bikes in Database."}
           </p>
         </div>
       ) : (
@@ -319,9 +319,7 @@ export default function BikesPage() {
             </div>
           </div>
           {qError && <p className="text-red-400 text-xs mb-2">{qError}</p>}
-          {qSuccess && (
-            <p className="text-green-400 text-xs mb-2">Zaktualizowano!</p>
-          )}
+          {qSuccess && <p className="text-green-400 text-xs mb-2">Updated!</p>}
           <button
             onClick={handleAddQuantity}
             disabled={qLoading}
@@ -368,7 +366,7 @@ export default function BikesPage() {
           </div>
           {pError && <p className="text-red-400 text-xs mb-2">{pError}</p>}
           {pSuccess && (
-            <p className="text-green-400 text-xs mb-2">Cena zmieniona!</p>
+            <p className="text-green-400 text-xs mb-2">Price changed!</p>
           )}
           <button
             onClick={handleChangePrice}
@@ -455,7 +453,7 @@ function AddBikeModal({
 
   async function handleSubmit() {
     if (!brandName || !categoryName || !hourlyPrice) {
-      setError("Wypełnij wszystkie pola.");
+      setError("Missing Input Data..");
       return;
     }
     setLoading(true);
@@ -533,7 +531,7 @@ function AddSimpleModal({
 
   async function handleSubmit() {
     if (!value.trim()) {
-      setError("Pole nie może być puste.");
+      setError("Missing Input Data.");
       return;
     }
     setLoading(true);
