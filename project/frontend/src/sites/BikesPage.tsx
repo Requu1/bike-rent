@@ -447,22 +447,22 @@ function AddBikeModal({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  const [brandId, setBrandId] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [brandName, setBrandName] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [hourlyPrice, setHourlyPrice] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit() {
-    if (!brandId || !categoryId || !hourlyPrice) {
+    if (!brandName || !categoryName || !hourlyPrice) {
       setError("Wypełnij wszystkie pola.");
       return;
     }
     setLoading(true);
     try {
       await callProcedure("bikes/add", {
-        brandId: Number(brandId),
-        categoryId: Number(categoryId),
+        brandName: String(brandName),
+        categoryName: String(categoryName),
         hourlyPrice: Number(hourlyPrice),
       });
       onSuccess();
@@ -476,21 +476,21 @@ function AddBikeModal({
 
   return (
     <Modal title="Add bike" onClose={onClose}>
-      <label className="block text-sm text-slate-400 mb-1">Brand ID</label>
+      <label className="block text-sm text-slate-400 mb-1">Brand</label>
       <input
-        type="number"
-        value={brandId}
-        onChange={(e) => setBrandId(e.target.value)}
+        type="text"
+        value={brandName}
+        onChange={(e) => setBrandName(e.target.value)}
         className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
-        placeholder="np. 1"
+        placeholder="np. Romet"
       />
-      <label className="block text-sm text-slate-400 mb-1">Category ID</label>
+      <label className="block text-sm text-slate-400 mb-1">Category</label>
       <input
-        type="number"
-        value={categoryId}
-        onChange={(e) => setCategoryId(e.target.value)}
+        type="text"
+        value={categoryName}
+        onChange={(e) => setCategoryName(e.target.value)}
         className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
-        placeholder="np. 2"
+        placeholder="np. Touring"
       />
       <label className="block text-sm text-slate-400 mb-1">
         Hourly price (zł)

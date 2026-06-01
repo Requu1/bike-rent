@@ -42,3 +42,10 @@ export interface CustomerRent {
   RentDate: string;
   ReturnDate: string | null;
 }
+
+export interface Customer {
+  CustomerID: number;
+  Firstname: string;
+  Surrname: string;
+  Phone: string;
+}
