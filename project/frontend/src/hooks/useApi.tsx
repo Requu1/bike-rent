@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export function useView<T>(endpoint: string) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const refetch = useCallback(() => {
+    setLoading(true);
     fetch(`http://localhost:8080/api/${endpoint}`)
       .then((res) => res.json())
       .then(setData)
@@ -13,7 +14,11 @@ export function useView<T>(endpoint: string) {
       .finally(() => setLoading(false));
   }, [endpoint]);
 
-  return { data, loading, error };
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  return { data, loading, refetch };
 }
 
 export async function callProcedure(endpoint: string, body: object) {

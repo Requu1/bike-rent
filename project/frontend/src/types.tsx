@@ -27,3 +27,18 @@ export interface FilterResult {
   BikeID: number;
   Quantity: number;
 }
+
+export interface ActiveRent {
+  CustomerName: string;
+  BikeID: number;
+  BrandName: string;
+  RentDate: string;
+  RentPrice: number;
+}
+
+export interface CustomerRent {
+  RentID: number;
+  BikeID: number;
+  RentDate: string;
+  ReturnDate: string | null;
+}
