@@ -6,14 +6,12 @@ import {
   Home as HomeIcon,
   Bike as BikeIcon,
   Notebook as RentsIcon,
-  Warehouse as StockIcon,
   Contact as CustomerIcon,
 } from "lucide-react";
 
 // sites
 import Bikes from "./sites/BikesPage";
 import HomePage from "./sites/HomePage";
-import StockPage from "./sites/StockPage";
 import RentsPage from "./sites/RentsPage";
 
 // types
@@ -21,10 +19,6 @@ import { type Bike } from "./types";
 import CustomersPage from "./sites/CustomersPage";
 
 function App() {
-  const [bikes, setBikes] = useState<Bike[]>([]);
-
-  //pobieranie API tutaj
-
   return (
     <BrowserRouter>
       {/* NavBar for all sites */}
@@ -43,13 +37,6 @@ function App() {
           >
             <RentsIcon className="w-6 h-6" />
             Rents
-          </Link>
-          <Link
-            to="/stock"
-            className="text-slate-400 hover:text-indigo-400 transition-colors p-2 rounded-lg hover:bg-slate-800/50 flex flex-col items-center"
-          >
-            <StockIcon className="w-6 h-6" />
-            Stock
           </Link>
           <Link
             to="/customers"
@@ -73,9 +60,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/rents" element={<RentsPage />} />
-          <Route path="/stock" element={<StockPage />} />
           <Route path="/customers" element={<CustomersPage />} />
-          <Route path="/bikes" element={<Bikes bikes={bikes} />} />
+          <Route path="/bikes" element={<Bikes />} />
         </Routes>
       </main>
     </BrowserRouter>

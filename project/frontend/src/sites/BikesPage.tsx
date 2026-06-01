@@ -1,33 +1,622 @@
-import { Link } from "react-router-dom";
-import { type Bike } from "../types";
+import { useState } from "react";
+import { useView, callProcedure } from "../hooks/useApi";
+import {
+  type Bike,
+  type Bestseller,
+  type BestBrand,
+  type TopCategory,
+  type FilterResult,
+} from "../types";
 
-interface BikeProps {
-  bikes: Bike[];
-}
+type Modal = "bike" | "brand" | "category" | null;
 
-export default function Bikes({ bikes }: BikeProps) {
+export default function BikesPage() {
+  const { data: bikes, loading, refetch } = useView<Bike>("bikes/stock");
+  const { data: bestsellers } = useView<Bestseller>("bikes/bestsellers");
+  const { data: bestBrands } = useView<BestBrand>("bikes/bestselling-brands");
+  const { data: topCategory } = useView<TopCategory>(
+    "bikes/most-rented-category",
+  );
+
+  const [modal, setModal] = useState<Modal>(null);
+
+  // FilterBike
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterBrand, setFilterBrand] = useState("");
+  const [filterResults, setFilterResults] = useState<FilterResult[] | null>(
+    null,
+  );
+  const [filterError, setFilterError] = useState<string | null>(null);
+  const [filterLoading, setFilterLoading] = useState(false);
+
+  // AddQuantity
+  const [qBikeId, setQBikeId] = useState("");
+  const [qQty, setQQty] = useState("");
+  const [qError, setQError] = useState<string | null>(null);
+  const [qSuccess, setQSuccess] = useState(false);
+  const [qLoading, setQLoading] = useState(false);
+
+  // ChangeRentPrice
+  const [pBikeId, setPBikeId] = useState("");
+  const [pPrice, setPPrice] = useState("");
+  const [pError, setPError] = useState<string | null>(null);
+  const [pSuccess, setPSuccess] = useState(false);
+  const [pLoading, setPLoading] = useState(false);
+
+  async function handleFilter() {
+    if (!filterCategory.trim() || !filterBrand.trim()) {
+      setFilterError("Podaj zarówno kategorię jak i markę.");
+      return;
+    }
+    setFilterError(null);
+    setFilterLoading(true);
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/bikes/filter?categoryName=${encodeURIComponent(filterCategory)}&brandName=${encodeURIComponent(filterBrand)}`,
+      );
+      if (!res.ok) throw new Error(await res.text());
+      setFilterResults(await res.json());
+    } catch (e: any) {
+      setFilterError(e.message);
+      setFilterResults(null);
+    } finally {
+      setFilterLoading(false);
+    }
+  }
+
+  function clearFilter() {
+    setFilterCategory("");
+    setFilterBrand("");
+    setFilterResults(null);
+    setFilterError(null);
+  }
+
+  async function handleAddQuantity() {
+    if (!qBikeId || !qQty) {
+      setQError("Wypełnij oba pola.");
+      return;
+    }
+    setQLoading(true);
+    setQError(null);
+    setQSuccess(false);
+    try {
+      await callProcedure("bikes/add-quantity", {
+        bikeId: Number(qBikeId),
+        quantity: Number(qQty),
+      });
+      setQSuccess(true);
+      setQBikeId("");
+      setQQty("");
+      refetch();
+    } catch (e: any) {
+      setQError(e.message);
+    } finally {
+      setQLoading(false);
+    }
+  }
+
+  async function handleChangePrice() {
+    if (!pBikeId || !pPrice) {
+      setPError("Wypełnij oba pola.");
+      return;
+    }
+    setPLoading(true);
+    setPError(null);
+    setPSuccess(false);
+    try {
+      await callProcedure("bikes/change-price", {
+        bikeId: Number(pBikeId),
+        hourlyPrice: Number(pPrice),
+      });
+      setPSuccess(true);
+      setPBikeId("");
+      setPPrice("");
+      refetch();
+    } catch (e: any) {
+      setPError(e.message);
+    } finally {
+      setPLoading(false);
+    }
+  }
+
+  const displayedBikes = filterResults
+    ? bikes.filter((b) => filterResults.some((f) => f.BikeID === b.BikeID))
+    : bikes;
+
   return (
     <div>
-      <h1 className="text-3xl font-extrabold tracking-tight mb-8">Bikes</h1>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-extrabold tracking-tight">Bikes</h1>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setModal("category")}
+            className="px-4 py-2 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800 transition text-sm"
+          >
+            + Category
+          </button>
+          <button
+            onClick={() => setModal("brand")}
+            className="px-4 py-2 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800 transition text-sm"
+          >
+            + Brand
+          </button>
+          <button
+            onClick={() => setModal("bike")}
+            className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition text-sm font-medium"
+          >
+            + Add bike
+          </button>
+        </div>
+      </div>
 
-      {bikes.length === 0 ? (
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* Bestsellers */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">
+            Top 10 bestsellers
+          </p>
+          <div className="flex flex-col gap-1">
+            {bestsellers.slice(0, 5).map((b, i) => (
+              <div
+                key={b.BikeID}
+                className="flex justify-between items-center text-sm"
+              >
+                <span className="text-slate-400">
+                  <span className="text-slate-600 mr-2">#{i + 1}</span>
+                  {b.Brand} · {b.Category}
+                </span>
+                <span className="text-indigo-400 font-medium">{b.Rents}x</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Best brands */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">
+            Top brands
+          </p>
+          <div className="flex flex-col gap-3">
+            {bestBrands.map((b, i) => (
+              <div key={b.Brand}>
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-slate-300">{b.Brand}</span>
+                  <span className="text-slate-400">{b.Rents} rents</span>
+                </div>
+                <div className="w-full bg-slate-800 rounded-full h-1.5">
+                  <div
+                    className="bg-indigo-500 h-1.5 rounded-full"
+                    style={{
+                      width: `${Math.round(
+                        (b.Rents / (bestBrands[0]?.Rents || 1)) * 100,
+                      )}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Most rented category */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">
+            Most rented category
+          </p>
+          {topCategory[0] && (
+            <>
+              <p className="text-2xl font-bold text-white">
+                {topCategory[0].Category}
+              </p>
+              <p className="text-slate-400 text-sm mt-1">
+                {topCategory[0].Rents} total rents
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Filter bar */}
+      <div className="flex gap-3 mb-6 items-end">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-slate-500">Category</label>
+          <input
+            type="text"
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            placeholder="np. Mountain"
+            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 w-40"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-slate-500">Brand</label>
+          <input
+            type="text"
+            value={filterBrand}
+            onChange={(e) => setFilterBrand(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleFilter()}
+            placeholder="np. Trek"
+            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 w-40"
+          />
+        </div>
+        <button
+          onClick={handleFilter}
+          disabled={filterLoading}
+          className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm transition"
+        >
+          {filterLoading ? "..." : "Filter"}
+        </button>
+        <button
+          onClick={clearFilter}
+          className="px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 text-sm transition"
+        >
+          Clear
+        </button>
+        {filterError && (
+          <p className="text-red-400 text-sm self-center">{filterError}</p>
+        )}
+        {filterResults !== null && (
+          <p className="text-slate-500 text-sm self-center">
+            {filterResults.length} result{filterResults.length !== 1 && "s"}
+          </p>
+        )}
+      </div>
+
+      {/* Bike grid */}
+      {loading ? (
+        <div className="text-slate-400 py-12 text-center">Ładowanie...</div>
+      ) : displayedBikes.length === 0 ? (
         <div className="text-center py-12 bg-slate-900 rounded-xl border border-slate-800">
           <p className="text-slate-400">
-            Loading products or none in database...
+            {filterResults !== null
+              ? "Brak wyników dla podanego filtra."
+              : "Brak rowerów w bazie."}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {bikes.map((bike) => (
-            <div
-              key={bike.id}
-              className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-md hover:border-slate-700 transition flex flex-col"
-            >
-              jakies info o tym bike
-            </div>
+          {displayedBikes.map((bike) => (
+            <BikeCard key={bike.BikeID} bike={bike} />
           ))}
         </div>
       )}
+
+      {/* Operations */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+        {/* Add quantity */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <p className="text-sm font-semibold text-white mb-4">Add quantity</p>
+          <div className="flex gap-3 mb-3">
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="text-xs text-slate-500">Bike ID</label>
+              <input
+                type="number"
+                value={qBikeId}
+                onChange={(e) => {
+                  setQBikeId(e.target.value);
+                  setQError(null);
+                  setQSuccess(false);
+                }}
+                placeholder="1"
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="text-xs text-slate-500">Quantity to add</label>
+              <input
+                type="number"
+                value={qQty}
+                onChange={(e) => {
+                  setQQty(e.target.value);
+                  setQError(null);
+                  setQSuccess(false);
+                }}
+                placeholder="5"
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+          {qError && <p className="text-red-400 text-xs mb-2">{qError}</p>}
+          {qSuccess && (
+            <p className="text-green-400 text-xs mb-2">Zaktualizowano!</p>
+          )}
+          <button
+            onClick={handleAddQuantity}
+            disabled={qLoading}
+            className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition"
+          >
+            {qLoading ? "Saving..." : "Add quantity"}
+          </button>
+        </div>
+
+        {/* Change price */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <p className="text-sm font-semibold text-white mb-4">
+            Change hourly price
+          </p>
+          <div className="flex gap-3 mb-3">
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="text-xs text-slate-500">Bike ID</label>
+              <input
+                type="number"
+                value={pBikeId}
+                onChange={(e) => {
+                  setPBikeId(e.target.value);
+                  setPError(null);
+                  setPSuccess(false);
+                }}
+                placeholder="1"
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="text-xs text-slate-500">New price (zł/h)</label>
+              <input
+                type="number"
+                value={pPrice}
+                onChange={(e) => {
+                  setPPrice(e.target.value);
+                  setPError(null);
+                  setPSuccess(false);
+                }}
+                placeholder="20"
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+          {pError && <p className="text-red-400 text-xs mb-2">{pError}</p>}
+          {pSuccess && (
+            <p className="text-green-400 text-xs mb-2">Cena zmieniona!</p>
+          )}
+          <button
+            onClick={handleChangePrice}
+            disabled={pLoading}
+            className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition"
+          >
+            {pLoading ? "Saving..." : "Change price"}
+          </button>
+        </div>
+      </div>
+
+      {/* Modals */}
+      {modal === "bike" && (
+        <AddBikeModal onClose={() => setModal(null)} onSuccess={refetch} />
+      )}
+      {modal === "brand" && (
+        <AddSimpleModal
+          title="Add brand"
+          label="Brand name"
+          endpoint="brands/add"
+          field="brandName"
+          onClose={() => setModal(null)}
+          onSuccess={refetch}
+        />
+      )}
+      {modal === "category" && (
+        <AddSimpleModal
+          title="Add category"
+          label="Category name"
+          endpoint="categories/add"
+          field="categoryName"
+          onClose={() => setModal(null)}
+          onSuccess={refetch}
+        />
+      )}
+    </div>
+  );
+}
+
+function BikeCard({ bike }: { bike: Bike }) {
+  return (
+    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-600 transition flex flex-col">
+      <div className="p-5 flex flex-col gap-3 flex-1">
+        <div>
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">
+            {bike.Category}
+          </p>
+          <h2 className="text-lg font-semibold text-white">{bike.Brand}</h2>
+          <p className="text-xs text-slate-500">ID #{bike.BikeID}</p>
+        </div>
+        <div className="mt-auto flex justify-between items-end pt-3 border-t border-slate-800">
+          <div>
+            <p className="text-xs text-slate-500">In stock</p>
+            <p
+              className={`text-xl font-bold ${bike.Quantity === 0 ? "text-red-400" : "text-white"}`}
+            >
+              {bike.Quantity}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-slate-500">Per hour</p>
+            <p className="text-xl font-bold text-indigo-400">
+              {bike.HourlyPrice} zł
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AddBikeModal({
+  onClose,
+  onSuccess,
+}: {
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
+  const [brandId, setBrandId] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [hourlyPrice, setHourlyPrice] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit() {
+    if (!brandId || !categoryId || !hourlyPrice) {
+      setError("Wypełnij wszystkie pola.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await callProcedure("bikes/add", {
+        brandId: Number(brandId),
+        categoryId: Number(categoryId),
+        hourlyPrice: Number(hourlyPrice),
+      });
+      onSuccess();
+      onClose();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Modal title="Add bike" onClose={onClose}>
+      <label className="block text-sm text-slate-400 mb-1">Brand ID</label>
+      <input
+        type="number"
+        value={brandId}
+        onChange={(e) => setBrandId(e.target.value)}
+        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
+        placeholder="np. 1"
+      />
+      <label className="block text-sm text-slate-400 mb-1">Category ID</label>
+      <input
+        type="number"
+        value={categoryId}
+        onChange={(e) => setCategoryId(e.target.value)}
+        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
+        placeholder="np. 2"
+      />
+      <label className="block text-sm text-slate-400 mb-1">
+        Hourly price (zł)
+      </label>
+      <input
+        type="number"
+        value={hourlyPrice}
+        onChange={(e) => setHourlyPrice(e.target.value)}
+        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
+        placeholder="np. 15"
+      />
+      {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
+      <ModalFooter
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        loading={loading}
+      />
+    </Modal>
+  );
+}
+
+function AddSimpleModal({
+  title,
+  label,
+  endpoint,
+  field,
+  onClose,
+  onSuccess,
+}: {
+  title: string;
+  label: string;
+  endpoint: string;
+  field: string;
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
+  const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit() {
+    if (!value.trim()) {
+      setError("Pole nie może być puste.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await callProcedure(endpoint, { [field]: value });
+      onSuccess();
+      onClose();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Modal title={title} onClose={onClose}>
+      <label className="block text-sm text-slate-400 mb-1">{label}</label>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
+      />
+      {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
+      <ModalFooter
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        loading={loading}
+      />
+    </Modal>
+  );
+}
+
+function Modal({
+  title,
+  onClose,
+  children,
+}: {
+  title: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+      onClick={onClose}
+    >
+      <div
+        className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-sm mx-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-lg font-semibold text-white mb-5">{title}</h2>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function ModalFooter({
+  onClose,
+  onSubmit,
+  loading,
+}: {
+  onClose: () => void;
+  onSubmit: () => void;
+  loading: boolean;
+}) {
+  return (
+    <div className="flex justify-end gap-2 mt-2">
+      <button
+        onClick={onClose}
+        className="px-4 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-sm"
+      >
+        Cancel
+      </button>
+      <button
+        onClick={onSubmit}
+        disabled={loading}
+        className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition"
+      >
+        {loading ? "Saving..." : "Save"}
+      </button>
     </div>
   );
 }
