@@ -423,6 +423,19 @@ BEGIN
 end;
 ```
 
+- FilterCustomer_p
+
+```js
+create
+    procedure FilterCustomer_p(IN customerPhone_v varchar(255))
+BEGIN
+    SELECT Firstname,Surrname,Phone
+    FROM Customers
+    WHERE Phone LIKE customerPhone_v;
+end;
+
+```
+
 ### Widoki:
 
 - view_active_rents
@@ -501,4 +514,11 @@ FROM Rents r
 GROUP BY bi.CategoryID
 ORDER BY COUNT(r.RentID) DESC
 LIMIT 1
+```
+
+- view_customers
+
+```js
+CREATE VIEW view_customers AS
+    SELECT * FROM Customers
 ```

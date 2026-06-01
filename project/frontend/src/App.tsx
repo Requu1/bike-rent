@@ -1,5 +1,4 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { useState } from "react";
 import "./App.css";
 
 import {
@@ -13,9 +12,6 @@ import {
 import Bikes from "./sites/BikesPage";
 import HomePage from "./sites/HomePage";
 import RentsPage from "./sites/RentsPage";
-
-// types
-import { type Bike } from "./types";
 import CustomersPage from "./sites/CustomersPage";
 
 function App() {
