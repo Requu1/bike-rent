@@ -3,7 +3,11 @@ import { useView, callProcedure } from "../hooks/useApi";
 import type { Customer } from "../types";
 
 export default function CustomersPage() {
-  const { data: customers, loading, refetch } = useView<Customer>("customers");
+  const {
+    data: customers,
+    loading,
+    refetch,
+  } = useView<Customer>("views/customers");
 
   // FilterCustomer
   const [filterPhone, setFilterPhone] = useState("");
@@ -12,8 +16,8 @@ export default function CustomersPage() {
   const [filterLoading, setFilterLoading] = useState(false);
 
   // AddCustomer
-  const [firstname, setFirstname] = useState("");
-  const [surrname, setSurrname] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [surrName, setSurrName] = useState("");
   const [phone, setPhone] = useState("");
   const [addError, setAddError] = useState<string | null>(null);
   const [addSuccess, setAddSuccess] = useState(false);
@@ -47,7 +51,7 @@ export default function CustomersPage() {
   }
 
   async function handleAddCustomer() {
-    if (!firstname.trim() || !surrname.trim() || !phone.trim()) {
+    if (!firstName.trim() || !surrName.trim() || !phone.trim()) {
       setAddError("Missing input data.");
       return;
     }
@@ -55,10 +59,10 @@ export default function CustomersPage() {
     setAddError(null);
     setAddSuccess(false);
     try {
-      await callProcedure("customers/add", { firstname, surrname, phone });
+      await callProcedure("customers/add", { firstName, surrName, phone });
       setAddSuccess(true);
-      setFirstname("");
-      setSurrname("");
+      setFirstName("");
+      setSurrName("");
       setPhone("");
       refetch();
     } catch (e: any) {
@@ -69,7 +73,7 @@ export default function CustomersPage() {
   }
 
   const displayedCustomers = filterResults
-    ? customers.filter((c) => filterResults.some((f) => f.Phone === c.Phone))
+    ? customers.filter((c) => filterResults.some((f) => f.phone === c.phone))
     : customers;
 
   return (
@@ -127,7 +131,7 @@ export default function CustomersPage() {
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-800">
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-800 text-slate-500 text-xs uppercase tracking-wider">
@@ -140,13 +144,13 @@ export default function CustomersPage() {
             <tbody>
               {displayedCustomers.map((c) => (
                 <tr
-                  key={c.CustomerID}
-                  className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
+                  key={c.customerId}
+                  className="border-b border-slate-800 text-slate-500 last:border-0 hover:bg-slate-800/40 transition"
                 >
-                  <td className="px-4 py-3 text-slate-500">#{c.CustomerID}</td>
-                  <td className="px-4 py-3 text-white">{c.Firstname}</td>
-                  <td className="px-4 py-3 text-slate-300">{c.Surrname}</td>
-                  <td className="px-4 py-3 text-slate-400">{c.Phone}</td>
+                  <td className="px-4 py-3">#{c.customerId}</td>
+                  <td className="px-4 py-3 text-white">{c.firstName}</td>
+                  <td className="px-4 py-3 text-white">{c.surrName}</td>
+                  <td className="px-4 py-3 ">{c.phone}</td>
                 </tr>
               ))}
             </tbody>
@@ -162,9 +166,9 @@ export default function CustomersPage() {
             <label className="text-xs text-slate-500">First name</label>
             <input
               type="text"
-              value={firstname}
+              value={firstName}
               onChange={(e) => {
-                setFirstname(e.target.value);
+                setFirstName(e.target.value);
                 setAddError(null);
                 setAddSuccess(false);
               }}
@@ -176,9 +180,9 @@ export default function CustomersPage() {
             <label className="text-xs text-slate-500">Surname</label>
             <input
               type="text"
-              value={surrname}
+              value={surrName}
               onChange={(e) => {
-                setSurrname(e.target.value);
+                setSurrName(e.target.value);
                 setAddError(null);
                 setAddSuccess(false);
               }}

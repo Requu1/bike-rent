@@ -1,51 +1,51 @@
 export interface Bike {
-  BikeID: number;
-  Brand: string;
-  Category: string;
-  Quantity: number;
-  HourlyPrice: number;
+  bikeId: number;
+  brand: string;
+  category: string;
+  quantity: number;
+  hourlyPrice: number;
 }
 
 export interface Bestseller {
-  BikeID: number;
-  Brand: string;
-  Category: string;
-  Rents: number;
+  bikeId: number;
+  brand: string;
+  category: string;
+  rents: number;
 }
 
 export interface BestBrand {
-  Brand: string;
-  Rents: number;
+  brand: string;
+  rents: number;
 }
 
 export interface TopCategory {
-  Category: string;
-  Rents: number;
+  category: string;
+  rents: number;
 }
 
 export interface FilterResult {
-  BikeID: number;
-  Quantity: number;
+  bikeId: number;
+  quantity: number;
 }
 
 export interface ActiveRent {
-  CustomerName: string;
-  BikeID: number;
-  BrandName: string;
-  RentDate: string;
-  RentPrice: number;
+  customerName: string;
+  bikeId: number;
+  brandName: string;
+  rentDate: string;
+  rentPrice: number;
 }
 
 export interface CustomerRent {
-  RentID: number;
-  BikeID: number;
-  RentDate: string;
-  ReturnDate: string | null;
+  rentId: number;
+  bikeId: number;
+  rentDate: string;
+  returnDate: string | null;
 }
 
 export interface Customer {
-  CustomerID: number;
-  Firstname: string;
-  Surrname: string;
-  Phone: string;
+  customerId: number;
+  firstName: string;
+  surrName: string;
+  phone: string;
 }

@@ -11,11 +11,11 @@ import {
 type Modal = "bike" | "brand" | "category" | null;
 
 export default function BikesPage() {
-  const { data: bikes, loading, refetch } = useView<Bike>("bikes/stock");
-  const { data: bestsellers } = useView<Bestseller>("bikes/bestsellers");
-  const { data: bestBrands } = useView<BestBrand>("bikes/bestselling-brands");
+  const { data: bikes, loading, refetch } = useView<Bike>("views/bike_stock");
+  const { data: bestsellers } = useView<Bestseller>("views/best_sellers");
+  const { data: bestBrands } = useView<BestBrand>("views/best_selling_brands");
   const { data: topCategory } = useView<TopCategory>(
-    "bikes/most-rented-category",
+    "views/most_rented_category",
   );
 
   const [modal, setModal] = useState<Modal>(null);
@@ -45,7 +45,7 @@ export default function BikesPage() {
 
   async function handleFilter() {
     if (!filterCategory.trim() || !filterBrand.trim()) {
-      setFilterError("Podaj zarówno kategorię jak i markę.");
+      setFilterError("Missing Input Data.");
       return;
     }
     setFilterError(null);
@@ -120,7 +120,7 @@ export default function BikesPage() {
   }
 
   const displayedBikes = filterResults
-    ? bikes.filter((b) => filterResults.some((f) => f.BikeID === b.BikeID))
+    ? bikes.filter((b) => filterResults.some((f) => f.bikeId === b.bikeId))
     : bikes;
 
   return (
@@ -160,14 +160,14 @@ export default function BikesPage() {
           <div className="flex flex-col gap-1">
             {bestsellers.slice(0, 5).map((b, i) => (
               <div
-                key={b.BikeID}
+                key={b.bikeId}
                 className="flex justify-between items-center text-sm"
               >
                 <span className="text-slate-400">
                   <span className="text-slate-600 mr-2">#{i + 1}</span>
-                  {b.Brand} · {b.Category}
+                  {b.brand} · {b.category}
                 </span>
-                <span className="text-indigo-400 font-medium">{b.Rents}x</span>
+                <span className="text-indigo-400 font-medium">{b.rents}x</span>
               </div>
             ))}
           </div>
@@ -179,18 +179,18 @@ export default function BikesPage() {
             Top brands
           </p>
           <div className="flex flex-col gap-3">
-            {bestBrands.map((b, i) => (
-              <div key={b.Brand}>
+            {bestBrands.map((b) => (
+              <div key={b.brand}>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-slate-300">{b.Brand}</span>
-                  <span className="text-slate-400">{b.Rents} rents</span>
+                  <span className="text-slate-300">{b.brand}</span>
+                  <span className="text-slate-400">{b.rents} rents</span>
                 </div>
                 <div className="w-full bg-slate-800 rounded-full h-1.5">
                   <div
                     className="bg-indigo-500 h-1.5 rounded-full"
                     style={{
                       width: `${Math.round(
-                        (b.Rents / (bestBrands[0]?.Rents || 1)) * 100,
+                        (b.rents / (bestBrands[0]?.rents || 1)) * 100,
                       )}%`,
                     }}
                   />
@@ -208,10 +208,10 @@ export default function BikesPage() {
           {topCategory[0] && (
             <>
               <p className="text-2xl font-bold text-white">
-                {topCategory[0].Category}
+                {topCategory[0].category}
               </p>
               <p className="text-slate-400 text-sm mt-1">
-                {topCategory[0].Rents} total rents
+                {topCategory[0].rents} total rents
               </p>
             </>
           )}
@@ -278,7 +278,7 @@ export default function BikesPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {displayedBikes.map((bike) => (
-            <BikeCard key={bike.BikeID} bike={bike} />
+            <BikeCard key={bike.bikeId} bike={bike} />
           ))}
         </div>
       )}
@@ -412,24 +412,24 @@ function BikeCard({ bike }: { bike: Bike }) {
       <div className="p-5 flex flex-col gap-3 flex-1">
         <div>
           <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">
-            {bike.Category}
+            {bike.category}
           </p>
-          <h2 className="text-lg font-semibold text-white">{bike.Brand}</h2>
-          <p className="text-xs text-slate-500">ID #{bike.BikeID}</p>
+          <h2 className="text-lg font-semibold text-white">{bike.brand}</h2>
+          <p className="text-xs text-slate-500">ID #{bike.bikeId}</p>
         </div>
         <div className="mt-auto flex justify-between items-end pt-3 border-t border-slate-800">
           <div>
             <p className="text-xs text-slate-500">In stock</p>
             <p
-              className={`text-xl font-bold ${bike.Quantity === 0 ? "text-red-400" : "text-white"}`}
+              className={`text-xl font-bold ${bike.quantity === 0 ? "text-red-400" : "text-white"}`}
             >
-              {bike.Quantity}
+              {bike.quantity}
             </p>
           </div>
           <div className="text-right">
             <p className="text-xs text-slate-500">Per hour</p>
             <p className="text-xl font-bold text-indigo-400">
-              {bike.HourlyPrice} zł
+              {bike.hourlyPrice} zł
             </p>
           </div>
         </div>

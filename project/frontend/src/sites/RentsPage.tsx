@@ -7,7 +7,7 @@ export default function RentsPage() {
     data: activeRents,
     loading,
     refetch,
-  } = useView<ActiveRent>("rents/active");
+  } = useView<ActiveRent>("views/active_rents");
 
   // CurrentRentsForCustomer
   const [customerId, setCustomerId] = useState("");
@@ -152,7 +152,7 @@ export default function RentsPage() {
             <p className="text-slate-400">No rents for this client</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-slate-800 mb-6">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-800 text-slate-500 text-xs uppercase tracking-wider">
@@ -168,21 +168,21 @@ export default function RentsPage() {
               <tbody>
                 {customerRents.map((r) => (
                   <tr
-                    key={r.RentID}
+                    key={r.rentId}
                     className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
                   >
-                    <td className="px-4 py-3 text-slate-400">#{r.RentID}</td>
-                    <td className="px-4 py-3 text-slate-400">#{r.BikeID}</td>
+                    <td className="px-4 py-3 text-slate-400">#{r.rentId}</td>
+                    <td className="px-4 py-3 text-slate-400">#{r.bikeId}</td>
                     <td className="px-4 py-3 text-slate-300">
-                      {new Date(r.RentDate).toLocaleString("pl-PL")}
+                      {new Date(r.rentDate).toLocaleString("pl-PL")}
                     </td>
                     <td className="px-4 py-3 text-slate-400">
-                      {r.ReturnDate
-                        ? new Date(r.ReturnDate).toLocaleString("pl-PL")
+                      {r.returnDate
+                        ? new Date(r.returnDate).toLocaleString("pl-PL")
                         : "—"}
                     </td>
                     <td className="px-4 py-3">
-                      {r.ReturnDate ? (
+                      {r.returnDate ? (
                         <span className="text-xs px-2 py-1 rounded-full bg-slate-800 text-slate-400">
                           returned
                         </span>
@@ -208,7 +208,7 @@ export default function RentsPage() {
           <p className="text-slate-400">No active rents.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-800">
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-800 text-slate-500 text-xs uppercase tracking-wider">
@@ -227,14 +227,14 @@ export default function RentsPage() {
                   key={i}
                   className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
                 >
-                  <td className="px-4 py-3 text-white">{rent.CustomerName}</td>
-                  <td className="px-4 py-3 text-slate-400">#{rent.BikeID}</td>
-                  <td className="px-4 py-3 text-slate-300">{rent.BrandName}</td>
+                  <td className="px-4 py-3 text-white">{rent.customerName}</td>
+                  <td className="px-4 py-3 text-slate-400">#{rent.bikeId}</td>
+                  <td className="px-4 py-3 text-slate-300">{rent.brandName}</td>
                   <td className="px-4 py-3 text-slate-400">
-                    {new Date(rent.RentDate).toLocaleString("pl-PL")}
+                    {new Date(rent.rentDate).toLocaleString("pl-PL")}
                   </td>
                   <td className="px-4 py-3 text-right text-indigo-400 font-medium">
-                    {rent.RentPrice} zł
+                    {rent.rentPrice} zł
                   </td>
                 </tr>
               ))}
