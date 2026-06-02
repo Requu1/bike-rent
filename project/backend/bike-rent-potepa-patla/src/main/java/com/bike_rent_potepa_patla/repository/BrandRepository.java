@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface BrandRepository extends JpaRepository<Brand,Long> {
     @Procedure(name="AddBrand_p")
     void addNewBrand(@Param("brandName_v")String brandName);
+
+    Brand findBrandByName(@Param("brandName_v")String brandName);
 }
