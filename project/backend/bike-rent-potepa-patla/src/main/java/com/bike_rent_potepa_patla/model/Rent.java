@@ -11,6 +11,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Builder
+@Table(name="Rents")
 public class Rent {
     @Column(name="RentID")
     @Id

@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.46, for Linux (x86_64)
+﻿-- MySQL dump 10.13  Distrib 8.0.46, for Linux (x86_64)
 --
 -- Host: bike-rent-potepa-patla-bike-rent.f.aivencloud.com    Database: bike-rent
 -- ------------------------------------------------------
@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-32';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-36';
 
 --
 -- Table structure for table `Bikes`
@@ -212,7 +212,7 @@ CREATE TABLE `Customers` (
 
 LOCK TABLES `Customers` WRITE;
 /*!40000 ALTER TABLE `Customers` DISABLE KEYS */;
-INSERT INTO `Customers` VALUES (1,'Robert','Kubica','+48278238482'),(2,'Grzegorz','Brz─Öczyszczykiewicz','+48328548322'),(3,'Anna','Kowalska','+48501234567'),(4,'Jan','Nowak','+48602345678'),(5,'Katarzyna','Wi┼Ťniewska','+48703456789'),(6,'Piotr','Zieli┼äski','+48804567890'),(7,'Agnieszka','W├│jcik','+48905678901'),(8,'Micha┼é','Kami┼äski','+48509876543'),(9,'Magdalena','Lewandowska','+48608765432'),(10,'Krzysztof','D─ůbrowski','+48707654321'),(11,'Tomasz','Jankowski','+48905432109'),(12,'Monika','Mazur','+48511223344'),(13,'Pawe┼é','Kwiatkowski','+48622334455'),(14,'Joanna','Krawczyk','+48733445566');
+INSERT INTO `Customers` VALUES (1,'Robert','Kubica','+48278238482'),(2,'Grzegorz','Brzeczyszczykiewicz','+48328548322'),(3,'Anna','Kowalska','+48501234567'),(4,'Jan','Nowak','+48602345678'),(5,'Katarzyna','Wisniewska','+48703456789'),(6,'Piotr','Zielinski','+48804567890'),(7,'Agnieszka','Wojcik','+48905678901'),(8,'Michal','Kaminski','+48509876543'),(9,'Magdalena','Lewandowska','+48608765432'),(10,'Krzysztof','Dabrowski','+48707654321'),(11,'Tomasz','Jankowski','+48905432109'),(12,'Monika','Mazur','+48511223344'),(13,'Pawel','Kwiatkowski','+48622334455'),(14,'Joanna','Krawczyk','+48733445566');
 /*!40000 ALTER TABLE `Customers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -449,6 +449,21 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `Category`,
  1 AS `Quantity`,
  1 AS `HourlyPrice`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_customers`
+--
+
+DROP TABLE IF EXISTS `view_customers`;
+/*!50001 DROP VIEW IF EXISTS `view_customers`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_customers` AS SELECT 
+ 1 AS `CustomerID`,
+ 1 AS `Firstname`,
+ 1 AS `Surrname`,
+ 1 AS `Phone`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -808,6 +823,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `FilterCustomer_p` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "FilterCustomer_p"(IN customerPhone_v varchar(255))
+BEGIN
+    SELECT Firstname,Surrname,Phone
+    FROM Customers
+    WHERE Phone LIKE customerPhone_v;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Final view structure for view `view_active_rents`
@@ -882,6 +918,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `view_customers`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_customers`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `view_customers` AS select `Customers`.`CustomerID` AS `CustomerID`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Customers`.`Phone` AS `Phone` from `Customers` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `view_most_rented_category`
 --
 
@@ -909,4 +963,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-24  8:43:17
+-- Dump completed on 2026-06-02  2:29:50

@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
+@Table(name="Categories")
 public class Category {
     @Column(name="CategoryID")
     @Id

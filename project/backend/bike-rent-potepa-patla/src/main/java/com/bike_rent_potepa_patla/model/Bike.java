@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
+@Table(name="Bikes")
 public class Bike {
     @Column(name="BikeID")
     @Id
