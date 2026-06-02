@@ -10,5 +10,8 @@ import org.springframework.stereotype.Service;
 public class BrandService {
     private final BrandRepository brandRepository;
 
+    Brand findByName(String brandName){
+        return brandRepository.findByBrandName(brandName);
+    }
 
 }

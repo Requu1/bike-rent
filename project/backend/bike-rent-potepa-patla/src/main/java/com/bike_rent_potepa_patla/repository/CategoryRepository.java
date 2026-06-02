@@ -11,5 +11,5 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
     @Procedure(name="AddCategory_p")
     void addNewCategory(@Param("categoryName_v")String categoryName);
 
-    Category findCategoryByCategoryName(@Param("CategoryName")String categoryName);
+    Category findByCategoryName(String categoryName);
 }

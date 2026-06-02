@@ -1,16 +1,14 @@
 package com.bike_rent_potepa_patla.service;
 
-import com.bike_rent_potepa_patla.dto.rent.RentCreateDto;
-import com.bike_rent_potepa_patla.dto.rent.RentResponseDto;
+
 import com.bike_rent_potepa_patla.repository.RentRepository;
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class RentService {
-    private RentRepository rentRepository;
+    private final RentRepository rentRepository;
 
-    @Transactional
-    RentResponseDto addRent(RentCreateDto rentCreateDto){
-        rentRepository.addNewRent(rentCreateDto.bikeId(), rentCreateDto.customerId());
-        return new RentResponseDto(rentCreateDto.bikeId());
-    }
+
 }

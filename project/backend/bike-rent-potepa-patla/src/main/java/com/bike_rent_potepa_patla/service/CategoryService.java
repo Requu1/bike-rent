@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
-    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     Category findByName(String categoryName) {
-        return categoryRepository.findCategoryByCategoryName(categoryName);
+        return categoryRepository.findByCategoryName(categoryName);
     }
 }
