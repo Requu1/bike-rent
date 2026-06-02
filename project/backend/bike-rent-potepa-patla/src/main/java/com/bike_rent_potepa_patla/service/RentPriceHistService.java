@@ -12,10 +12,4 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RentPriceHistService {
     private final RentPriceHistRepository rentPriceHistRepository;
-
-    @Transactional
-    RentPriceResponseDto submitNewRentPrice(RentPriceCreateDto rentPriceCreateDto) {
-        rentPriceHistRepository.changeRentPrice(rentPriceCreateDto.bikeId(), rentPriceCreateDto.hourlyPrice());
-        return new RentPriceResponseDto();
-    }
 }
