@@ -3,13 +3,14 @@ package com.bike_rent_potepa_patla.dto.rentPrice;
 
 import lombok.Builder;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Builder
 public record RentPriceResponseDto(
+        Long rentPriceId,
         Long bikeId,
         Integer hourlyPrice,
-        LocalDate startDate,
-        LocalDate endDate
+        Date startDate,
+        Date endDate
 ) {
 }

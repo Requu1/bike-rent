@@ -10,5 +10,10 @@ import org.springframework.stereotype.Service;
 public class RentService {
     private final RentRepository rentRepository;
 
+    public void endRent(Long rentId){
+        rentRepository.endRent(rentId);
+    }
+
+
 
 }

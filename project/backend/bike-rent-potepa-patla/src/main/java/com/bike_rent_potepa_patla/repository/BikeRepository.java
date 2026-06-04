@@ -1,6 +1,6 @@
 package com.bike_rent_potepa_patla.repository;
 
-import com.bike_rent_potepa_patla.dto.FilteredBikeDto;
+import com.bike_rent_potepa_patla.dto.bike.FilteredBikeDto;
 import com.bike_rent_potepa_patla.model.Bike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -19,4 +19,6 @@ public interface RentPriceHistRepository extends JpaRepository<RentPriceHist, Lo
 
     @Query(value="SELECT RentalPrice_f(:rentId)")
     int getRentalPrice(@Param("rentId")Long rentId);
+
+    RentPriceHist findRentPriceHistById(Long id);
 }
