@@ -4,7 +4,10 @@
 
 Krzysztof Patla, Szymon Potępa
 
-#### Technologies used: JavaScript + React + Vite + Tailwind
+#### Technologies used:
+
+Backend: Java + Spring
+Frontend: React + Vite + Tailwind
 
 #### Database: MySQL
 
@@ -14,9 +17,25 @@ aby pobrać wszystkie potrzebne pakiety trzeba uruchomić
 
 `npm install`
 
-aby uruchomić projekt należy wpisać w terminalu
+aby pobrać bazę danych należy mieć pobranego Dockera i uruchomić komendy
 
+`cd 'ścieżka do projektu'/docker`
+`docker-compose up -d`
+
+kontener powinien się uruchomić samodzielnie
+
+aby uruchomić backend należy ...
+
+(najlepiej w InteliJ uruchomić program w ustalonej konfiguracji)
+
+aby uruchomić frontend projektu należy wpisać w terminalu
+
+`cd 'ścieżka do projektu'/project/frontend`
 `npm run dev`
+
+oraz wpisać
+`o`
+lub uruchomić localhosta wypisanego przez terminal (można też nacisnąć link)
 
 ---
 
