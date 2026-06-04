@@ -454,6 +454,20 @@ FROM Rents r
 WHERE r.ReturnDate IS NULL
 ```
 
+- view_hist_rents
+
+```js
+CREATE VIEW view_hist_rents AS
+select RentID, Rents.BikeID,BrandName,Firstname,Surrname,RentDate,ReturnDate from Rents
+INNER JOIN Customers
+ON Rents.CustomerID = Customers.CustomerID
+INNER JOIN Bikes
+ON Rents.BikeID = Bikes.BikeID
+INNER JOIN Brands
+ON Bikes.BikeID=Brands.BrandID
+WHERE ReturnDate IS NOT NULL
+```
+
 - view_bestsellers
 
 ```js
@@ -500,6 +514,18 @@ SELECT bi.BikeID            AS BikeID,
 FROM Bikes bi
     JOIN Brands br ON bi.BrandID = br.BrandID
     JOIN Categories c ON bi.CategoryID = c.CategoryID
+```
+
+- view_hist_price
+
+```js
+CREATE VIEW view_hist_price AS
+SELECT RentPriceHistID,Bikes.BikeID,BrandName,HourlyPrice,StartDate,EndDate FROM RentPriceHist
+INNER JOIN Bikes
+ON RentPriceHist.BikeID = Bikes.BikeID
+INNER JOIN Brands
+ON Bikes.BrandID = Brands.BrandID
+WHERE EndDate IS NOT NULL
 ```
 
 - view_most_rented_category
