@@ -1,6 +1,9 @@
 package com.bike_rent_potepa_patla.dto.bike;
 
+import lombok.Builder;
+
+@Builder
 public record FilteredBikeDto(
-        Long bikeId,
-        int quantity) {
-}
+        Integer bikeId,
+        Integer quantity
+) { }

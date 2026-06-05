@@ -1,10 +1,10 @@
 package com.bike_rent_potepa_patla.dto.rent;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public record RentsForCustomerDto(
-        Long rentId,
-        Long bikeId,
-        Date rentDate,
-        Date returnDate
+        Integer rentId,
+        Integer bikeId,
+        LocalDate rentDate,
+        LocalDate returnDate
 ) { }
