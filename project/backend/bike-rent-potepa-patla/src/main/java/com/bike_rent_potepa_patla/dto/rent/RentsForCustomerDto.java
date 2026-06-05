@@ -1,16 +1,10 @@
 package com.bike_rent_potepa_patla.dto.rent;
 
-
-import lombok.Builder;
-
-import java.time.LocalDate;
 import java.util.Date;
 
-@Builder
-public record RentResponseDto(
+public record RentsForCustomerDto(
         Long rentId,
         Long bikeId,
-        Long customerId,
         Date rentDate,
         Date returnDate
-) {}
+) { }

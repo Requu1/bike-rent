@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
     @Procedure(name="AddCustomer_p")
-    void addNewCustomer
+    Long addNewCustomer
             (@Param("firstname_v")String firstname,@Param("surrname_v")String lastname,@Param("phone_v")String phone);
 }

@@ -12,11 +12,11 @@ import java.util.List;
 
 @Repository
 public interface BikeRepository extends JpaRepository<Bike,Long> {
-    @Procedure(name="AddBike_p")
-    void addNewBikeWithNewPriceHist
+    @Procedure(procedureName="AddBike_p")
+    Long addNewBikeWithNewPriceHist
             (@Param("brandId_v")Long brandId,@Param("categoryId_v")Long categoryId,@Param("hourly_price_v")Integer hourlyPrice);
 
-    @Procedure(name="AddQuantity_p")
+    @Procedure(procedureName="AddQuantity_p")
     void addBikeQuantity(@Param("quantity_v")int quantity,@Param("bikeID_v")Long bikeID);
 
     @Query(value="CALL FilterBike_p(:categoryName,:brandName)",nativeQuery = true)

@@ -23,9 +23,18 @@ public class RentPriceHistService {
                 dto.bikeId(),dto.hourlyPrice(),findStartDateForNewRentPrice(newRentPriceId),null );
     }
 
+    public int getCurrentRentPrice(Long rentId){
+        return rentPriceHistRepository.getRentalPrice(rentId);
+    }
+
+    public int getAvgBikeRentPrice(Long bikeId,Date startDate,Date endDate){
+        return rentPriceHistRepository.avgBikeRentPrice(bikeId,startDate,endDate);
+    }
 
     private Date findStartDateForNewRentPrice(Long id){
         RentPriceHist rentPrice=rentPriceHistRepository.findRentPriceHistById(id);
         return rentPrice.getStartDate();
     }
+
+
 }
