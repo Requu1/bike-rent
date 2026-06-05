@@ -29,7 +29,7 @@ public class RentPriceHistService {
     }
 
     @Transactional
-    public Integer getCurrentRentPrice(Integer rentId){
+    public Integer getRentTotalPrice(Integer rentId){
         return rentPriceHistRepository.getRentalPrice(rentId);
     }
 
