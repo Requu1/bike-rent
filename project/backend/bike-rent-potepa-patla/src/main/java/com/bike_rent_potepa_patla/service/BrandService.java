@@ -14,10 +14,12 @@ public class BrandService {
     private final BrandRepository brandRepository;
 
     @Transactional
-    BrandResponseDto addBrand(BrandCreateDto dto){
-        Long newBrandId=brandRepository.addNewBrand(dto.brandName());
-        return new BrandResponseDto(newBrandId,dto.brandName());
-
+    public BrandResponseDto addBrand(BrandCreateDto dto){
+        Integer newBrandId=brandRepository.addNewBrand(dto.brandName());
+        return BrandResponseDto.builder()
+                .id(newBrandId)
+                .brandName(dto.brandName())
+                .build();
     }
 
     Brand findByName(String brandName){

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BikeRepository extends JpaRepository<Bike,Long> {
+public interface BikeRepository extends JpaRepository<Bike,Integer> {
     @Procedure(procedureName="AddBike_p")
-    Long addNewBikeWithNewPriceHist
-            (@Param("brandId_v")Long brandId,@Param("categoryId_v")Long categoryId,@Param("hourly_price_v")Integer hourlyPrice);
+    Integer addNewBikeWithNewPriceHist
+            (@Param("brandId_v")Integer brandId,@Param("categoryId_v")Integer categoryId,@Param("hourly_price_v")Integer hourlyPrice);
 
     @Procedure(procedureName="AddQuantity_p")
-    void addBikeQuantity(@Param("quantity_v")int quantity,@Param("bikeID_v")Long bikeID);
+    void addBikeQuantity(@Param("quantity_v")int quantity,@Param("bikeID_v")Integer bikeID);
 
     @Query(value="CALL FilterBike_p(:categoryName,:brandName)",nativeQuery = true)
     List<FilteredBikeDto> getBikesByCategoryAndBrand(@Param("categoryName_v")String categoryName, @Param("brandName_v")String brandName);

@@ -21,14 +21,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ErrorResponseDto> handleDatabaseExceptions(DataAccessException ex) {
-
         String errorMessage = ex.getMostSpecificCause().getMessage();
-
-        ErrorResponseDto error = new ErrorResponseDto(
-                "DATABASE_ERROR",
-                errorMessage
-        );
-
+        ErrorResponseDto error = ErrorResponseDto.builder()
+                .errorName("DATABASE_ERROR")
+                .errorMsg(errorMessage)
+                .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }

@@ -15,8 +15,11 @@ public class CategoryService {
 
     @Transactional
     public CategoryResponseDto addCategory(CategoryCreateDto dto){
-        Long newCategoryId=categoryRepository.addNewCategory(dto.name());
-        return new  CategoryResponseDto(newCategoryId,dto.name());
+        Integer newCategoryId=categoryRepository.addNewCategory(dto.name());
+        return CategoryResponseDto.builder()
+                .categoryId(newCategoryId)
+                .name(dto.name())
+                .build();
     }
 
     Category findByName(String categoryName) {

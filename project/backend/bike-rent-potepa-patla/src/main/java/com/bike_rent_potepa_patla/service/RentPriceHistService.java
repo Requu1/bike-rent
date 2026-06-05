@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -18,21 +18,28 @@ public class RentPriceHistService {
 
     @Transactional
     public RentPriceResponseDto changeRentPrice(RentPriceCreateDto dto) {
-        Long newRentPriceId=rentPriceHistRepository.changeRentPrice(dto.bikeId(),dto.hourlyPrice());
-        return new RentPriceResponseDto(newRentPriceId,
-                dto.bikeId(),dto.hourlyPrice(),findStartDateForNewRentPrice(newRentPriceId),null );
+        Integer newRentPriceId=rentPriceHistRepository.changeRentPrice(dto.bikeId(),dto.hourlyPrice());
+        return RentPriceResponseDto.builder()
+                .rentPriceId(newRentPriceId)
+                .bikeId(dto.bikeId())
+                .hourlyPrice(dto.hourlyPrice())
+                .startDate(findStartDateForNewRentPrice(newRentPriceId))
+                .endDate(null)
+                .build();
     }
 
-    public int getCurrentRentPrice(Long rentId){
+    @Transactional
+    public Integer getCurrentRentPrice(Integer rentId){
         return rentPriceHistRepository.getRentalPrice(rentId);
     }
 
-    public int getAvgBikeRentPrice(Long bikeId,Date startDate,Date endDate){
+    @Transactional
+    public Integer getAvgBikeRentPrice(Integer bikeId, LocalDate startDate, LocalDate endDate){
         return rentPriceHistRepository.avgBikeRentPrice(bikeId,startDate,endDate);
     }
 
-    private Date findStartDateForNewRentPrice(Long id){
-        RentPriceHist rentPrice=rentPriceHistRepository.findRentPriceHistById(id);
+    private LocalDate findStartDateForNewRentPrice(Integer rentPriceId){
+        RentPriceHist rentPrice=rentPriceHistRepository.findRentPriceHistById(rentPriceId);
         return rentPrice.getStartDate();
     }
 

@@ -20,23 +20,27 @@ public class BikeService {
 
     @Transactional
     public BikeResponseDto addBike(BikeCreateDto bikeCreateDto) {
-        Long newBikeId=bikeRepository.addNewBikeWithNewPriceHist(
+        Integer newBikeId=bikeRepository.addNewBikeWithNewPriceHist(
                 brandService.findByName(bikeCreateDto.brandName()).getId(),
                 categoryService.findByName(bikeCreateDto.categoryName()).getId(),
                 bikeCreateDto.hourlyPrice()
         );
 
-        return new BikeResponseDto
-                (newBikeId, bikeCreateDto.brandName(), bikeCreateDto.categoryName(), bikeCreateDto.hourlyPrice());
+        return BikeResponseDto.builder()
+                .bikeId(newBikeId)
+                .brandName(bikeCreateDto.brandName())
+                .categoryName(bikeCreateDto.categoryName())
+                .hourlyPrice(bikeCreateDto.hourlyPrice())
+                .build();
     }
 
     @Transactional
-    public void addBikeQuantity(Integer quantity,Long bikeId){
+    public void addBikeQuantity(Integer quantity,Integer bikeId){
         bikeRepository.addBikeQuantity(quantity,bikeId);
     }
 
     @Transactional
-    List<FilteredBikeDto> filterBikesByBrandAndCategory(String categoryName,String brandName){
+    public List<FilteredBikeDto> filterBikesByCategoryAndBrand(String categoryName,String brandName){
         return bikeRepository.getBikesByCategoryAndBrand(categoryName,brandName);
     }
 }

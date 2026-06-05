@@ -7,18 +7,18 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Repository
-public interface RentPriceHistRepository extends JpaRepository<RentPriceHist, Long> {
-    @Procedure(name="ChangeRentPrice_p")
-    void changeRentPrice(@Param("bike_id_v")Long bikeId,@Param("hourly_price_v")int hourlyPrice);
+public interface RentPriceHistRepository extends JpaRepository<RentPriceHist, Integer> {
+    @Procedure(procedureName = "ChangeRentPrice_p")
+    Integer changeRentPrice(@Param("bike_id_v")Integer bikeId,@Param("hourly_price_v")Integer hourlyPrice);
 
     @Query(value="SELECT AvgBikeRentPrice_f(:bikeId,:startDate,:endDate)",nativeQuery = true)
-    int avgBikeRentPrice(@Param("bikeId")Long bikeId, @Param("startDate") Date startDate, @Param("endDate")Date endDate);
+    Integer avgBikeRentPrice(@Param("bikeId")Integer bikeId, @Param("startDate") LocalDate startDate, @Param("endDate")LocalDate endDate);
 
     @Query(value="SELECT RentalPrice_f(:rentId)")
-    int getRentalPrice(@Param("rentId")Long rentId);
+    Integer getRentalPrice(@Param("rentId")Integer rentId);
 
-    RentPriceHist findRentPriceHistById(Long id);
+    RentPriceHist findRentPriceHistById(Integer id);
 }
