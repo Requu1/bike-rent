@@ -3,6 +3,7 @@ import {
   Bike as BikeIcon,
   Notebook as RentsIcon,
   Contact as CustomerIcon,
+  History as HistoryIcon,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -50,7 +51,7 @@ export default function HomePage() {
         <p className="text-slate-400 text-lg">Bike rental control panel App</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <Link
           to="/bikes"
           className="bg-slate-900 border border-slate-800 hover:border-slate-600 rounded-2xl p-8 flex flex-col gap-3 transition"
@@ -80,6 +81,15 @@ export default function HomePage() {
           <CustomerIcon className="w-8 h-8 text-indigo-400" />
           <p className="text-white text-xl font-semibold">Customers</p>
           <p className="text-slate-400 text-sm">Our clients</p>
+        </Link>
+
+        <Link
+          to="/hist"
+          className="bg-slate-900 border border-slate-800 hover:border-slate-600 rounded-2xl p-8 flex flex-col gap-3 transition"
+        >
+          <HistoryIcon className="w-8 h-8 text-indigo-400" />
+          <p className="text-white text-xl font-semibold">History</p>
+          <p className="text-slate-400 text-sm">Historical rents and prices</p>
         </Link>
       </div>
 

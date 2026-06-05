@@ -6,6 +6,7 @@ import {
   Bike as BikeIcon,
   Notebook as RentsIcon,
   Contact as CustomerIcon,
+  History as HistoryIcon,
 } from "lucide-react";
 
 // sites
@@ -13,6 +14,7 @@ import Bikes from "./sites/BikesPage";
 import HomePage from "./sites/HomePage";
 import RentsPage from "./sites/RentsPage";
 import CustomersPage from "./sites/CustomersPage";
+import HistPage from "./sites/HistPage";
 
 function App() {
   return (
@@ -48,6 +50,13 @@ function App() {
             <BikeIcon className="w-6 h-6" />
             Bikes
           </Link>
+          <Link
+            to="/hist"
+            className="text-slate-400 hover:text-indigo-400 transition-colors p-2 rounded-lg hover:bg-slate-800/50 flex flex-col items-center"
+          >
+            <HistoryIcon className="w-6 h-6" />
+            History
+          </Link>
         </div>
       </nav>
 
@@ -58,6 +67,7 @@ function App() {
           <Route path="/rents" element={<RentsPage />} />
           <Route path="/customers" element={<CustomersPage />} />
           <Route path="/bikes" element={<Bikes />} />
+          <Route path="/hist" element={<HistPage />} />
         </Routes>
       </main>
     </BrowserRouter>

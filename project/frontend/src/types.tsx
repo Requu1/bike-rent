@@ -36,6 +36,25 @@ export interface ActiveRent {
   rentPrice: number;
 }
 
+export interface RentHist {
+  RentID: number;
+  BikeID: number;
+  BrandName: string;
+  Firstname: string;
+  Surrname: string;
+  RentDate: number;
+  ReturnDate: number;
+}
+
+export interface PriceHist {
+  RentPriceHistID: number;
+  BikeID: number;
+  BrandName: string;
+  HourlyPrice: number;
+  StartDate: string;
+  EndDate: string;
+}
+
 export interface CustomerRent {
   rentId: number;
   bikeId: number;
