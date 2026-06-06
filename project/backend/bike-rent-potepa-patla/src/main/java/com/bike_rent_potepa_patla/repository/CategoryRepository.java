@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
-    @Procedure(name="AddCategory_p")
-    void addNewCategory(@Param("categoryName_v")String categoryName);
+    @Procedure(procedureName="AddCategory_p")
+    Integer addNewCategory(@Param("categoryName_v")String categoryName);
 
     Category findByCategoryName(String categoryName);
 }

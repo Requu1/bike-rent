@@ -14,13 +14,13 @@ import lombok.*;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name="Firstname",nullable = false)
     private String firstName;
 
     @Column(name="Surrname",nullable = false)
-    private String surrname;
+    private String surname;
 
     @Column(name="Phone",nullable = false)
     @Size(min=15,max=15)

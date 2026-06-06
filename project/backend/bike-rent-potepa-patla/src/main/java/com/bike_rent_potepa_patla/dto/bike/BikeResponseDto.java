@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record BikeResponseDto(
-        Long bikeId,
+        Integer bikeId,
         String brandName,
         String categoryName,
         Integer hourlyPrice

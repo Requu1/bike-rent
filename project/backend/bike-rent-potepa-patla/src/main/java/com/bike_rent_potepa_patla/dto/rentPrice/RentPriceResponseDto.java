@@ -7,7 +7,8 @@ import java.time.LocalDate;
 
 @Builder
 public record RentPriceResponseDto(
-        Long bikeId,
+        Integer rentPriceId,
+        Integer bikeId,
         Integer hourlyPrice,
         LocalDate startDate,
         LocalDate endDate
