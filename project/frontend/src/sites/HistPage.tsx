@@ -6,13 +6,13 @@ export default function HistPage() {
     data: rentHist,
     loading: loadingRent,
     refetch: refetchRent,
-  } = useView<RentHist>("views/rent_hist");
+  } = useView<RentHist>("views/hist-rents");
 
   const {
     data: priceHist,
     loading: loadingPrice,
     refetch: refetchPrice,
-  } = useView<PriceHist>("views/price_hist");
+  } = useView<PriceHist>("views/hist-price");
 
   return (
     <div>
@@ -61,21 +61,21 @@ export default function HistPage() {
                 <tbody>
                   {rentHist.map((r) => (
                     <tr
-                      key={r.RentID}
+                      key={r.rentId}
                       className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
                     >
-                      <td className="px-3 py-3 text-slate-500">#{r.RentID}</td>
-                      <td className="px-3 py-3 text-slate-400">#{r.BikeID}</td>
-                      <td className="px-3 py-3 text-white">{r.BrandName}</td>
+                      <td className="px-3 py-3 text-slate-500">#{r.rentId}</td>
+                      <td className="px-3 py-3 text-slate-400">#{r.bikeId}</td>
+                      <td className="px-3 py-3 text-white">{r.brandName}</td>
                       <td className="px-3 py-3 text-white">
-                        {r.Firstname} {r.Surrname}
+                        {r.firstName} {r.surrName}
                       </td>
                       <td className="px-3 py-3 text-slate-400">
-                        {new Date(r.RentDate).toLocaleString("pl-PL")}
+                        {new Date(r.rentDate).toLocaleString("pl-PL")}
                       </td>
                       <td className="px-3 py-3 text-slate-400">
-                        {r.ReturnDate
-                          ? new Date(r.ReturnDate).toLocaleString("pl-PL")
+                        {r.returnDate
+                          ? new Date(r.returnDate).toLocaleString("pl-PL")
                           : "—"}
                       </td>
                     </tr>
@@ -125,23 +125,23 @@ export default function HistPage() {
                 <tbody>
                   {priceHist.map((p) => (
                     <tr
-                      key={p.RentPriceHistID}
+                      key={p.rentPriceHistId}
                       className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
                     >
                       <td className="px-3 py-3 text-slate-500">
-                        #{p.RentPriceHistID}
+                        #{p.rentPriceHistId}
                       </td>
-                      <td className="px-3 py-3 text-slate-400">#{p.BikeID}</td>
-                      <td className="px-3 py-3 text-white">{p.BrandName}</td>
+                      <td className="px-3 py-3 text-slate-400">#{p.bikeId}</td>
+                      <td className="px-3 py-3 text-white">{p.brandName}</td>
                       <td className="px-3 py-3 text-indigo-400 font-medium">
-                        {p.HourlyPrice.toFixed(2)} zł
+                        {p.hourlyPrice.toFixed(2)} zł
                       </td>
                       <td className="px-3 py-3 text-slate-400">
-                        {new Date(p.StartDate).toLocaleString("pl-PL")}
+                        {new Date(p.startDate).toLocaleString("pl-PL")}
                       </td>
                       <td className="px-3 py-3 text-slate-400">
-                        {p.EndDate
-                          ? new Date(p.EndDate).toLocaleString("pl-PL")
+                        {p.endDate
+                          ? new Date(p.endDate).toLocaleString("pl-PL")
                           : "—"}
                       </td>
                     </tr>

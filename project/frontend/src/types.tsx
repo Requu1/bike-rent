@@ -29,6 +29,7 @@ export interface FilterResult {
 }
 
 export interface ActiveRent {
+  rentId: number;
   customerName: string;
   bikeId: number;
   brandName: string;
@@ -37,22 +38,22 @@ export interface ActiveRent {
 }
 
 export interface RentHist {
-  RentID: number;
-  BikeID: number;
-  BrandName: string;
-  Firstname: string;
-  Surrname: string;
-  RentDate: number;
-  ReturnDate: number;
+  rentId: number;
+  bikeId: number;
+  brandName: string;
+  firstName: string;
+  surrName: string;
+  rentDate: number;
+  returnDate: number;
 }
 
 export interface PriceHist {
-  RentPriceHistID: number;
-  BikeID: number;
-  BrandName: string;
-  HourlyPrice: number;
-  StartDate: string;
-  EndDate: string;
+  rentPriceHistId: number;
+  bikeId: number;
+  brandName: string;
+  hourlyPrice: number;
+  startDate: string;
+  endDate: string;
 }
 
 export interface CustomerRent {
@@ -67,4 +68,14 @@ export interface Customer {
   firstName: string;
   surrName: string;
   phone: string;
+}
+
+export interface Brand {
+  brandId: number;
+  brandName: string;
+}
+
+export interface Category {
+  categoryId: number;
+  categoryName: string;
 }

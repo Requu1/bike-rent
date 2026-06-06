@@ -6,17 +6,21 @@ import {
   type BestBrand,
   type TopCategory,
   type FilterResult,
+  type Category,
+  type Brand,
 } from "../types";
 
 type Modal = "bike" | "brand" | "category" | null;
 
 export default function BikesPage() {
-  const { data: bikes, loading, refetch } = useView<Bike>("views/bike_stock");
-  const { data: bestsellers } = useView<Bestseller>("views/best_sellers");
-  const { data: bestBrands } = useView<BestBrand>("views/best_selling_brands");
+  const { data: bikes, loading, refetch } = useView<Bike>("views/bike-stock");
+  const { data: bestsellers } = useView<Bestseller>("views/best-sellers");
+  const { data: bestBrands } = useView<BestBrand>("views/best-selling-brands");
   const { data: topCategory } = useView<TopCategory>(
-    "views/most_rented_category",
+    "views/most-rented-category",
   );
+  const { data: categories } = useView<Category>("categories");
+  const { data: brands } = useView<Brand>("brands");
 
   const [modal, setModal] = useState<Modal>(null);
 
@@ -52,7 +56,7 @@ export default function BikesPage() {
     setFilterLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/bikes/filter?categoryName=${encodeURIComponent(filterCategory)}&brandName=${encodeURIComponent(filterBrand)}`,
+        `http://localhost:8080/api/bikes?categoryName=${encodeURIComponent(filterCategory)}&brandName=${encodeURIComponent(filterBrand)}`,
       );
       if (!res.ok) throw new Error(await res.text());
       setFilterResults(await res.json());
@@ -80,10 +84,11 @@ export default function BikesPage() {
     setQError(null);
     setQSuccess(false);
     try {
-      await callProcedure("bikes/add-quantity", {
-        bikeId: Number(qBikeId),
-        quantity: Number(qQty),
-      });
+      const res = await fetch(
+        `http://localhost:8080/api/bikes/${encodeURIComponent(qQty)}/add-quantity?quantity=${encodeURIComponent(qBikeId)}`,
+        { method: "PATCH" },
+      );
+      if (!res.ok) throw new Error(await res.text());
       setQSuccess(true);
       setQBikeId("");
       setQQty("");
@@ -104,7 +109,7 @@ export default function BikesPage() {
     setPError(null);
     setPSuccess(false);
     try {
-      await callProcedure("bikes/change-price", {
+      await callProcedure(`rent-price-hist`, {
         bikeId: Number(pBikeId),
         hourlyPrice: Number(pPrice),
       });
@@ -215,6 +220,45 @@ export default function BikesPage() {
               </p>
             </>
           )}
+        </div>
+      </div>
+
+      {/* Brands & Categories */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {/* Brands */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">
+            Brands
+          </p>
+          <div className="flex flex-col gap-1">
+            {brands.map((b) => (
+              <div
+                key={b.brandId}
+                className="flex items-center justify-between text-sm py-1.5 border-b border-slate-800 last:border-0"
+              >
+                <span className="text-slate-300">{b.brandName}</span>
+                <span className="text-xs text-slate-600">#{b.brandId}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Categories */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">
+            Categories
+          </p>
+          <div className="flex flex-col gap-1">
+            {categories.map((c) => (
+              <div
+                key={c.categoryId}
+                className="flex items-center justify-between text-sm py-1.5 border-b border-slate-800 last:border-0"
+              >
+                <span className="text-slate-300">{c.categoryName}</span>
+                <span className="text-xs text-slate-600">#{c.categoryId}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -386,7 +430,7 @@ export default function BikesPage() {
         <AddSimpleModal
           title="Add brand"
           label="Brand name"
-          endpoint="brands/add"
+          endpoint="brands"
           field="brandName"
           onClose={() => setModal(null)}
           onSuccess={refetch}
@@ -396,8 +440,8 @@ export default function BikesPage() {
         <AddSimpleModal
           title="Add category"
           label="Category name"
-          endpoint="categories/add"
-          field="categoryName"
+          endpoint="categories"
+          field="name"
           onClose={() => setModal(null)}
           onSuccess={refetch}
         />
@@ -458,7 +502,7 @@ function AddBikeModal({
     }
     setLoading(true);
     try {
-      await callProcedure("bikes/add", {
+      await callProcedure("bikes", {
         brandName: String(brandName),
         categoryName: String(categoryName),
         hourlyPrice: Number(hourlyPrice),

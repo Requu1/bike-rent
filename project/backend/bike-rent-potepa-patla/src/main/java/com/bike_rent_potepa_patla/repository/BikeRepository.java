@@ -19,6 +19,6 @@ public interface BikeRepository extends JpaRepository<Bike,Integer> {
     @Procedure(procedureName="AddQuantity_p")
     void addBikeQuantity(@Param("quantity_v")int quantity,@Param("bikeID_v")Integer bikeID);
 
-    @Query(value="CALL FilterBike_p(:categoryName,:brandName)",nativeQuery = true)
+    @Query(value="CALL FilterBike_p(:categoryName_v,:brandName_v)",nativeQuery = true)
     List<FilteredBikeDto> getBikesByCategoryAndBrand(@Param("categoryName_v")String categoryName, @Param("brandName_v")String brandName);
 }

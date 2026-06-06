@@ -461,15 +461,17 @@ end;
 
 ```js
 CREATE VIEW view_active_rents AS
-SELECT CONCAT(c.Firstname, ' ', c.Surrname) AS CustomerName,
-       r.BikeID                             AS BikeID,
-       b.BrandName                          AS BrandName,
-       r.RentDate                           AS RentDate,
-       RentalPrice_f(r.RentID)              AS RentPrice
+SELECT
+    CONCAT(c.Firstname, ' ', c.Surrname) AS CustomerName,
+    r.RentID,
+    r.BikeID,
+    b.BrandName,
+    r.RentDate,
+    RentalPrice_f(r.RentID)              AS RentPrice
 FROM Rents r
     LEFT JOIN Customers c ON r.CustomerID = c.CustomerID
-    LEFT JOIN Bikes bi ON r.BikeID = bi.BikeID
-    JOIN Brands b ON bi.BrandID = b.BrandID
+    LEFT JOIN Bikes bi    ON r.BikeID = bi.BikeID
+    JOIN Brands b         ON bi.BrandID = b.BrandID
 WHERE r.ReturnDate IS NULL
 ```
 
@@ -504,6 +506,13 @@ ORDER BY COUNT(r.RentID) DESC
 LIMIT 10
 ```
 
+- view_brands
+
+```js
+CREATE VIEW view_brands AS
+    SELECT * FROM Brands
+```
+
 - view_bestselling_brands
 
 ```js
@@ -516,6 +525,13 @@ FROM Rents r
 GROUP BY bi.BrandID
 ORDER BY COUNT(r.RentID) DESC
 LIMIT 2
+```
+
+- view_categories
+
+```js
+CREATE VIEW view_categories AS
+    SELECT * FROM Categories
 ```
 
 - view_bike_stock

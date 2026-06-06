@@ -59,7 +59,7 @@ export default function CustomersPage() {
     setAddError(null);
     setAddSuccess(false);
     try {
-      await callProcedure("customers/add", { firstName, surrName, phone });
+      await callProcedure("customers", { firstName, surrName, phone });
       setAddSuccess(true);
       setFirstName("");
       setSurrName("");

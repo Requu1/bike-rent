@@ -7,7 +7,7 @@ export default function RentsPage() {
     data: activeRents,
     loading,
     refetch,
-  } = useView<ActiveRent>("views/active_rents");
+  } = useView<ActiveRent>("views/active-rents");
 
   // CurrentRentsForCustomer
   const [customerId, setCustomerId] = useState("");
@@ -39,7 +39,9 @@ export default function RentsPage() {
     setCustomerError(null);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/rents/customer/${customerId}`,
+        `http://localhost:8080/api/rents?customerId=${encodeURIComponent(
+          customerId,
+        )}`,
       );
       if (!res.ok) throw new Error(await res.text());
       setCustomerRents(await res.json());
@@ -66,7 +68,7 @@ export default function RentsPage() {
     setArError(null);
     setArSuccess(false);
     try {
-      await callProcedure("rents/add", {
+      await callProcedure("rents", {
         bikeId: Number(arBikeId),
         customerId: Number(arCustomerId),
       });
@@ -90,7 +92,13 @@ export default function RentsPage() {
     setErError(null);
     setErSuccess(false);
     try {
-      await callProcedure("rents/end", { rentId: Number(erRentId) });
+      const res = await fetch(
+        `http://localhost:8080/api/rents/${erRentId}/end`,
+        {
+          method: "PATCH",
+        },
+      );
+      if (!res.ok) throw new Error(await res.text());
       setErSuccess(true);
       setErRentId("");
       refetch();
@@ -213,6 +221,7 @@ export default function RentsPage() {
             <thead>
               <tr className="border-b border-slate-800 text-slate-500 text-xs uppercase tracking-wider">
                 <th className="px-4 py-3 text-left font-medium">Customer</th>
+                <th className="px-4 py-3 text-left font-medium">Rent ID</th>
                 <th className="px-4 py-3 text-left font-medium">Bike</th>
                 <th className="px-4 py-3 text-left font-medium">Brand</th>
                 <th className="px-4 py-3 text-left font-medium">Rent date</th>
@@ -224,10 +233,11 @@ export default function RentsPage() {
             <tbody>
               {activeRents.map((rent, i) => (
                 <tr
-                  key={i}
+                  key={rent.rentId ?? i}
                   className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
                 >
                   <td className="px-4 py-3 text-white">{rent.customerName}</td>
+                  <td className="px-4 py-3 text-slate-400">#{rent.rentId}</td>
                   <td className="px-4 py-3 text-slate-400">#{rent.bikeId}</td>
                   <td className="px-4 py-3 text-slate-300">{rent.brandName}</td>
                   <td className="px-4 py-3 text-slate-400">

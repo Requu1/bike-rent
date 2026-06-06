@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-type IncomeResult = { income: number };
+type IncomeResult = number;
 
 export default function HomePage() {
   const [startDate, setStartDate] = useState("");
@@ -30,11 +30,11 @@ export default function HomePage() {
     setIncome(null);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/income?startDate=${startDate}&endDate=${endDate}`,
+        `http://localhost:8080/api/rents/income?startDate=${startDate}&endDate=${endDate}`,
       );
       if (!res.ok) throw new Error(await res.text());
       const data: IncomeResult = await res.json();
-      setIncome(data.income);
+      setIncome(data);
     } catch (e: any) {
       setError(e.message);
     } finally {
