@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-36';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-50';
 
 --
 -- Table structure for table `Bikes`
@@ -467,6 +467,41 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `view_hist_price`
+--
+
+DROP TABLE IF EXISTS `view_hist_price`;
+/*!50001 DROP VIEW IF EXISTS `view_hist_price`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_hist_price` AS SELECT 
+ 1 AS `RentPriceHistID`,
+ 1 AS `BikeID`,
+ 1 AS `BrandName`,
+ 1 AS `HourlyPrice`,
+ 1 AS `StartDate`,
+ 1 AS `EndDate`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_hist_rents`
+--
+
+DROP TABLE IF EXISTS `view_hist_rents`;
+/*!50001 DROP VIEW IF EXISTS `view_hist_rents`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_hist_rents` AS SELECT 
+ 1 AS `RentID`,
+ 1 AS `BikeID`,
+ 1 AS `BrandName`,
+ 1 AS `Firstname`,
+ 1 AS `Surrname`,
+ 1 AS `RentDate`,
+ 1 AS `ReturnDate`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `view_most_rented_category`
 --
 
@@ -602,9 +637,10 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddBike_p"(IN brandId_v int, IN categoryId_v int,IN hourly_price_v INT)
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddBike_p"(IN brandId_v int, IN categoryId_v int, IN hourly_price_v int, OUT bikeId_v INT)
 BEGIN
      INSERT INTO Bikes(brandid, categoryid, quantity) VALUES (brandId_v,categoryId_v,0);
+     SET bikeId_v =LAST_INSERT_ID();
      INSERT INTO RentPriceHist(BikeID, HourlyPrice, StartDate, EndDate)  VALUES(LAST_INSERT_ID(),hourly_price_v,CURRENT_DATE(),NULL);
 END ;;
 DELIMITER ;
@@ -622,11 +658,11 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddBrand_p"(
-    IN brandName_v VARCHAR(255))
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddBrand_p"(IN brandName_v varchar(255),OUT brandId_v INT)
 BEGIN
     INSERT INTO Brands (BrandName)
 VALUES (brandName_v);
+    SET brandId_v=LAST_INSERT_ID();
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -643,11 +679,11 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddCategory_p"(
-    IN categoryName_v VARCHAR(255))
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddCategory_p"(IN categoryName_v varchar(255),OUT categoryId_v INT )
 BEGIN
     INSERT INTO Categories (CategoryName)
 VALUES (categoryName_v);
+    SET categoryId_v=LAST_INSERT_ID();
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -664,9 +700,11 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddCustomer_p"(firstname_v VARCHAR(255),surrname_v VARCHAR(255),phone_v varchar(15))
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddCustomer_p"(IN firstname_v varchar(255), IN surrname_v varchar(255),
+                                                   IN phone_v varchar(15), OUT customerId_v INT)
 BEGIN
     INSERT INTO Customers(firstname, surrname,phone) VALUES(firstname_v,surrname_v,phone_v);
+    SET customerId_v=LAST_INSERT_ID();
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -712,9 +750,10 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddRent_p"(bike_id_v integer,customer_id_v integer)
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddRent_p"(IN bike_id_v int, IN customer_id_v int,OUT rentId_v INT)
 BEGIN
     INSERT INTO Rents(bikeid, customerid, rentdate, returndate)  VALUES(bike_id_v,customer_id_v,NOW(),NULL);
+    SET rentId_v=LAST_INSERT_ID();
     CALL AddQuantity_p(-1,bike_id_v);
 end ;;
 DELIMITER ;
@@ -732,9 +771,10 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "ChangeRentPrice_p"(bike_id_v integer,hourly_price_v integer)
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "ChangeRentPrice_p"(IN bike_id_v int, IN hourly_price_v int,OUT rentPriceId_v INT)
 BEGIN
     INSERT INTO RentPriceHist(BikeID, HourlyPrice, StartDate, EndDate) VALUES (bike_id_v,hourly_price_v,CURRENT_DATE(),NULL);
+    SET rentPriceId_v=LAST_INSERT_ID();
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -936,6 +976,42 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `view_hist_price`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_hist_price`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `view_hist_price` AS select `RentPriceHist`.`RentPriceHistID` AS `RentPriceHistID`,`Bikes`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`RentPriceHist`.`HourlyPrice` AS `HourlyPrice`,`RentPriceHist`.`StartDate` AS `StartDate`,`RentPriceHist`.`EndDate` AS `EndDate` from ((`RentPriceHist` join `Bikes` on((`RentPriceHist`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) where (`RentPriceHist`.`EndDate` is not null) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_hist_rents`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_hist_rents`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `view_hist_rents` AS select `Rents`.`RentID` AS `RentID`,`Rents`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Rents`.`RentDate` AS `RentDate`,`Rents`.`ReturnDate` AS `ReturnDate` from (((`Rents` join `Customers` on((`Rents`.`CustomerID` = `Customers`.`CustomerID`))) join `Bikes` on((`Rents`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BikeID` = `Brands`.`BrandID`))) where (`Rents`.`ReturnDate` is not null) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `view_most_rented_category`
 --
 
@@ -963,4 +1039,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-02  2:29:50
+-- Dump completed on 2026-06-05 19:42:45

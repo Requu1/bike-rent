@@ -38,4 +38,11 @@ public class ViewService {
         return viewRepository.viewMostRentedCategory();
     }
 
+    public List<ViewHistPriceDto> viewHistPrice(){
+        return viewRepository.viewHistPrice();
+    }
+
+    public List<ViewHistRentsDto> viewHistRents(){
+        return viewRepository.viewHistRents();
+    }
 }

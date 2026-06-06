@@ -16,22 +16,22 @@ import java.util.List;
 public class ViewController {
     private final ViewService viewService;
 
-    @GetMapping("/active_rents")
+    @GetMapping("/active-rents")
     public ResponseEntity<List<ViewActiveRentsDto>> viewActiveRents(){
         return ResponseEntity.ok(viewService.viewActiveRents());
     }
 
-    @GetMapping("/best_sellers")
+    @GetMapping("/best-sellers")
     public ResponseEntity<List<ViewBestSellersDto>> viewBestSellers() {
         return ResponseEntity.ok(viewService.viewBestSellers());
     }
 
-    @GetMapping("/best_selling_brands")
+    @GetMapping("/best-selling-brands")
     public ResponseEntity<List<ViewBestSellingBrandsDto>> viewBestSellingBrands() {
         return ResponseEntity.ok(viewService.viewBestSellingBrands());
     }
 
-    @GetMapping("/bike_stock")
+    @GetMapping("/bike-stock")
     public ResponseEntity<List<ViewBikeStockDto>> viewBikeStock() {
         return ResponseEntity.ok(viewService.viewBikeStock());
     }
@@ -41,10 +41,18 @@ public class ViewController {
         return ResponseEntity.ok(viewService.viewCustomers());
     }
 
-    @GetMapping("/most_rented_category")
+    @GetMapping("/most-rented-category")
     public ResponseEntity<List<ViewMostRentedCategoryDto>> viewMostRentedCategory() {
         return ResponseEntity.ok(viewService.viewMostRentedCategory());
     }
 
+    @GetMapping("/hist-rents")
+    public ResponseEntity<List<ViewHistRentsDto>> viewHistRents() {
+        return ResponseEntity.ok(viewService.viewHistRents());
+    }
 
+    @GetMapping("/hist-price")
+    public ResponseEntity<List<ViewHistPriceDto>> viewHistPrice() {
+        return ResponseEntity.ok(viewService.viewHistPrice());
+    }
 }
