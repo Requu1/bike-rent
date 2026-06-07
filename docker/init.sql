@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-50';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-72';
 
 --
 -- Table structure for table `Bikes`
@@ -41,7 +41,7 @@ CREATE TABLE `Bikes` (
   KEY `CategoryID` (`CategoryID`),
   CONSTRAINT `Bikes_ibfk_1` FOREIGN KEY (`BrandID`) REFERENCES `Brands` (`BrandID`),
   CONSTRAINT `Bikes_ibfk_2` FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`CategoryID`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `Bikes` (
 
 LOCK TABLES `Bikes` WRITE;
 /*!40000 ALTER TABLE `Bikes` DISABLE KEYS */;
-INSERT INTO `Bikes` VALUES (1,1,3,12),(2,3,2,7),(3,2,4,15),(4,4,4,9),(5,1,5,20),(6,2,4,11),(7,1,2,6),(8,3,2,14),(9,2,2,8),(10,2,1,5),(11,3,1,13),(12,3,3,10),(13,3,2,16),(14,3,1,4),(15,1,2,18);
+INSERT INTO `Bikes` VALUES (1,1,3,12),(2,3,2,7),(3,2,4,15),(4,4,4,9),(5,1,5,20),(6,2,4,11),(7,1,2,6),(8,3,2,14),(9,2,2,8),(10,2,1,5),(11,3,1,13),(12,3,3,10),(13,3,2,16),(14,3,1,4),(15,1,2,18),(16,1,2,4);
 /*!40000 ALTER TABLE `Bikes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -252,7 +252,7 @@ CREATE TABLE `RentPriceHist` (
   PRIMARY KEY (`RentPriceHistID`),
   KEY `BikeID` (`BikeID`),
   CONSTRAINT `RentPriceHist_ibfk_1` FOREIGN KEY (`BikeID`) REFERENCES `Bikes` (`BikeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,7 +261,7 @@ CREATE TABLE `RentPriceHist` (
 
 LOCK TABLES `RentPriceHist` WRITE;
 /*!40000 ALTER TABLE `RentPriceHist` DISABLE KEYS */;
-INSERT INTO `RentPriceHist` VALUES (1,1,18,'2025-01-01','2025-06-30'),(2,1,22,'2025-06-30',NULL),(3,2,14,'2025-01-01','2025-06-30'),(4,2,16,'2025-06-30',NULL),(5,3,25,'2025-01-01','2025-06-30'),(6,3,29,'2025-06-30',NULL),(7,4,27,'2025-01-01','2025-06-30'),(8,4,31,'2025-06-30',NULL),(9,5,11,'2025-01-01','2025-06-30'),(10,5,13,'2025-06-30',NULL),(11,6,26,'2025-01-01','2025-06-30'),(12,6,28,'2025-06-30',NULL),(13,7,16,'2025-01-01','2025-06-30'),(14,7,17,'2025-06-30',NULL),(15,8,15,'2025-01-01','2025-06-30'),(16,8,18,'2025-06-30',NULL),(17,9,16,'2025-01-01','2025-06-30'),(18,9,20,'2025-06-30',NULL),(19,10,32,'2025-01-01','2025-06-30'),(20,10,36,'2025-06-30',NULL),(21,11,34,'2025-01-01','2025-06-30'),(22,11,40,'2025-06-30',NULL),(23,12,20,'2025-01-01','2025-06-30'),(24,12,23,'2025-06-30',NULL),(25,13,19,'2025-01-01','2025-06-30'),(26,13,22,'2025-06-30',NULL),(27,14,38,'2025-01-01','2025-06-30'),(28,14,41,'2025-06-30',NULL),(29,15,17,'2025-01-01','2025-06-30'),(30,15,21,'2025-06-30',NULL);
+INSERT INTO `RentPriceHist` VALUES (1,1,18,'2025-01-01','2025-06-30'),(2,1,22,'2025-06-30',NULL),(3,2,14,'2025-01-01','2025-06-30'),(4,2,16,'2025-06-30',NULL),(5,3,25,'2025-01-01','2025-06-30'),(6,3,29,'2025-06-30',NULL),(7,4,27,'2025-01-01','2025-06-30'),(8,4,31,'2025-06-30',NULL),(9,5,11,'2025-01-01','2025-06-30'),(10,5,13,'2025-06-30',NULL),(11,6,26,'2025-01-01','2025-06-30'),(12,6,28,'2025-06-30',NULL),(13,7,16,'2025-01-01','2025-06-30'),(14,7,17,'2025-06-30',NULL),(15,8,15,'2025-01-01','2025-06-30'),(16,8,18,'2025-06-30',NULL),(17,9,16,'2025-01-01','2025-06-30'),(18,9,20,'2025-06-30',NULL),(19,10,32,'2025-01-01','2025-06-30'),(20,10,36,'2025-06-30',NULL),(21,11,34,'2025-01-01','2025-06-30'),(22,11,40,'2025-06-30',NULL),(23,12,20,'2025-01-01','2025-06-30'),(24,12,23,'2025-06-30',NULL),(25,13,19,'2025-01-01','2025-06-30'),(26,13,22,'2025-06-30',NULL),(27,14,38,'2025-01-01','2025-06-30'),(28,14,41,'2025-06-30',NULL),(29,15,17,'2025-01-01','2025-06-30'),(30,15,21,'2025-06-30',NULL),(31,16,50,'2026-06-07','2026-06-07'),(32,16,70,'2026-06-07',NULL);
 /*!40000 ALTER TABLE `RentPriceHist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -274,23 +274,15 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `ChangeRentPrice_tr` BEFORE INSERT ON `RentPriceHist` FOR EACH ROW BEGIN
-        IF NOT EXISTS(SELECT 1 FROM Bikes WHERE Bikes.BikeID=NEW.BikeID) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT ='Podany BikeID nie istnieje';
-        end if;
+    IF NOT EXISTS(SELECT 1 FROM Bikes WHERE Bikes.BikeID = NEW.BikeID) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Podany BikeID nie istnieje';
+    END IF;
 
-        IF (NEW.HourlyPrice<=0) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT ='Nowy koszt wynaj─Öcia roweru musi by─ç wi─Ökszy od 0';
-        end if;
-
-        IF (SELECT 1 FROM RentPriceHist WHERE BikeID=NEW.BikeID) THEN
-            UPDATE RentPriceHist
-            SET EndDate=CURRENT_DATE()
-            WHERE RentPriceHist.BikeID=NEW.BikeID AND EndDate IS NULL;
-        end if;
-
-    end */;;
+    IF (NEW.HourlyPrice <= 0) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nowy koszt wynaj─Öcia roweru musi by─ç wi─Ökszy od 0';
+    END IF;
+END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -315,7 +307,7 @@ CREATE TABLE `Rents` (
   KEY `CustomerID` (`CustomerID`),
   CONSTRAINT `Rents_ibfk_1` FOREIGN KEY (`BikeID`) REFERENCES `Bikes` (`BikeID`),
   CONSTRAINT `Rents_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +316,7 @@ CREATE TABLE `Rents` (
 
 LOCK TABLES `Rents` WRITE;
 /*!40000 ALTER TABLE `Rents` DISABLE KEYS */;
-INSERT INTO `Rents` VALUES (1,1,1,'2025-01-03','2025-01-07'),(2,2,2,'2025-01-05','2025-01-12'),(3,3,3,'2025-01-10','2025-01-15'),(4,4,4,'2025-01-12','2025-01-20'),(5,5,5,'2025-01-15','2025-01-22'),(6,6,6,'2025-02-01','2025-02-09'),(7,7,7,'2025-02-03','2025-02-10'),(8,8,8,'2025-02-08','2025-02-18'),(9,9,9,'2025-02-10','2025-02-14'),(10,10,10,'2025-02-14','2025-02-21'),(11,11,11,'2025-03-01','2025-03-08'),(12,12,12,'2025-03-05','2025-03-11'),(13,13,13,'2025-03-10','2025-03-19'),(14,14,14,'2025-03-15','2025-03-18'),(15,15,1,'2025-03-20','2025-03-28'),(16,1,3,'2025-04-02','2025-04-09'),(17,2,5,'2025-04-05','2025-04-12'),(18,3,7,'2025-04-08','2025-04-15'),(19,4,9,'2025-04-10','2025-04-20'),(20,5,11,'2025-04-14','2025-04-21'),(21,6,2,'2025-05-01','2025-05-06'),(22,7,4,'2025-05-03','2025-05-09'),(23,8,6,'2025-05-05','2025-05-11'),(24,9,8,'2025-05-07','2025-05-13'),(25,10,10,'2025-05-09','2025-05-18'),(26,11,12,'2025-05-15','2025-05-22'),(27,12,14,'2025-05-20','2025-05-27'),(28,13,1,'2025-06-01','2025-06-07'),(29,14,2,'2025-06-03','2025-06-09'),(30,15,3,'2025-06-05','2025-06-12'),(31,1,1,'2026-05-10',NULL),(32,2,1,'2026-05-11',NULL),(33,5,1,'2026-05-12',NULL),(34,3,2,'2026-05-09',NULL),(35,4,2,'2026-05-10',NULL),(36,6,3,'2026-05-08',NULL),(37,7,4,'2026-05-13',NULL),(38,8,5,'2026-05-14',NULL),(39,9,6,'2026-05-15',NULL),(40,10,7,'2026-05-16',NULL),(41,11,8,'2026-05-17',NULL),(42,12,9,'2026-05-18',NULL),(43,13,10,'2026-05-19',NULL),(44,14,11,'2026-05-20',NULL),(45,15,12,'2026-05-21',NULL);
+INSERT INTO `Rents` VALUES (1,1,1,'2025-01-03','2025-01-07'),(2,2,2,'2025-01-05','2025-01-12'),(3,3,3,'2025-01-10','2025-01-15'),(4,4,4,'2025-01-12','2025-01-20'),(5,5,5,'2025-01-15','2025-01-22'),(6,6,6,'2025-02-01','2025-02-09'),(7,7,7,'2025-02-03','2025-02-10'),(8,8,8,'2025-02-08','2025-02-18'),(9,9,9,'2025-02-10','2025-02-14'),(10,10,10,'2025-02-14','2025-02-21'),(11,11,11,'2025-03-01','2025-03-08'),(12,12,12,'2025-03-05','2025-03-11'),(13,13,13,'2025-03-10','2025-03-19'),(14,14,14,'2025-03-15','2025-03-18'),(15,15,1,'2025-03-20','2025-03-28'),(16,1,3,'2025-04-02','2025-04-09'),(17,2,5,'2025-04-05','2025-04-12'),(18,3,7,'2025-04-08','2025-04-15'),(19,4,9,'2025-04-10','2025-04-20'),(20,5,11,'2025-04-14','2025-04-21'),(21,6,2,'2025-05-01','2025-05-06'),(22,7,4,'2025-05-03','2025-05-09'),(23,8,6,'2025-05-05','2025-05-11'),(24,9,8,'2025-05-07','2025-05-13'),(25,10,10,'2025-05-09','2025-05-18'),(26,11,12,'2025-05-15','2025-05-22'),(27,12,14,'2025-05-20','2025-05-27'),(28,13,1,'2025-06-01','2025-06-07'),(29,14,2,'2025-06-03','2025-06-09'),(30,15,3,'2025-06-05','2025-06-12'),(31,1,1,'2026-05-10',NULL),(32,2,1,'2026-05-11',NULL),(33,5,1,'2026-05-12',NULL),(34,3,2,'2026-05-09',NULL),(35,4,2,'2026-05-10',NULL),(36,6,3,'2026-05-08',NULL),(37,7,4,'2026-05-13',NULL),(38,8,5,'2026-05-14',NULL),(39,9,6,'2026-05-15',NULL),(40,10,7,'2026-05-16',NULL),(41,11,8,'2026-05-17',NULL),(42,12,9,'2026-05-18',NULL),(43,13,10,'2026-05-19',NULL),(44,14,11,'2026-05-20',NULL),(45,15,12,'2026-05-21',NULL),(46,16,1,'2026-06-07','2026-06-07'),(47,16,2,'2026-06-07',NULL);
 /*!40000 ALTER TABLE `Rents` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -338,6 +330,7 @@ UNLOCK TABLES;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `AddRent_tr` BEFORE INSERT ON `Rents` FOR EACH ROW BEGIN
         DECLARE rents_count integer default 0;
+        DECLARE current_quantity integer default 0;
 
         IF NOT EXISTS(SELECT 1 FROM Bikes WHERE Bikes.BikeID=NEW.BikeID) THEN
             SIGNAL SQLSTATE '45000'
@@ -349,17 +342,19 @@ DELIMITER ;;
             SET MESSAGE_TEXT ='Podany CustomerID nie istnieje';
         end if;
 
-        if (SELECT Quantity FROM Bikes WHERE Bikes.BikeID=NEW.BikeID)=0 THEN
+        SELECT Quantity INTO current_quantity FROM Bikes WHERE Bikes.BikeID=NEW.BikeID FOR UPDATE;
+
+        IF current_quantity = 0 THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT ='Roweru o podanym BikeID nie ma obecnie na stanie.';
-        end if;
+        END IF;
 
         SELECT COUNT(*) INTO rents_count FROM Rents WHERE Rents.CustomerID=NEW.CustomerID AND Rents.ReturnDate IS NULL;
         IF rents_count>=5 THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Nie mo┼╝na doda─ç rezerwacji, poniewa┼╝ klient o podanym CustomerID ma ju┼╝ 5 rezerwacji';
         end if;
-    end */;;
+end */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -401,6 +396,7 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `view_active_rents` AS SELECT 
  1 AS `CustomerName`,
+ 1 AS `RentID`,
  1 AS `BikeID`,
  1 AS `BrandName`,
  1 AS `RentDate`,
@@ -449,6 +445,32 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `Category`,
  1 AS `Quantity`,
  1 AS `HourlyPrice`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_brands`
+--
+
+DROP TABLE IF EXISTS `view_brands`;
+/*!50001 DROP VIEW IF EXISTS `view_brands`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_brands` AS SELECT 
+ 1 AS `BrandID`,
+ 1 AS `BrandName`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_categories`
+--
+
+DROP TABLE IF EXISTS `view_categories`;
+/*!50001 DROP VIEW IF EXISTS `view_categories`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_categories` AS SELECT 
+ 1 AS `CategoryID`,
+ 1 AS `CategoryName`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -771,11 +793,17 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "ChangeRentPrice_p"(IN bike_id_v int, IN hourly_price_v int,OUT rentPriceId_v INT)
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "ChangeRentPrice_p"(IN bike_id_v INT, IN hourly_price_v INT, OUT rentPriceId_v INT)
 BEGIN
-    INSERT INTO RentPriceHist(BikeID, HourlyPrice, StartDate, EndDate) VALUES (bike_id_v,hourly_price_v,CURRENT_DATE(),NULL);
-    SET rentPriceId_v=LAST_INSERT_ID();
-end ;;
+    UPDATE RentPriceHist
+    SET EndDate = CURRENT_DATE()
+    WHERE BikeID = bike_id_v AND EndDate IS NULL;
+
+    INSERT INTO RentPriceHist(BikeID, HourlyPrice, StartDate, EndDate)
+    VALUES (bike_id_v, hourly_price_v, CURRENT_DATE(), NULL);
+
+    SET rentPriceId_v = LAST_INSERT_ID();
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -898,7 +926,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_active_rents` AS select concat(`c`.`Firstname`,' ',`c`.`Surrname`) AS `CustomerName`,`r`.`BikeID` AS `BikeID`,`b`.`BrandName` AS `BrandName`,`r`.`RentDate` AS `RentDate`,`RentalPrice_f`(`r`.`RentID`) AS `RentPrice` from (((`Rents` `r` left join `Customers` `c` on((`r`.`CustomerID` = `c`.`CustomerID`))) left join `Bikes` `bi` on((`r`.`BikeID` = `bi`.`BikeID`))) join `Brands` `b` on((`bi`.`BrandID` = `b`.`BrandID`))) where (`r`.`ReturnDate` is null) */;
+/*!50001 VIEW `view_active_rents` AS select concat(`c`.`Firstname`,' ',`c`.`Surrname`) AS `CustomerName`,`r`.`RentID` AS `RentID`,`r`.`BikeID` AS `BikeID`,`b`.`BrandName` AS `BrandName`,`r`.`RentDate` AS `RentDate`,`RentalPrice_f`(`r`.`RentID`) AS `RentPrice` from (((`Rents` `r` left join `Customers` `c` on((`r`.`CustomerID` = `c`.`CustomerID`))) left join `Bikes` `bi` on((`r`.`BikeID` = `bi`.`BikeID`))) join `Brands` `b` on((`bi`.`BrandID` = `b`.`BrandID`))) where (`r`.`ReturnDate` is null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -953,6 +981,42 @@ DELIMITER ;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_bike_stock` AS select `Bikes`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `Brand`,`Categories`.`CategoryName` AS `Category`,`Bikes`.`Quantity` AS `Quantity`,(select `RentPriceHist`.`HourlyPrice` from `RentPriceHist` where ((`RentPriceHist`.`BikeID` = `Bikes`.`BikeID`) and (`RentPriceHist`.`EndDate` is null))) AS `HourlyPrice` from ((`Bikes` join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) join `Categories` on((`Bikes`.`CategoryID` = `Categories`.`CategoryID`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_brands`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_brands`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `view_brands` AS select `Brands`.`BrandID` AS `BrandID`,`Brands`.`BrandName` AS `BrandName` from `Brands` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_categories`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_categories`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `view_categories` AS select `Categories`.`CategoryID` AS `CategoryID`,`Categories`.`CategoryName` AS `CategoryName` from `Categories` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1039,4 +1103,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-05 19:42:45
+-- Dump completed on 2026-06-07 13:41:30
