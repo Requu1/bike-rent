@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useView, callProcedure } from "../hooks/useApi";
 import type { ActiveRent, CustomerRent } from "../types";
 
@@ -29,6 +29,15 @@ export default function RentsPage() {
   const [erError, setErError] = useState<string | null>(null);
   const [erSuccess, setErSuccess] = useState(false);
   const [erLoading, setErLoading] = useState(false);
+
+  const sortedActiveRents = useMemo(
+    () =>
+      [...activeRents].sort(
+        (a, b) =>
+          new Date(b.rentDate).getTime() - new Date(a.rentDate).getTime(),
+      ),
+    [activeRents],
+  );
 
   async function handleCustomerFilter() {
     if (!customerId.trim()) {
@@ -231,7 +240,7 @@ export default function RentsPage() {
               </tr>
             </thead>
             <tbody>
-              {activeRents.map((rent, i) => (
+              {sortedActiveRents.map((rent, i) => (
                 <tr
                   key={rent.rentId ?? i}
                   className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
