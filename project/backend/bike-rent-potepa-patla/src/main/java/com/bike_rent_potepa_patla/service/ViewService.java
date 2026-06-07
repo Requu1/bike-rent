@@ -45,4 +45,12 @@ public class ViewService {
     public List<ViewHistRentsDto> viewHistRents(){
         return viewRepository.viewHistRents();
     }
+
+    public List<ViewBrandsDto> viewBrands(){
+        return viewRepository.viewBrands();
+    }
+
+    public List<ViewCategoriesDto> viewCategories(){
+        return viewRepository.viewCategories();
+    }
 }

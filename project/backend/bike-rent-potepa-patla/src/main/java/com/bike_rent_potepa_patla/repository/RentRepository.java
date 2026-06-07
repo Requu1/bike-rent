@@ -16,8 +16,8 @@ public interface RentRepository extends JpaRepository<Rent,Integer> {
     @Procedure(procedureName="AddRent_p")
     Integer addNewRent(@Param("bike_id_v")Integer bikeId,@Param("customer_id_v")Integer customerId);
 
-    @Procedure(procedureName="CurrentRentsForCustomer_p")
-    List<RentsForCustomerDto> getCurrentRentsForCustomer(@Param("customerId_v")Integer customerId);
+    @Query(value = "CALL CurrentRentsForCustomer_p(:customerId)", nativeQuery = true)
+    List<RentsForCustomerDto> getCurrentRentsForCustomer(@Param("customerId")Integer customerId);
 
     @Procedure(procedureName="EndRent_p")
     void endRent(@Param("rent_id_v")Integer rentId);
