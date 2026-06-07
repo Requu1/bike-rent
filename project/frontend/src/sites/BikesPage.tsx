@@ -518,21 +518,21 @@ function AddBikeModal({
 
   return (
     <Modal title="Add bike" onClose={onClose}>
-      <label className="block text-sm text-slate-400 mb-1">Brand ID</label>
+      <label className="block text-sm text-slate-400 mb-1">Brand</label>
       <input
         type="text"
         value={brandName}
         onChange={(e) => setBrandName(e.target.value)}
         className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
-        placeholder="e.g. 1"
+        placeholder="e.g. Romet"
       />
-      <label className="block text-sm text-slate-400 mb-1">Category ID</label>
+      <label className="block text-sm text-slate-400 mb-1">Category</label>
       <input
         type="text"
         value={categoryName}
         onChange={(e) => setCategoryName(e.target.value)}
         className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
-        placeholder="e.g. 3"
+        placeholder="e.g. Touring"
       />
       <label className="block text-sm text-slate-400 mb-1">
         Hourly price (zł)

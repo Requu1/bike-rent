@@ -32,7 +32,7 @@ export default function CustomersPage() {
     setFilterError(null);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/customers/?phone=${encodeURIComponent(filterPhone)}`,
+        `http://localhost:8080/api/customers?phone=${encodeURIComponent(filterPhone)}`,
       );
       if (!res.ok) throw new Error(await res.text());
       setFilterResults(await res.json());
