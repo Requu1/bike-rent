@@ -137,11 +137,11 @@ export default function HistPage() {
                         {p.hourlyPrice.toFixed(2)} zł
                       </td>
                       <td className="px-3 py-3 text-slate-400">
-                        {new Date(p.startDate).toLocaleString("pl-PL")}
+                        {new Date(p.startDate).toLocaleDateString("pl-PL")}
                       </td>
                       <td className="px-3 py-3 text-slate-400">
                         {p.endDate
-                          ? new Date(p.endDate).toLocaleString("pl-PL")
+                          ? new Date(p.endDate).toLocaleDateString("pl-PL")
                           : "—"}
                       </td>
                     </tr>
