@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-72';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-77';
 
 --
 -- Table structure for table `Bikes`
@@ -50,7 +50,7 @@ CREATE TABLE `Bikes` (
 
 LOCK TABLES `Bikes` WRITE;
 /*!40000 ALTER TABLE `Bikes` DISABLE KEYS */;
-INSERT INTO `Bikes` VALUES (1,1,3,12),(2,3,2,7),(3,2,4,15),(4,4,4,9),(5,1,5,20),(6,2,4,11),(7,1,2,6),(8,3,2,14),(9,2,2,8),(10,2,1,5),(11,3,1,13),(12,3,3,10),(13,3,2,16),(14,3,1,4),(15,1,2,18),(16,1,2,4);
+INSERT INTO `Bikes` VALUES (1,1,3,11),(2,3,2,7),(3,2,4,15),(4,4,4,9),(5,1,5,20),(6,2,4,11),(7,1,2,6),(8,3,2,14),(9,2,2,8),(10,2,1,5),(11,3,1,13),(12,3,3,10),(13,3,2,16),(14,3,1,4),(15,1,2,18),(16,1,2,4);
 /*!40000 ALTER TABLE `Bikes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -300,14 +300,14 @@ CREATE TABLE `Rents` (
   `RentID` int NOT NULL AUTO_INCREMENT,
   `BikeID` int NOT NULL,
   `CustomerID` int NOT NULL,
-  `RentDate` date NOT NULL,
-  `ReturnDate` date DEFAULT NULL,
+  `rentDate` datetime DEFAULT NULL,
+  `returnDate` datetime DEFAULT NULL,
   PRIMARY KEY (`RentID`),
   KEY `BikeID` (`BikeID`),
   KEY `CustomerID` (`CustomerID`),
   CONSTRAINT `Rents_ibfk_1` FOREIGN KEY (`BikeID`) REFERENCES `Bikes` (`BikeID`),
   CONSTRAINT `Rents_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +316,7 @@ CREATE TABLE `Rents` (
 
 LOCK TABLES `Rents` WRITE;
 /*!40000 ALTER TABLE `Rents` DISABLE KEYS */;
-INSERT INTO `Rents` VALUES (1,1,1,'2025-01-03','2025-01-07'),(2,2,2,'2025-01-05','2025-01-12'),(3,3,3,'2025-01-10','2025-01-15'),(4,4,4,'2025-01-12','2025-01-20'),(5,5,5,'2025-01-15','2025-01-22'),(6,6,6,'2025-02-01','2025-02-09'),(7,7,7,'2025-02-03','2025-02-10'),(8,8,8,'2025-02-08','2025-02-18'),(9,9,9,'2025-02-10','2025-02-14'),(10,10,10,'2025-02-14','2025-02-21'),(11,11,11,'2025-03-01','2025-03-08'),(12,12,12,'2025-03-05','2025-03-11'),(13,13,13,'2025-03-10','2025-03-19'),(14,14,14,'2025-03-15','2025-03-18'),(15,15,1,'2025-03-20','2025-03-28'),(16,1,3,'2025-04-02','2025-04-09'),(17,2,5,'2025-04-05','2025-04-12'),(18,3,7,'2025-04-08','2025-04-15'),(19,4,9,'2025-04-10','2025-04-20'),(20,5,11,'2025-04-14','2025-04-21'),(21,6,2,'2025-05-01','2025-05-06'),(22,7,4,'2025-05-03','2025-05-09'),(23,8,6,'2025-05-05','2025-05-11'),(24,9,8,'2025-05-07','2025-05-13'),(25,10,10,'2025-05-09','2025-05-18'),(26,11,12,'2025-05-15','2025-05-22'),(27,12,14,'2025-05-20','2025-05-27'),(28,13,1,'2025-06-01','2025-06-07'),(29,14,2,'2025-06-03','2025-06-09'),(30,15,3,'2025-06-05','2025-06-12'),(31,1,1,'2026-05-10',NULL),(32,2,1,'2026-05-11',NULL),(33,5,1,'2026-05-12',NULL),(34,3,2,'2026-05-09',NULL),(35,4,2,'2026-05-10',NULL),(36,6,3,'2026-05-08',NULL),(37,7,4,'2026-05-13',NULL),(38,8,5,'2026-05-14',NULL),(39,9,6,'2026-05-15',NULL),(40,10,7,'2026-05-16',NULL),(41,11,8,'2026-05-17',NULL),(42,12,9,'2026-05-18',NULL),(43,13,10,'2026-05-19',NULL),(44,14,11,'2026-05-20',NULL),(45,15,12,'2026-05-21',NULL),(46,16,1,'2026-06-07','2026-06-07'),(47,16,2,'2026-06-07',NULL);
+INSERT INTO `Rents` VALUES (1,1,1,'2025-01-03 00:00:00','2025-01-07 00:00:00'),(2,2,2,'2025-01-05 00:00:00','2025-01-12 00:00:00'),(3,3,3,'2025-01-10 00:00:00','2025-01-15 00:00:00'),(4,4,4,'2025-01-12 00:00:00','2025-01-20 00:00:00'),(5,5,5,'2025-01-15 00:00:00','2025-01-22 00:00:00'),(6,6,6,'2025-02-01 00:00:00','2025-02-09 00:00:00'),(7,7,7,'2025-02-03 00:00:00','2025-02-10 00:00:00'),(8,8,8,'2025-02-08 00:00:00','2025-02-18 00:00:00'),(9,9,9,'2025-02-10 00:00:00','2025-02-14 00:00:00'),(10,10,10,'2025-02-14 00:00:00','2025-02-21 00:00:00'),(11,11,11,'2025-03-01 00:00:00','2025-03-08 00:00:00'),(12,12,12,'2025-03-05 00:00:00','2025-03-11 00:00:00'),(13,13,13,'2025-03-10 00:00:00','2025-03-19 00:00:00'),(14,14,14,'2025-03-15 00:00:00','2025-03-18 00:00:00'),(15,15,1,'2025-03-20 00:00:00','2025-03-28 00:00:00'),(16,1,3,'2025-04-02 00:00:00','2025-04-09 00:00:00'),(17,2,5,'2025-04-05 00:00:00','2025-04-12 00:00:00'),(18,3,7,'2025-04-08 00:00:00','2025-04-15 00:00:00'),(19,4,9,'2025-04-10 00:00:00','2025-04-20 00:00:00'),(20,5,11,'2025-04-14 00:00:00','2025-04-21 00:00:00'),(21,6,2,'2025-05-01 00:00:00','2025-05-06 00:00:00'),(22,7,4,'2025-05-03 00:00:00','2025-05-09 00:00:00'),(23,8,6,'2025-05-05 00:00:00','2025-05-11 00:00:00'),(24,9,8,'2025-05-07 00:00:00','2025-05-13 00:00:00'),(25,10,10,'2025-05-09 00:00:00','2025-05-18 00:00:00'),(26,11,12,'2025-05-15 00:00:00','2025-05-22 00:00:00'),(27,12,14,'2025-05-20 00:00:00','2025-05-27 00:00:00'),(28,13,1,'2025-06-01 00:00:00','2025-06-07 00:00:00'),(29,14,2,'2025-06-03 00:00:00','2025-06-09 00:00:00'),(30,15,3,'2025-06-05 00:00:00','2025-06-12 00:00:00'),(31,1,1,'2026-05-10 00:00:00',NULL),(32,2,1,'2026-05-11 00:00:00',NULL),(33,5,1,'2026-05-12 00:00:00',NULL),(34,3,2,'2026-05-09 00:00:00',NULL),(35,4,2,'2026-05-10 00:00:00',NULL),(36,6,3,'2026-05-08 00:00:00',NULL),(37,7,4,'2026-05-13 00:00:00',NULL),(38,8,5,'2026-05-14 00:00:00',NULL),(39,9,6,'2026-05-15 00:00:00',NULL),(40,10,7,'2026-05-16 00:00:00',NULL),(41,11,8,'2026-05-17 00:00:00',NULL),(42,12,9,'2026-05-18 00:00:00',NULL),(43,13,10,'2026-05-19 00:00:00',NULL),(44,14,11,'2026-05-20 00:00:00',NULL),(45,15,12,'2026-05-21 00:00:00',NULL),(46,16,1,'2026-06-07 00:00:00','2026-06-07 00:00:00'),(47,16,2,'2026-06-07 00:00:00',NULL),(48,1,1,'2026-06-07 14:13:53',NULL);
 /*!40000 ALTER TABLE `Rents` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -926,7 +926,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_active_rents` AS select concat(`c`.`Firstname`,' ',`c`.`Surrname`) AS `CustomerName`,`r`.`RentID` AS `RentID`,`r`.`BikeID` AS `BikeID`,`b`.`BrandName` AS `BrandName`,`r`.`RentDate` AS `RentDate`,`RentalPrice_f`(`r`.`RentID`) AS `RentPrice` from (((`Rents` `r` left join `Customers` `c` on((`r`.`CustomerID` = `c`.`CustomerID`))) left join `Bikes` `bi` on((`r`.`BikeID` = `bi`.`BikeID`))) join `Brands` `b` on((`bi`.`BrandID` = `b`.`BrandID`))) where (`r`.`ReturnDate` is null) */;
+/*!50001 VIEW `view_active_rents` AS select concat(`c`.`Firstname`,' ',`c`.`Surrname`) AS `CustomerName`,`r`.`RentID` AS `RentID`,`r`.`BikeID` AS `BikeID`,`b`.`BrandName` AS `BrandName`,`r`.`rentDate` AS `RentDate`,`RentalPrice_f`(`r`.`RentID`) AS `RentPrice` from (((`Rents` `r` left join `Customers` `c` on((`r`.`CustomerID` = `c`.`CustomerID`))) left join `Bikes` `bi` on((`r`.`BikeID` = `bi`.`BikeID`))) join `Brands` `b` on((`bi`.`BrandID` = `b`.`BrandID`))) where (`r`.`returnDate` is null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1070,7 +1070,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_hist_rents` AS select `Rents`.`RentID` AS `RentID`,`Rents`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Rents`.`RentDate` AS `RentDate`,`Rents`.`ReturnDate` AS `ReturnDate` from (((`Rents` join `Customers` on((`Rents`.`CustomerID` = `Customers`.`CustomerID`))) join `Bikes` on((`Rents`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BikeID` = `Brands`.`BrandID`))) where (`Rents`.`ReturnDate` is not null) */;
+/*!50001 VIEW `view_hist_rents` AS select `Rents`.`RentID` AS `RentID`,`Rents`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Rents`.`rentDate` AS `RentDate`,`Rents`.`returnDate` AS `ReturnDate` from (((`Rents` join `Customers` on((`Rents`.`CustomerID` = `Customers`.`CustomerID`))) join `Bikes` on((`Rents`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) where (`Rents`.`returnDate` is not null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1103,4 +1103,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-07 13:41:30
+-- Dump completed on 2026-06-07 14:53:18
