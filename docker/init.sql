@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-81';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-118';
 
 --
 -- Table structure for table `Bikes`
@@ -37,10 +37,13 @@ CREATE TABLE `Bikes` (
   `CategoryID` int NOT NULL,
   `Quantity` int NOT NULL,
   PRIMARY KEY (`BikeID`),
-  KEY `BrandID` (`BrandID`),
-  KEY `CategoryID` (`CategoryID`),
+  KEY `fk_bikes_brand` (`BrandID`),
+  KEY `fk_bikes_category` (`CategoryID`),
   CONSTRAINT `Bikes_ibfk_1` FOREIGN KEY (`BrandID`) REFERENCES `Brands` (`BrandID`),
-  CONSTRAINT `Bikes_ibfk_2` FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`CategoryID`)
+  CONSTRAINT `Bikes_ibfk_2` FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`CategoryID`),
+  CONSTRAINT `fk_bikes_brand` FOREIGN KEY (`BrandID`) REFERENCES `Brands` (`BrandID`),
+  CONSTRAINT `fk_bikes_category` FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`CategoryID`),
+  CONSTRAINT `chk_quantity_non_negative` CHECK ((`Quantity` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,54 +53,9 @@ CREATE TABLE `Bikes` (
 
 LOCK TABLES `Bikes` WRITE;
 /*!40000 ALTER TABLE `Bikes` DISABLE KEYS */;
-INSERT INTO `Bikes` VALUES (1,1,3,11),(2,3,2,7),(3,2,4,15),(4,4,4,9),(5,1,5,20),(6,2,4,11),(7,1,2,6),(8,3,2,14),(9,2,2,8),(10,2,1,5),(11,3,1,13),(12,3,3,10),(13,3,2,16),(14,3,1,4),(15,1,2,18),(16,1,2,4);
+INSERT INTO `Bikes` VALUES (1,1,3,11),(2,3,2,7),(3,2,4,15),(4,4,4,9),(5,1,5,19),(6,2,4,11),(7,1,2,6),(8,3,2,14),(9,2,2,8),(10,2,1,5),(11,3,1,13),(12,3,3,10),(13,3,2,16),(14,3,1,4),(15,1,2,18),(16,1,2,4);
 /*!40000 ALTER TABLE `Bikes` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `AddBike_tr` BEFORE INSERT ON `Bikes` FOR EACH ROW BEGIN
-    IF NOT EXISTS(SELECT 1 FROM Brands WHERE BrandID=NEW.BrandID) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Podane BrandID nie istnieje';
-    end if;
-
-    IF NOT EXISTS(SELECT 1 FROM Categories WHERE CategoryID=NEW.CategoryID) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Podane CategoryID nie istnieje';
-    end if;
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `AddQuantity_tr` BEFORE UPDATE ON `Bikes` FOR EACH ROW BEGIN
-    IF (NEW.Quantity<0) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Quantity nie mo┼╝e by─ç mniejsze od 0';
-end if;
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `Brands`
@@ -110,7 +68,8 @@ CREATE TABLE `Brands` (
   `BrandID` int NOT NULL AUTO_INCREMENT,
   `BrandName` varchar(255) NOT NULL,
   PRIMARY KEY (`BrandID`),
-  UNIQUE KEY `UQ_BrandName` (`BrandName`)
+  UNIQUE KEY `UQ_BrandName` (`BrandName`),
+  UNIQUE KEY `uk_brand_name` (`BrandName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -123,26 +82,6 @@ LOCK TABLES `Brands` WRITE;
 INSERT INTO `Brands` VALUES (1,'Kross'),(2,'Romet'),(4,'Superior'),(3,'Trek');
 /*!40000 ALTER TABLE `Brands` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `AddBrand_tr` BEFORE INSERT ON `Brands` FOR EACH ROW BEGIN
-    IF EXISTS(SELECT 1 FROM  Brands WHERE BrandName=NEW.BrandName) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Podany Brand ju┼╝ istnieje';
-    end if;
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `Categories`
@@ -155,7 +94,8 @@ CREATE TABLE `Categories` (
   `CategoryID` int NOT NULL AUTO_INCREMENT,
   `CategoryName` varchar(255) NOT NULL,
   PRIMARY KEY (`CategoryID`),
-  UNIQUE KEY `UQ_CategoryName` (`CategoryName`)
+  UNIQUE KEY `UQ_CategoryName` (`CategoryName`),
+  UNIQUE KEY `uk_category_name` (`CategoryName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -168,26 +108,6 @@ LOCK TABLES `Categories` WRITE;
 INSERT INTO `Categories` VALUES (1,'City'),(4,'Electric'),(3,'Mountain'),(5,'Racing'),(2,'Touring');
 /*!40000 ALTER TABLE `Categories` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `AddCategory_tr` BEFORE INSERT ON `Categories` FOR EACH ROW BEGIN
-    IF EXISTS(SELECT 1 FROM Categories WHERE CategoryName=NEW.CategoryName) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Podane Category ju┼╝ istnieje';
-    end if;
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `Customers`
@@ -202,7 +122,8 @@ CREATE TABLE `Customers` (
   `Surrname` varchar(255) NOT NULL,
   `Phone` varchar(15) NOT NULL,
   PRIMARY KEY (`CustomerID`),
-  UNIQUE KEY `UQ_Phone` (`Phone`)
+  UNIQUE KEY `UQ_Phone` (`Phone`),
+  UNIQUE KEY `uk_customer_phone` (`Phone`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -215,26 +136,6 @@ LOCK TABLES `Customers` WRITE;
 INSERT INTO `Customers` VALUES (1,'Robert','Kubica','+48278238482'),(2,'Grzegorz','Brzeczyszczykiewicz','+48328548322'),(3,'Anna','Kowalska','+48501234567'),(4,'Jan','Nowak','+48602345678'),(5,'Katarzyna','Wisniewska','+48703456789'),(6,'Piotr','Zielinski','+48804567890'),(7,'Agnieszka','Wojcik','+48905678901'),(8,'Michal','Kaminski','+48509876543'),(9,'Magdalena','Lewandowska','+48608765432'),(10,'Krzysztof','Dabrowski','+48707654321'),(11,'Tomasz','Jankowski','+48905432109'),(12,'Monika','Mazur','+48511223344'),(13,'Pawel','Kwiatkowski','+48622334455'),(14,'Joanna','Krawczyk','+48733445566');
 /*!40000 ALTER TABLE `Customers` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `AddCustomer_tr` BEFORE INSERT ON `Customers` FOR EACH ROW BEGIN
-    IF EXISTS (SELECT 1 FROM Customers WHERE Phone=NEW.Phone) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Dany numer telefonu ju┼╝ istnieje';
-end if;
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `RentPriceHist`
@@ -250,8 +151,10 @@ CREATE TABLE `RentPriceHist` (
   `StartDate` date NOT NULL,
   `EndDate` date DEFAULT NULL,
   PRIMARY KEY (`RentPriceHistID`),
-  KEY `BikeID` (`BikeID`),
-  CONSTRAINT `RentPriceHist_ibfk_1` FOREIGN KEY (`BikeID`) REFERENCES `Bikes` (`BikeID`)
+  KEY `fk_rentprice_bike` (`BikeID`),
+  CONSTRAINT `fk_rentprice_bike` FOREIGN KEY (`BikeID`) REFERENCES `Bikes` (`BikeID`),
+  CONSTRAINT `RentPriceHist_ibfk_1` FOREIGN KEY (`BikeID`) REFERENCES `Bikes` (`BikeID`),
+  CONSTRAINT `chk_hourly_price_positive` CHECK ((`HourlyPrice` > 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -264,30 +167,6 @@ LOCK TABLES `RentPriceHist` WRITE;
 INSERT INTO `RentPriceHist` VALUES (1,1,18,'2025-01-01','2025-06-30'),(2,1,22,'2025-06-30',NULL),(3,2,14,'2025-01-01','2025-06-30'),(4,2,16,'2025-06-30',NULL),(5,3,25,'2025-01-01','2025-06-30'),(6,3,29,'2025-06-30',NULL),(7,4,27,'2025-01-01','2025-06-30'),(8,4,31,'2025-06-30',NULL),(9,5,11,'2025-01-01','2025-06-30'),(10,5,13,'2025-06-30',NULL),(11,6,26,'2025-01-01','2025-06-30'),(12,6,28,'2025-06-30',NULL),(13,7,16,'2025-01-01','2025-06-30'),(14,7,17,'2025-06-30',NULL),(15,8,15,'2025-01-01','2025-06-30'),(16,8,18,'2025-06-30',NULL),(17,9,16,'2025-01-01','2025-06-30'),(18,9,20,'2025-06-30',NULL),(19,10,32,'2025-01-01','2025-06-30'),(20,10,36,'2025-06-30',NULL),(21,11,34,'2025-01-01','2025-06-30'),(22,11,40,'2025-06-30',NULL),(23,12,20,'2025-01-01','2025-06-30'),(24,12,23,'2025-06-30',NULL),(25,13,19,'2025-01-01','2025-06-30'),(26,13,22,'2025-06-30',NULL),(27,14,38,'2025-01-01','2025-06-30'),(28,14,41,'2025-06-30',NULL),(29,15,17,'2025-01-01','2025-06-30'),(30,15,21,'2025-06-30',NULL),(31,16,50,'2026-06-07','2026-06-07'),(32,16,70,'2026-06-07',NULL);
 /*!40000 ALTER TABLE `RentPriceHist` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `ChangeRentPrice_tr` BEFORE INSERT ON `RentPriceHist` FOR EACH ROW BEGIN
-    IF NOT EXISTS(SELECT 1 FROM Bikes WHERE Bikes.BikeID = NEW.BikeID) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Podany BikeID nie istnieje';
-    END IF;
-
-    IF (NEW.HourlyPrice <= 0) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nowy koszt wynaj─Öcia roweru musi by─ç wi─Ökszy od 0';
-    END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `Rents`
@@ -307,7 +186,7 @@ CREATE TABLE `Rents` (
   KEY `CustomerID` (`CustomerID`),
   CONSTRAINT `Rents_ibfk_1` FOREIGN KEY (`BikeID`) REFERENCES `Bikes` (`BikeID`),
   CONSTRAINT `Rents_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +195,7 @@ CREATE TABLE `Rents` (
 
 LOCK TABLES `Rents` WRITE;
 /*!40000 ALTER TABLE `Rents` DISABLE KEYS */;
-INSERT INTO `Rents` VALUES (1,1,1,'2025-01-03 00:00:00','2025-01-07 00:00:00'),(2,2,2,'2025-01-05 00:00:00','2025-01-12 00:00:00'),(3,3,3,'2025-01-10 00:00:00','2025-01-15 00:00:00'),(4,4,4,'2025-01-12 00:00:00','2025-01-20 00:00:00'),(5,5,5,'2025-01-15 00:00:00','2025-01-22 00:00:00'),(6,6,6,'2025-02-01 00:00:00','2025-02-09 00:00:00'),(7,7,7,'2025-02-03 00:00:00','2025-02-10 00:00:00'),(8,8,8,'2025-02-08 00:00:00','2025-02-18 00:00:00'),(9,9,9,'2025-02-10 00:00:00','2025-02-14 00:00:00'),(10,10,10,'2025-02-14 00:00:00','2025-02-21 00:00:00'),(11,11,11,'2025-03-01 00:00:00','2025-03-08 00:00:00'),(12,12,12,'2025-03-05 00:00:00','2025-03-11 00:00:00'),(13,13,13,'2025-03-10 00:00:00','2025-03-19 00:00:00'),(14,14,14,'2025-03-15 00:00:00','2025-03-18 00:00:00'),(15,15,1,'2025-03-20 00:00:00','2025-03-28 00:00:00'),(16,1,3,'2025-04-02 00:00:00','2025-04-09 00:00:00'),(17,2,5,'2025-04-05 00:00:00','2025-04-12 00:00:00'),(18,3,7,'2025-04-08 00:00:00','2025-04-15 00:00:00'),(19,4,9,'2025-04-10 00:00:00','2025-04-20 00:00:00'),(20,5,11,'2025-04-14 00:00:00','2025-04-21 00:00:00'),(21,6,2,'2025-05-01 00:00:00','2025-05-06 00:00:00'),(22,7,4,'2025-05-03 00:00:00','2025-05-09 00:00:00'),(23,8,6,'2025-05-05 00:00:00','2025-05-11 00:00:00'),(24,9,8,'2025-05-07 00:00:00','2025-05-13 00:00:00'),(25,10,10,'2025-05-09 00:00:00','2025-05-18 00:00:00'),(26,11,12,'2025-05-15 00:00:00','2025-05-22 00:00:00'),(27,12,14,'2025-05-20 00:00:00','2025-05-27 00:00:00'),(28,13,1,'2025-06-01 00:00:00','2025-06-07 00:00:00'),(29,14,2,'2025-06-03 00:00:00','2025-06-09 00:00:00'),(30,15,3,'2025-06-05 00:00:00','2025-06-12 00:00:00'),(31,1,1,'2026-05-10 00:00:00',NULL),(32,2,1,'2026-05-11 00:00:00',NULL),(33,5,1,'2026-05-12 00:00:00',NULL),(34,3,2,'2026-05-09 00:00:00',NULL),(35,4,2,'2026-05-10 00:00:00',NULL),(36,6,3,'2026-05-08 00:00:00',NULL),(37,7,4,'2026-05-13 00:00:00',NULL),(38,8,5,'2026-05-14 00:00:00',NULL),(39,9,6,'2026-05-15 00:00:00',NULL),(40,10,7,'2026-05-16 00:00:00',NULL),(41,11,8,'2026-05-17 00:00:00',NULL),(42,12,9,'2026-05-18 00:00:00',NULL),(43,13,10,'2026-05-19 00:00:00',NULL),(44,14,11,'2026-05-20 00:00:00',NULL),(45,15,12,'2026-05-21 00:00:00',NULL),(46,16,1,'2026-06-07 00:00:00','2026-06-07 00:00:00'),(47,16,2,'2026-06-07 00:00:00',NULL),(48,1,1,'2026-06-07 14:13:53',NULL);
+INSERT INTO `Rents` VALUES (1,1,1,'2025-01-03 00:00:00','2025-01-07 00:00:00'),(2,2,2,'2025-01-05 00:00:00','2025-01-12 00:00:00'),(3,3,3,'2025-01-10 00:00:00','2025-01-15 00:00:00'),(4,4,4,'2025-01-12 00:00:00','2025-01-20 00:00:00'),(5,5,5,'2025-01-15 00:00:00','2025-01-22 00:00:00'),(6,6,6,'2025-02-01 00:00:00','2025-02-09 00:00:00'),(7,7,7,'2025-02-03 00:00:00','2025-02-10 00:00:00'),(8,8,8,'2025-02-08 00:00:00','2025-02-18 00:00:00'),(9,9,9,'2025-02-10 00:00:00','2025-02-14 00:00:00'),(10,10,10,'2025-02-14 00:00:00','2025-02-21 00:00:00'),(11,11,11,'2025-03-01 00:00:00','2025-03-08 00:00:00'),(12,12,12,'2025-03-05 00:00:00','2025-03-11 00:00:00'),(13,13,13,'2025-03-10 00:00:00','2025-03-19 00:00:00'),(14,14,14,'2025-03-15 00:00:00','2025-03-18 00:00:00'),(15,15,1,'2025-03-20 00:00:00','2025-03-28 00:00:00'),(16,1,3,'2025-04-02 00:00:00','2025-04-09 00:00:00'),(17,2,5,'2025-04-05 00:00:00','2025-04-12 00:00:00'),(18,3,7,'2025-04-08 00:00:00','2025-04-15 00:00:00'),(19,4,9,'2025-04-10 00:00:00','2025-04-20 00:00:00'),(20,5,11,'2025-04-14 00:00:00','2025-04-21 00:00:00'),(21,6,2,'2025-05-01 00:00:00','2025-05-06 00:00:00'),(22,7,4,'2025-05-03 00:00:00','2025-05-09 00:00:00'),(23,8,6,'2025-05-05 00:00:00','2025-05-11 00:00:00'),(24,9,8,'2025-05-07 00:00:00','2025-05-13 00:00:00'),(25,10,10,'2025-05-09 00:00:00','2025-05-18 00:00:00'),(26,11,12,'2025-05-15 00:00:00','2025-05-22 00:00:00'),(27,12,14,'2025-05-20 00:00:00','2025-05-27 00:00:00'),(28,13,1,'2025-06-01 00:00:00','2025-06-07 00:00:00'),(29,14,2,'2025-06-03 00:00:00','2025-06-09 00:00:00'),(30,15,3,'2025-06-05 00:00:00','2025-06-12 00:00:00'),(31,1,1,'2026-05-10 00:00:00',NULL),(32,2,1,'2026-05-11 00:00:00',NULL),(33,5,1,'2026-05-12 00:00:00',NULL),(34,3,2,'2026-05-09 00:00:00',NULL),(35,4,2,'2026-05-10 00:00:00',NULL),(36,6,3,'2026-05-08 00:00:00',NULL),(37,7,4,'2026-05-13 00:00:00',NULL),(38,8,5,'2026-05-14 00:00:00',NULL),(39,9,6,'2026-05-15 00:00:00',NULL),(40,10,7,'2026-05-16 00:00:00',NULL),(41,11,8,'2026-05-17 00:00:00',NULL),(42,12,9,'2026-05-18 00:00:00',NULL),(43,13,10,'2026-05-19 00:00:00',NULL),(44,14,11,'2026-05-20 00:00:00',NULL),(45,15,12,'2026-05-21 00:00:00',NULL),(46,16,1,'2026-06-07 00:00:00','2026-06-07 00:00:00'),(47,16,2,'2026-06-07 00:00:00',NULL),(48,1,1,'2026-06-07 14:13:53',NULL),(49,5,7,'2026-06-07 20:40:01',NULL);
 /*!40000 ALTER TABLE `Rents` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -329,57 +208,27 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `AddRent_tr` BEFORE INSERT ON `Rents` FOR EACH ROW BEGIN
-        DECLARE rents_count integer default 0;
-        DECLARE current_quantity integer default 0;
+    DECLARE rents_count integer default 0;
+    DECLARE current_quantity integer default 0;
+    DECLARE row_lock integer;
 
-        IF NOT EXISTS(SELECT 1 FROM Bikes WHERE Bikes.BikeID=NEW.BikeID) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT ='Podany BikeID nie istnieje';
-        end if;
 
-        IF NOT EXISTS(SELECT 1 FROM Customers WHERE Customers.CustomerID=NEW.CustomerID) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT ='Podany CustomerID nie istnieje';
-        end if;
+    SELECT 1 INTO row_lock FROM Customers WHERE CustomerID = NEW.CustomerID FOR UPDATE;
 
-        SELECT Quantity INTO current_quantity FROM Bikes WHERE Bikes.BikeID=NEW.BikeID FOR UPDATE;
+    SELECT COUNT(*) INTO rents_count FROM Rents WHERE CustomerID = NEW.CustomerID AND ReturnDate IS NULL;
+    IF rents_count >= 5 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Nie mo┼╝na doda─ç rezerwacji, poniewa┼╝ klient ma ju┼╝ 5 rezerwacji';
+    END IF;
 
-        IF current_quantity = 0 THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT ='Roweru o podanym BikeID nie ma obecnie na stanie.';
-        END IF;
 
-        SELECT COUNT(*) INTO rents_count FROM Rents WHERE Rents.CustomerID=NEW.CustomerID AND Rents.ReturnDate IS NULL;
-        IF rents_count>=5 THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Nie mo┼╝na doda─ç rezerwacji, poniewa┼╝ klient o podanym CustomerID ma ju┼╝ 5 rezerwacji';
-        end if;
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`avnadmin`@`%`*/ /*!50003 TRIGGER `EndRent_tr` BEFORE UPDATE ON `Rents` FOR EACH ROW BEGIN
-        IF NOT EXISTS(SELECT 1 FROM Rents WHERE RentID=NEW.RentID) THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT ='Wypo┼╝yczenie o podanym RentID nie istnieje.';
-        end if;
+    SELECT Quantity INTO current_quantity FROM Bikes WHERE BikeID = NEW.BikeID FOR UPDATE;
 
-        IF (SELECT ReturnDate FROM Rents WHERE RentID=NEW.RentID) IS NOT NULL THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT ='Rower zosta┼é ju┼╝ zwr├│cony.';
-        end if;
-    end */;;
+    IF current_quantity = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT ='Roweru o podanym BikeID nie ma obecnie na stanie.';
+    END IF;
+END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -549,32 +398,27 @@ SET character_set_client = @saved_cs_client;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" FUNCTION "AvgBikeRentPrice_f"(bikeId_v int, startDate_v datetime, endDate_v datetime) RETURNS int
-    DETERMINISTIC
+CREATE DEFINER="avnadmin"@"%" FUNCTION "AvgBikeRentPrice_f"(bikeId_v int, startDate_v datetime, endDate_v datetime) RETURNS decimal(10,2)
+    READS SQL DATA
 BEGIN
-    DECLARE avgPrice int;
-    DECLARE numOfPrices int;
-    DECLARE sumOfPrices int;
+    DECLARE avgPrice decimal(10,2);
 
-    IF endDate_v<startDate_v THEN
+    IF endDate_v < startDate_v THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT ='Data ko┼äcowa musi by─ç p├│┼║niejsza od startowej';
-    end if;
+    END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM RentPriceHist WHERE BikeID=bikeId_v) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT ='Historia cen roweru o podanym id nie istnieje.';
-    end if;
 
-    SELECT SUM(RentPriceHist.HourlyPrice) ,COUNT(*) INTO sumOfPrices,numOfPrices
+    SELECT AVG(HourlyPrice) INTO avgPrice
     FROM RentPriceHist
-    WHERE BikeID=bikeId_v AND (StartDate <= endDate_v AND (EndDate >= startDate_v OR EndDate IS NULL));
+    WHERE BikeID = bikeId_v
+      AND StartDate <= endDate_v
+      AND (EndDate >= startDate_v OR EndDate IS NULL);
 
-    IF numOfPrices=0 THEN
-        RETURN 0;
-    end if;
-
-    SET avgPrice=sumOfPrices/numOfPrices;
+    IF avgPrice IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT ='Brak historii cen dla podanego roweru w wybranym okresie.';
+    END IF;
 
     RETURN avgPrice;
 END ;;
@@ -593,10 +437,10 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" FUNCTION "Income_f"(p_StartDate datetime, p_EndDate datetime) RETURNS decimal(10,2)
+CREATE DEFINER="avnadmin"@"%" FUNCTION "Income_f"(p_StartDate datetime, p_EndDate datetime) RETURNS int
     READS SQL DATA
 BEGIN
-    DECLARE price DECIMAL(10,2);
+    DECLARE price integer;
 
     SELECT COALESCE(SUM(RentalPrice_f(RentID)), 0) INTO price FROM Rents
     WHERE RentDate BETWEEN p_StartDate AND p_EndDate;
@@ -618,31 +462,25 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" FUNCTION "RentalPrice_f"(
-    p_RentID INT
-) RETURNS int
-    DETERMINISTIC
+CREATE DEFINER="avnadmin"@"%" FUNCTION "RentalPrice_f"(p_RentID int) RETURNS int
+    READS SQL DATA
 BEGIN
-    DECLARE hourly_price INT;
-    DECLARE rent_date DATE;
-    DECLARE return_date DATE;
+    DECLARE v_hourly_price INT;
+    DECLARE v_rent_date DATETIME;
+    DECLARE v_return_date DATETIME;
+    DECLARE v_total_hours INT;
 
-    SELECT HourlyPrice INTO hourly_price
-    FROM RentPriceHist
-    INNER JOIN Rents
-    ON Rents.BikeID=RentPriceHist.BikeID
-    WHERE RentID = p_RentID AND EndDate IS NULL LIMIT 1;
+    SELECT  r.RentDate, r.ReturnDate, p.HourlyPrice INTO v_rent_date, v_return_date, v_hourly_price
+    FROM Rents r
+    INNER JOIN RentPriceHist p ON r.BikeID = p.BikeID
+    WHERE r.RentID = p_RentID
+      AND p.StartDate <= r.RentDate
+      AND (p.EndDate >= r.RentDate OR p.EndDate IS NULL)
+    LIMIT 1;
 
-    SELECT RentDate,ReturnDate INTO rent_date,return_date FROM Rents
-    WHERE RentID=p_RentID;
+    SET v_total_hours = GREATEST(1, CEIL(TIMESTAMPDIFF(MINUTE, v_rent_date, IFNULL(v_return_date, NOW())) / 60.0));
 
-
-    RETURN (TIMESTAMPDIFF(
-        HOUR,
-        rent_date,
-        IFNULL(return_date, NOW())
-        )
-        )*hourly_price;
+    RETURN v_total_hours * v_hourly_price;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -659,11 +497,21 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddBike_p"(IN brandId_v int, IN categoryId_v int, IN hourly_price_v int, OUT bikeId_v INT)
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddBike_p"(
+    IN brandId_v int,
+    IN categoryId_v int,
+    IN hourly_price_v int,
+    OUT bikeId_v int
+)
 BEGIN
-     INSERT INTO Bikes(brandid, categoryid, quantity) VALUES (brandId_v,categoryId_v,0);
-     SET bikeId_v =LAST_INSERT_ID();
-     INSERT INTO RentPriceHist(BikeID, HourlyPrice, StartDate, EndDate)  VALUES(LAST_INSERT_ID(),hourly_price_v,CURRENT_DATE(),NULL);
+     INSERT INTO Bikes(brandid, categoryid, quantity)
+     VALUES (brandId_v, categoryId_v, 0);
+
+     SET bikeId_v = LAST_INSERT_ID();
+
+
+     INSERT INTO RentPriceHist(BikeID, HourlyPrice, StartDate, EndDate)
+     VALUES(bikeId_v, hourly_price_v, CURRENT_DATE(), NULL);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -743,20 +591,17 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddQuantity_p"(
-    IN quantity_v INT,
-    IN bikeID_v INT
-)
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddQuantity_p"(IN quantity_v int, IN bikeID_v int)
 BEGIN
-    IF EXISTS (SELECT 1 FROM Bikes WHERE BikeID = bikeID_v) THEN
-        UPDATE Bikes
-        SET Quantity = Quantity+quantity_v
-        WHERE BikeID = bikeID_v;
-    ELSE
+    UPDATE Bikes
+    SET Quantity = Quantity + quantity_v
+    WHERE BikeID = bikeID_v;
+
+    IF ROW_COUNT() = 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Nie ma takiego BikeID';
-    end if;
-end ;;
+    END IF;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -845,14 +690,26 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "EndRent_p"(rent_id_v integer)
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "EndRent_p"(IN rent_id_v int)
 BEGIN
-    UPDATE Rents
-    SET ReturnDate=NOW()
-    WHERE Rents.RentID=rent_id_v;
+    DECLARE v_bike_id INT;
 
-    CALL AddQuantity_p(1,(SELECT BikeID FROM Rents WHERE RentID=rent_id_v));
-end ;;
+    SELECT BikeID INTO v_bike_id
+    FROM Rents
+    WHERE RentID = rent_id_v;
+
+    UPDATE Rents
+    SET ReturnDate = NOW()
+    WHERE RentID = rent_id_v AND ReturnDate IS NULL;
+
+    IF ROW_COUNT() = 1 THEN
+        CALL AddQuantity_p(1, v_bike_id);
+    ELSE
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'To wypo┼╝yczenie zosta┼éo zako┼äczone lub nie istnieje.';
+    END IF;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -868,24 +725,15 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" PROCEDURE "FilterBike_p"(categoryName_v VARCHAR(255),brandName_v VARCHAR(255))
+CREATE DEFINER="avnadmin"@"%" PROCEDURE "FilterBike_p"(IN categoryName_v varchar(255), IN brandName_v varchar(255))
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM Categories WHERE CategoryName=categoryName_v) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT ='Podane categoryName nie istnieje.';
-    end if;
-
-    IF NOT EXISTS(SELECT 1 FROM Brands WHERE BrandName=brandName_v) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT ='Podane brandName nie istnieje.';
-    end if;
-
-    SELECT Bikes.BikeID,Bikes.Quantity
+    SELECT Bikes.BikeID, Bikes.Quantity
     FROM Bikes
     INNER JOIN Brands ON Bikes.BrandID = Brands.BrandID
     INNER JOIN Categories ON Bikes.CategoryID = Categories.CategoryID
-    WHERE Brands.BrandName LIKE brandName_v AND Categories.CategoryName LIKE categoryName_v;
-end ;;
+    WHERE Brands.BrandName LIKE CONCAT('%', brandName_v, '%')
+      AND Categories.CategoryName LIKE CONCAT('%', categoryName_v, '%');
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -905,7 +753,7 @@ CREATE DEFINER="avnadmin"@"%" PROCEDURE "FilterCustomer_p"(IN customerPhone_v va
 BEGIN
     SELECT Firstname,Surrname,Phone
     FROM Customers
-    WHERE Phone LIKE customerPhone_v;
+    WHERE Phone = customerPhone_v;
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1103,4 +951,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-07 15:12:30
+-- Dump completed on 2026-06-07 22:10:32

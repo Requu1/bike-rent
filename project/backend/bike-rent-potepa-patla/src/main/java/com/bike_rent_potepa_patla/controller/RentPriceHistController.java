@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @RestController
@@ -27,8 +28,8 @@ public class RentPriceHistController {
     }
 
     @GetMapping("/avg-bike-rent-price")
-    public ResponseEntity<Integer> getAvgBikeRentPrice(@RequestParam Integer bikeId,@RequestParam LocalDate startDate,
-                                                 @RequestParam LocalDate endDate){
+    public ResponseEntity<BigDecimal> getAvgBikeRentPrice(@RequestParam Integer bikeId, @RequestParam LocalDate startDate,
+                                                          @RequestParam LocalDate endDate){
         return ResponseEntity.ok(rentPriceHistService.getAvgBikeRentPrice(bikeId,startDate,endDate));
     }
 }

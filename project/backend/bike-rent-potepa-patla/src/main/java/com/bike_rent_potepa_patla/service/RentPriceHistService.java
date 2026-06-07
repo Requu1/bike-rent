@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -35,7 +36,7 @@ public class RentPriceHistService {
     }
 
     @Transactional
-    public Integer getAvgBikeRentPrice(Integer bikeId, LocalDate startDate, LocalDate endDate){
+    public BigDecimal getAvgBikeRentPrice(Integer bikeId, LocalDate startDate, LocalDate endDate){
         return rentPriceHistRepository.avgBikeRentPrice(bikeId,startDate.atStartOfDay(),endDate.atTime(LocalTime.MAX));
     }
 
