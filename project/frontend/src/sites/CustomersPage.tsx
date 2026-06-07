@@ -35,7 +35,8 @@ export default function CustomersPage() {
         `http://localhost:8080/api/customers?phone=${encodeURIComponent(filterPhone)}`,
       );
       if (!res.ok) throw new Error(await res.text());
-      setFilterResults(await res.json());
+      const json = await res.json();
+      setFilterResults(Array.isArray(json) ? json : [json]);
     } catch (e: any) {
       setFilterError(e.message);
       setFilterResults(null);
