@@ -47,6 +47,14 @@ export default function BikesPage() {
   const [pSuccess, setPSuccess] = useState(false);
   const [pLoading, setPLoading] = useState(false);
 
+  // Avg bike rent price
+  const [aBikeId, setABikeId] = useState("");
+  const [aStartDate, setAStartDate] = useState("");
+  const [aEndDate, setAEndDate] = useState("");
+  const [aResult, setAResult] = useState<number | null>(null);
+  const [aError, setAError] = useState<string | null>(null);
+  const [aLoading, setALoading] = useState(false);
+
   async function handleFilter() {
     if (!filterCategory.trim() || !filterBrand.trim()) {
       setFilterError("Missing Input Data.");
@@ -121,6 +129,35 @@ export default function BikesPage() {
       setPError(e.message);
     } finally {
       setPLoading(false);
+    }
+  }
+
+  async function handleAvgRentPrice() {
+    if (!aBikeId || !aStartDate || !aEndDate) {
+      setAError("Missing Input Data.");
+      return;
+    }
+    setALoading(true);
+    setAError(null);
+    setAResult(null);
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/rent-price-hist/avg-bike-rent-price?bikeId=${encodeURIComponent(aBikeId)}&startDate=${encodeURIComponent(aStartDate)}&endDate=${encodeURIComponent(aEndDate)}`,
+      );
+      if (!res.ok) throw new Error(await res.text());
+
+      const text = (await res.text()).trim();
+      const parsed = Number(text);
+
+      if (Number.isNaN(parsed)) {
+        throw new Error("Invalid response from server.");
+      }
+
+      setAResult(parsed);
+    } catch (e: any) {
+      setAError(e.message);
+    } finally {
+      setALoading(false);
     }
   }
 
@@ -328,7 +365,7 @@ export default function BikesPage() {
       )}
 
       {/* Operations */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
         {/* Add quantity */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
           <p className="text-sm font-semibold text-white mb-4">Add quantity</p>
@@ -418,6 +455,65 @@ export default function BikesPage() {
             className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition"
           >
             {pLoading ? "Saving..." : "Change price"}
+          </button>
+        </div>
+
+        {/* Average bike rent price */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <p className="text-sm font-semibold text-white mb-4">
+            Avg bike rent price
+          </p>
+          <div className="flex flex-col gap-3 mb-3">
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-slate-500">Bike ID</label>
+              <input
+                type="number"
+                value={aBikeId}
+                onChange={(e) => {
+                  setABikeId(e.target.value);
+                  setAError(null);
+                }}
+                placeholder="1"
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-slate-500">Start date</label>
+              <input
+                type="date"
+                value={aStartDate}
+                onChange={(e) => {
+                  setAStartDate(e.target.value);
+                  setAError(null);
+                }}
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-slate-500">End date</label>
+              <input
+                type="date"
+                value={aEndDate}
+                onChange={(e) => {
+                  setAEndDate(e.target.value);
+                  setAError(null);
+                }}
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+          {aError && <p className="text-red-400 text-xs mb-2">{aError}</p>}
+          {aResult !== null && (
+            <p className="text-green-400 text-xs mb-2">
+              Avg rent price: {aResult.toFixed(2)} zł
+            </p>
+          )}
+          <button
+            onClick={handleAvgRentPrice}
+            disabled={aLoading}
+            className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition"
+          >
+            {aLoading ? "Loading..." : "Calculate avg"}
           </button>
         </div>
       </div>
