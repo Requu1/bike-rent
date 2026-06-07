@@ -203,7 +203,7 @@ export default function CustomersPage() {
               setAddSuccess(false);
             }}
             onKeyDown={(e) => e.key === "Enter" && handleAddCustomer()}
-            placeholder="500123456"
+            placeholder="+48500123456"
             className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
           />
         </div>
