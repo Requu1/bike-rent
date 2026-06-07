@@ -1,6 +1,6 @@
 package com.bike_rent_potepa_patla.dto.views;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record ViewHistRentsDto(
     Integer rentId,
@@ -8,6 +8,6 @@ public record ViewHistRentsDto(
     String brandName,
     String firstName,
     String surrName,
-    LocalDate rentDate,
-    LocalDate returnDate
+    LocalDateTime rentDate,
+    LocalDateTime returnDate
 ) { }
