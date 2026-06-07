@@ -8,6 +8,7 @@ services:
       MYSQL_ROOT_HOST: "%"
       MYSQL_USER: avnadmin
       MYSQL_PASSWORD: garek123
+      TZ: Europe/Warsaw
     ports:
       - "3307:3306"
     volumes:

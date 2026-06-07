@@ -2,6 +2,7 @@ package com.bike_rent_potepa_patla.service;
 
 import com.bike_rent_potepa_patla.dto.brand.BrandCreateDto;
 import com.bike_rent_potepa_patla.dto.brand.BrandResponseDto;
+import com.bike_rent_potepa_patla.exception.BrandNotFoundException;
 import com.bike_rent_potepa_patla.model.Brand;
 import com.bike_rent_potepa_patla.repository.BrandRepository;
 import jakarta.transaction.Transactional;
@@ -23,7 +24,12 @@ public class BrandService {
     }
 
     Brand findByName(String brandName){
-        return brandRepository.findByBrandName(brandName);
+        Brand brand=brandRepository.findByBrandName(brandName);
+        if(brand==null){
+            throw new BrandNotFoundException("Brand not found");
+        }
+        return brand;
     }
+
 
 }

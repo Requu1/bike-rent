@@ -2,6 +2,7 @@ package com.bike_rent_potepa_patla.service;
 
 import com.bike_rent_potepa_patla.dto.category.CategoryCreateDto;
 import com.bike_rent_potepa_patla.dto.category.CategoryResponseDto;
+import com.bike_rent_potepa_patla.exception.CategoryNotFoundException;
 import com.bike_rent_potepa_patla.model.Category;
 import com.bike_rent_potepa_patla.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,10 @@ public class CategoryService {
     }
 
     Category findByName(String categoryName) {
-        return categoryRepository.findByCategoryName(categoryName);
+        Category category= categoryRepository.findByCategoryName(categoryName);
+        if(category==null){
+            throw new CategoryNotFoundException("Category not found");
+        }
+        return category;
     }
 }
