@@ -3,7 +3,7 @@ package com.bike_rent_potepa_patla.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -27,9 +27,9 @@ public class Rent {
     private Customer customer;
 
     @Column(name="RentDate",nullable = false)
-    private LocalDate rentDate;
+    private LocalDateTime rentDate;
 
     @Column(name="ReturnDate",nullable = true)
-    private LocalDate returnDate;
+    private LocalDateTime returnDate;
 
 }

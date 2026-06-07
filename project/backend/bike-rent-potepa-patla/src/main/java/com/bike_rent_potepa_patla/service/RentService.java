@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -41,6 +42,6 @@ public class RentService {
 
     @Transactional
     public Integer getIncome(LocalDate startDate, LocalDate endDate){
-        return rentRepository.getIncome(startDate,endDate);
+        return rentRepository.getIncome(startDate.atStartOfDay(),endDate.atTime(LocalTime.MAX));
     }
 }

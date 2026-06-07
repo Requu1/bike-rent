@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class RentPriceHistService {
 
     @Transactional
     public Integer getAvgBikeRentPrice(Integer bikeId, LocalDate startDate, LocalDate endDate){
-        return rentPriceHistRepository.avgBikeRentPrice(bikeId,startDate,endDate);
+        return rentPriceHistRepository.avgBikeRentPrice(bikeId,startDate.atStartOfDay(),endDate.atTime(LocalTime.MAX));
     }
 
     private LocalDate findStartDateForNewRentPrice(Integer rentPriceId){

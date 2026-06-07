@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Repository
 public interface RentPriceHistRepository extends JpaRepository<RentPriceHist, Integer> {
@@ -15,7 +15,7 @@ public interface RentPriceHistRepository extends JpaRepository<RentPriceHist, In
     Integer changeRentPrice(@Param("bike_id_v")Integer bikeId,@Param("hourly_price_v")Integer hourlyPrice);
 
     @Query(value="SELECT AvgBikeRentPrice_f(:bikeId,:startDate,:endDate)",nativeQuery = true)
-    Integer avgBikeRentPrice(@Param("bikeId")Integer bikeId, @Param("startDate") LocalDate startDate, @Param("endDate")LocalDate endDate);
+    Integer avgBikeRentPrice(@Param("bikeId")Integer bikeId, @Param("startDate") LocalDateTime startDate, @Param("endDate")LocalDateTime endDate);
 
     @Query(value="SELECT RentalPrice_f(:rentId)")
     Integer getRentalPrice(@Param("rentId")Integer rentId);
