@@ -52,4 +52,14 @@ public class ViewRepository {
         String sql = "select * from view_hist_rents";
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewHistRentsDto.class));
     }
+
+    public List<ViewBrandsDto> viewBrands(){
+        String sql = "select * from view_brands";
+        return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewBrandsDto.class));
+    }
+
+    public List<ViewCategoriesDto> viewCategories(){
+        String sql = "select * from view_categories";
+        return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewCategoriesDto.class));
+    }
 }

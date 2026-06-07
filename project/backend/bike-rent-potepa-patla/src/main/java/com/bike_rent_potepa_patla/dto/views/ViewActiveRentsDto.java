@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public record ViewActiveRentsDto(
         String customerName,
+        Integer rentId,
         Integer bikeId,
         String brandName,
         LocalDate rentDate,

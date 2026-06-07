@@ -55,4 +55,14 @@ public class ViewController {
     public ResponseEntity<List<ViewHistPriceDto>> viewHistPrice() {
         return ResponseEntity.ok(viewService.viewHistPrice());
     }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<ViewCategoriesDto>> viewCategories() {
+        return ResponseEntity.ok(viewService.viewCategories());
+    }
+
+    @GetMapping("/brands")
+    public ResponseEntity<List<ViewBrandsDto>> viewBrands() {
+        return ResponseEntity.ok(viewService.viewBrands());
+    }
 }
