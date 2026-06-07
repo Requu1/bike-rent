@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-77';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-81';
 
 --
 -- Table structure for table `Bikes`
@@ -549,7 +549,7 @@ SET character_set_client = @saved_cs_client;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" FUNCTION "AvgBikeRentPrice_f"(bikeId_v int,startDate_v DATE,endDate_v DATE) RETURNS int
+CREATE DEFINER="avnadmin"@"%" FUNCTION "AvgBikeRentPrice_f"(bikeId_v int, startDate_v datetime, endDate_v datetime) RETURNS int
     DETERMINISTIC
 BEGIN
     DECLARE avgPrice int;
@@ -593,7 +593,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER="avnadmin"@"%" FUNCTION "Income_f"(p_StartDate DATE, p_EndDate DATE) RETURNS decimal(10,2)
+CREATE DEFINER="avnadmin"@"%" FUNCTION "Income_f"(p_StartDate datetime, p_EndDate datetime) RETURNS decimal(10,2)
     READS SQL DATA
 BEGIN
     DECLARE price DECIMAL(10,2);
@@ -1103,4 +1103,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-07 14:53:18
+-- Dump completed on 2026-06-07 15:12:30
