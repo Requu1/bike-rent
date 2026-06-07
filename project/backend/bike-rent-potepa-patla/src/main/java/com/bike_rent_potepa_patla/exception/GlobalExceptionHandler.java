@@ -28,4 +28,9 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(InvalidPhoneException.class)
+    public ResponseEntity<?> invalidPhoneException(InvalidPhoneException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
 }

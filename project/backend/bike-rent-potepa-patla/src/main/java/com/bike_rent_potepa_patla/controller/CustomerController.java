@@ -21,7 +21,6 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<FilteredCustomerDto> getFilteredCustomer(@RequestParam String phone){
-        String fixedPhone = phone.replace(" ", "+");
-        return ResponseEntity.ok(customerService.getFilteredCustomer(fixedPhone));
+        return ResponseEntity.ok(customerService.getFilteredCustomer(phone));
     }
 }

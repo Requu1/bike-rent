@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useView, callProcedure } from "../hooks/useApi";
+import { useView } from "../hooks/useApi";
 import type { Customer } from "../types";
 
 export default function CustomersPage() {
@@ -56,11 +56,31 @@ export default function CustomersPage() {
       setAddError("Missing input data.");
       return;
     }
+
+    if (!/^\+\d{7,15}$/.test(phone.trim())) {
+      setAddError("Invalid phone format. Use + followed by 7-15 digits.");
+      return;
+    }
+
     setAddLoading(true);
     setAddError(null);
     setAddSuccess(false);
     try {
-      await callProcedure("customers", { firstName, surrName, phone });
+      const res = await fetch("http://localhost:8080/api/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, surrName, phone }),
+      });
+
+      if (!res.ok) {
+        if (res.status === 400) {
+          throw new Error(
+            "Invalid phone format. Use + followed by 7-15 digits.",
+          );
+        }
+        throw new Error(await res.text());
+      }
+
       setAddSuccess(true);
       setFirstName("");
       setSurrName("");

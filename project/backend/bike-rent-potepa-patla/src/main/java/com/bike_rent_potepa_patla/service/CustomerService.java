@@ -3,6 +3,7 @@ package com.bike_rent_potepa_patla.service;
 import com.bike_rent_potepa_patla.dto.customer.CustomerCreateDto;
 import com.bike_rent_potepa_patla.dto.customer.CustomerResponseDto;
 import com.bike_rent_potepa_patla.dto.customer.FilteredCustomerDto;
+import com.bike_rent_potepa_patla.exception.InvalidPhoneException;
 import com.bike_rent_potepa_patla.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,10 @@ public class CustomerService {
 
     @Transactional
     public CustomerResponseDto addCustomer(CustomerCreateDto dto) {
+        if (!dto.phone().matches("^\\+\\d{7,15}$")) {
+            throw new InvalidPhoneException("Invalid phone format");
+        }
+
         Integer newCustomerId=customerRepository.addNewCustomer(dto.firstName(),dto.surrName(),dto.phone());
         return CustomerResponseDto.builder()
                 .customerId(newCustomerId)
@@ -27,6 +32,7 @@ public class CustomerService {
 
     @Transactional
     public FilteredCustomerDto getFilteredCustomer(String phone){
-        return customerRepository.filterCustomerByPhone(phone);
+        String fixedPhone = phone.replace(" ", "+");
+        return customerRepository.filterCustomerByPhone(fixedPhone);
     }
 }

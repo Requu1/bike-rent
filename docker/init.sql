@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-118';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-121';
 
 --
 -- Table structure for table `Bikes`
@@ -120,7 +120,7 @@ CREATE TABLE `Customers` (
   `CustomerID` int NOT NULL AUTO_INCREMENT,
   `Firstname` varchar(255) NOT NULL,
   `Surrname` varchar(255) NOT NULL,
-  `Phone` varchar(15) NOT NULL,
+  `Phone` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`CustomerID`),
   UNIQUE KEY `UQ_Phone` (`Phone`),
   UNIQUE KEY `uk_customer_phone` (`Phone`)
@@ -571,7 +571,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,IGNORE_SPACE,ONLY_FULL_GROUP_BY,ANSI,STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER="avnadmin"@"%" PROCEDURE "AddCustomer_p"(IN firstname_v varchar(255), IN surrname_v varchar(255),
-                                                   IN phone_v varchar(15), OUT customerId_v INT)
+                                                   IN phone_v varchar(16), OUT customerId_v int)
 BEGIN
     INSERT INTO Customers(firstname, surrname,phone) VALUES(firstname_v,surrname_v,phone_v);
     SET customerId_v=LAST_INSERT_ID();
@@ -951,4 +951,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-07 22:10:32
+-- Dump completed on 2026-06-07 23:45:00
