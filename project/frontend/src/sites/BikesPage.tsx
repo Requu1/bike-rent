@@ -19,8 +19,8 @@ export default function BikesPage() {
   const { data: topCategory } = useView<TopCategory>(
     "views/most-rented-category",
   );
-  const { data: categories } = useView<Category>("categories");
-  const { data: brands } = useView<Brand>("brands");
+  const { data: categories } = useView<Category>("views/categories");
+  const { data: brands } = useView<Brand>("views/brands");
 
   const [modal, setModal] = useState<Modal>(null);
 
@@ -518,21 +518,21 @@ function AddBikeModal({
 
   return (
     <Modal title="Add bike" onClose={onClose}>
-      <label className="block text-sm text-slate-400 mb-1">Brand</label>
+      <label className="block text-sm text-slate-400 mb-1">Brand ID</label>
       <input
         type="text"
         value={brandName}
         onChange={(e) => setBrandName(e.target.value)}
         className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
-        placeholder="np. Romet"
+        placeholder="e.g. 1"
       />
-      <label className="block text-sm text-slate-400 mb-1">Category</label>
+      <label className="block text-sm text-slate-400 mb-1">Category ID</label>
       <input
         type="text"
         value={categoryName}
         onChange={(e) => setCategoryName(e.target.value)}
         className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
-        placeholder="np. Touring"
+        placeholder="e.g. 3"
       />
       <label className="block text-sm text-slate-400 mb-1">
         Hourly price (zł)
@@ -542,7 +542,7 @@ function AddBikeModal({
         value={hourlyPrice}
         onChange={(e) => setHourlyPrice(e.target.value)}
         className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white mb-4 focus:outline-none focus:border-indigo-500"
-        placeholder="np. 15"
+        placeholder="e.g. 15"
       />
       {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
       <ModalFooter

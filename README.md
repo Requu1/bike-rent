@@ -485,7 +485,7 @@ ON Rents.CustomerID = Customers.CustomerID
 INNER JOIN Bikes
 ON Rents.BikeID = Bikes.BikeID
 INNER JOIN Brands
-ON Bikes.BikeID=Brands.BrandID
+ON Bikes.BrandID=Brands.BrandID
 WHERE ReturnDate IS NOT NULL
 ```
 
