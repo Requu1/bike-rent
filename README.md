@@ -43,9 +43,71 @@ lub uruchomić localhosta wypisanego przez terminal (można też nacisnąć link
 
 ![alt text](erd/diagram.png)
 
+### Warunki integralnościowe dla poszczególnych tabel:
+
+#### Bikes:
+
+- fk_bikes_brand
+
+```js
+ALTER TABLE Bikes ADD CONSTRAINT fk_bikes_brand FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
+```
+
+- fk_bikes_category
+
+```js
+ALTER TABLE Bikes ADD CONSTRAINT fk_bikes_category FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID);
+```
+
+- chk_quantity_non_negative
+
+```js
+ALTER TABLE Bikes ADD CONSTRAINT chk_quantity_non_negative CHECK (Quantity >= 0);
+```
+
+#### Brands:
+
+- uk_brand_name
+
+```js
+ALTER TABLE Brands ADD CONSTRAINT uk_brand_name UNIQUE (BrandName)
+```
+
+#### Categories:
+
+- uk_category_name
+
+```js
+ALTER TABLE Categories ADD CONSTRAINT uk_category_name UNIQUE (CategoryName);
+```
+
+#### Customers:
+
+- uk_customer_phone
+
+```js
+ALTER TABLE Customers ADD CONSTRAINT uk_customer_phone UNIQUE (Phone);
+```
+
+#### RentPriceHist:
+
+- fk_rentprice_bike
+
+```js
+ALTER TABLE RentPriceHist ADD CONSTRAINT fk_rentprice_bike FOREIGN KEY (BikeID) REFERENCES Bikes(BikeID)
+```
+
+- chk_hourly_price_positive
+
+```js
+ALTER TABLE RentPriceHist ADD CONSTRAINT chk_hourly_price_positive CHECK (HourlyPrice > 0);
+```
+
+# TRZEBA DODAĆ RESZTE
+
 ### Trigger dla tabeli Rents:
 
-AddRent_tr
+- AddRent_tr
 
 ```js
 create definer = avnadmin@`%` trigger AddRent_tr
