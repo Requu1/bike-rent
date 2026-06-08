@@ -473,6 +473,7 @@ FROM Rents r
     LEFT JOIN Bikes bi    ON r.BikeID = bi.BikeID
     JOIN Brands b         ON bi.BrandID = b.BrandID
 WHERE r.ReturnDate IS NULL
+ORDER BY RentDate DESC
 ```
 
 - view_hist_rents
@@ -487,6 +488,7 @@ ON Rents.BikeID = Bikes.BikeID
 INNER JOIN Brands
 ON Bikes.BrandID=Brands.BrandID
 WHERE ReturnDate IS NOT NULL
+ORDER BY ReturnDate DESC
 ```
 
 - view_bestsellers
@@ -549,6 +551,7 @@ SELECT bi.BikeID            AS BikeID,
 FROM Bikes bi
     JOIN Brands br ON bi.BrandID = br.BrandID
     JOIN Categories c ON bi.CategoryID = c.CategoryID
+ORDER BY bi.BikeID ASC
 ```
 
 - view_hist_price
@@ -561,6 +564,7 @@ ON RentPriceHist.BikeID = Bikes.BikeID
 INNER JOIN Brands
 ON Bikes.BrandID = Brands.BrandID
 WHERE EndDate IS NOT NULL
+ORDER BY EndDate DESC
 ```
 
 - view_most_rented_category
