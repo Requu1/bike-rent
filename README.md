@@ -103,8 +103,6 @@ ALTER TABLE RentPriceHist ADD CONSTRAINT fk_rentprice_bike FOREIGN KEY (BikeID) 
 ALTER TABLE RentPriceHist ADD CONSTRAINT chk_hourly_price_positive CHECK (HourlyPrice > 0);
 ```
 
-# TRZEBA DODAĆ RESZTE
-
 ### Trigger dla tabeli Rents:
 
 - AddRent_tr
