@@ -15,29 +15,6 @@ export default function HistPage() {
     refetch: refetchPrice,
   } = useView<PriceHist>("views/hist-price");
 
-  const sortedRentHist = useMemo(
-    () =>
-      [...rentHist].sort(
-        (a, b) =>
-          new Date(b.rentDate).getTime() - new Date(a.rentDate).getTime(),
-      ),
-    [rentHist],
-  );
-
-  const sortedPriceHist = useMemo(
-    () =>
-      [...priceHist].sort((a, b) => {
-        const aStart = new Date(a.startDate).getTime();
-        const bStart = new Date(b.startDate).getTime();
-        if (bStart !== aStart) return bStart - aStart;
-
-        const aEnd = a.endDate ? new Date(a.endDate).getTime() : 0;
-        const bEnd = b.endDate ? new Date(b.endDate).getTime() : 0;
-        return bEnd - aEnd;
-      }),
-    [priceHist],
-  );
-
   return (
     <div>
       <h1 className="text-3xl font-extrabold tracking-tight mb-8">History</h1>
@@ -59,7 +36,7 @@ export default function HistPage() {
             <div className="text-slate-400 py-8 text-center bg-slate-900 border border-slate-800 rounded-xl">
               Loading...
             </div>
-          ) : sortedRentHist.length === 0 ? (
+          ) : rentHist.length === 0 ? (
             <div className="text-center py-10 bg-slate-900 rounded-xl border border-slate-800">
               <p className="text-slate-400">No rent history in database.</p>
             </div>
@@ -83,7 +60,7 @@ export default function HistPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedRentHist.map((r) => (
+                  {rentHist.map((r) => (
                     <tr
                       key={r.rentId}
                       className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"
@@ -129,7 +106,7 @@ export default function HistPage() {
             <div className="text-slate-400 py-8 text-center bg-slate-900 border border-slate-800 rounded-xl">
               Loading...
             </div>
-          ) : sortedPriceHist.length === 0 ? (
+          ) : priceHist.length === 0 ? (
             <div className="text-center py-10 bg-slate-900 rounded-xl border border-slate-800">
               <p className="text-slate-400">No price history in database.</p>
             </div>
@@ -147,7 +124,7 @@ export default function HistPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedPriceHist.map((p) => (
+                  {priceHist.map((p) => (
                     <tr
                       key={p.rentPriceHistId}
                       className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"

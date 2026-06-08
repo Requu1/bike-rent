@@ -30,15 +30,6 @@ export default function RentsPage() {
   const [erSuccess, setErSuccess] = useState(false);
   const [erLoading, setErLoading] = useState(false);
 
-  const sortedActiveRents = useMemo(
-    () =>
-      [...activeRents].sort(
-        (a, b) =>
-          new Date(b.rentDate).getTime() - new Date(a.rentDate).getTime(),
-      ),
-    [activeRents],
-  );
-
   async function handleCustomerFilter() {
     if (!customerId.trim()) {
       setCustomerError("Missing Input Data.");
@@ -240,7 +231,7 @@ export default function RentsPage() {
               </tr>
             </thead>
             <tbody>
-              {sortedActiveRents.map((rent, i) => (
+              {activeRents.map((rent, i) => (
                 <tr
                   key={rent.rentId ?? i}
                   className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40 transition"

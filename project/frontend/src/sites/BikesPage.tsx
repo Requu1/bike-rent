@@ -369,8 +369,8 @@ export default function BikesPage() {
         {/* Add quantity */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
           <p className="text-sm font-semibold text-white mb-4">Add quantity</p>
-          <div className="flex gap-3 mb-3">
-            <div className="flex flex-col gap-1 flex-1">
+          <div className="flex flex-col gap-3 mb-3">
+            <div className="flex flex-col gap-1">
               <label className="text-xs text-slate-500">Bike ID</label>
               <input
                 type="number"
@@ -384,7 +384,7 @@ export default function BikesPage() {
                 className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
               />
             </div>
-            <div className="flex flex-col gap-1 flex-1">
+            <div className="flex flex-col gap-1">
               <label className="text-xs text-slate-500">Quantity to add</label>
               <input
                 type="number"
@@ -415,8 +415,8 @@ export default function BikesPage() {
           <p className="text-sm font-semibold text-white mb-4">
             Change hourly price
           </p>
-          <div className="flex gap-3 mb-3">
-            <div className="flex flex-col gap-1 flex-1">
+          <div className="flex flex-col gap-3 mb-3">
+            <div className="flex flex-col gap-1">
               <label className="text-xs text-slate-500">Bike ID</label>
               <input
                 type="number"
@@ -430,7 +430,7 @@ export default function BikesPage() {
                 className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500"
               />
             </div>
-            <div className="flex flex-col gap-1 flex-1">
+            <div className="flex flex-col gap-1">
               <label className="text-xs text-slate-500">New price (zł/h)</label>
               <input
                 type="number"
