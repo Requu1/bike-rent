@@ -13,6 +13,16 @@ Frontend: React + Vite + Tailwind
 
 ---
 
+Aplikacja dla pracownika wypożyczalni rowerów.
+
+Umożliwia ona zarządzanie magazynem rowerów (dodawanie, przeglądanie, zmiana cen , średnia cena wypożyczeń z danego czasu dla danego roweru), składanie rezerwacji, przeglądanie klientów i historycznych cen rowerów jak i historycznych wypożyczeń.
+
+Oblicza ona na bieżąco aktualny koszt dla danego wypożyczenia i może obliczyć przychód wypożyczalni z zadanego czasu.
+
+---
+
+### Uruchamianie
+
 aby pobrać wszystkie potrzebne pakiety trzeba uruchomić
 
 `npm install`
@@ -28,6 +38,8 @@ aby uruchomić backend należy wpisać w terminalu
 
 `cd 'ścieżka do projektu'/project/backend/bike-rent-potepa-patla`
 `./gradlew bootRun` lub `gradlew.bat bootRun`
+
+(gdy pasek naładuje się do 80%, oznacza to że baza danych zaczęła działać)
 
 aby uruchomić frontend projektu należy wpisać w terminalu
 
@@ -124,7 +136,7 @@ BEGIN
     SELECT COUNT(*) INTO rents_count FROM Rents WHERE CustomerID = NEW.CustomerID AND ReturnDate IS NULL;
     IF rents_count >= 5 THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Nie można dodać rezerwacji, ponieważ klient ma już 5 rezerwacji';
+        SET MESSAGE_TEXT = 'Nie mozna dodac rezerwacji, poniewaz klient ma juz 5 rezerwacji';
     END IF;
 
 
@@ -151,7 +163,7 @@ BEGIN
 
     IF endDate_v < startDate_v THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT ='Data końcowa musi być późniejsza od startowej';
+        SET MESSAGE_TEXT ='Data koncowa musi byc pozniejsza od startowej';
     END IF;
 
 
@@ -341,7 +353,7 @@ BEGIN
     ELSE
 
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'To wypożyczenie zostało zakończone lub nie istnieje.';
+        SET MESSAGE_TEXT = 'To wypozyczenie zostalo zakonczone lub nie istnieje.';
     END IF;
 END;
 ```
@@ -429,6 +441,7 @@ LIMIT 10
 ```js
 CREATE VIEW view_brands AS
     SELECT * FROM Brands
+ORDER BY BrandID DESC
 ```
 
 - view_bestselling_brands
@@ -450,6 +463,7 @@ LIMIT 2
 ```js
 CREATE VIEW view_categories AS
     SELECT * FROM Categories
+ORDER BY CategoryID DESC
 ```
 
 - view_bike_stock
@@ -502,4 +516,5 @@ LIMIT 1
 ```js
 CREATE VIEW view_customers AS
     SELECT * FROM Customers
+ORDER BY CustomerID DESC
 ```
