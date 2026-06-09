@@ -24,9 +24,10 @@ aby pobrać bazę danych należy mieć pobranego Dockera i uruchomić komendy
 
 kontener powinien się uruchomić samodzielnie
 
-aby uruchomić backend należy ...
+aby uruchomić backend należy wpisać w terminalu
 
-(najlepiej w InteliJ uruchomić program w ustalonej konfiguracji)
+`cd 'ścieżka do projektu'/project/backend/bike-rent-potepa-patla`
+`./gradlew bootRun` lub `gradlew.bat bootRun`
 
 aby uruchomić frontend projektu należy wpisać w terminalu
 
