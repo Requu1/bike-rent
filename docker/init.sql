@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-121';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-125';
 
 --
 -- Table structure for table `Bikes`
@@ -774,7 +774,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_active_rents` AS select concat(`c`.`Firstname`,' ',`c`.`Surrname`) AS `CustomerName`,`r`.`RentID` AS `RentID`,`r`.`BikeID` AS `BikeID`,`b`.`BrandName` AS `BrandName`,`r`.`rentDate` AS `RentDate`,`RentalPrice_f`(`r`.`RentID`) AS `RentPrice` from (((`Rents` `r` left join `Customers` `c` on((`r`.`CustomerID` = `c`.`CustomerID`))) left join `Bikes` `bi` on((`r`.`BikeID` = `bi`.`BikeID`))) join `Brands` `b` on((`bi`.`BrandID` = `b`.`BrandID`))) where (`r`.`returnDate` is null) */;
+/*!50001 VIEW `view_active_rents` AS select concat(`c`.`Firstname`,' ',`c`.`Surrname`) AS `CustomerName`,`r`.`RentID` AS `RentID`,`r`.`BikeID` AS `BikeID`,`b`.`BrandName` AS `BrandName`,`r`.`rentDate` AS `RentDate`,`RentalPrice_f`(`r`.`RentID`) AS `RentPrice` from (((`Rents` `r` left join `Customers` `c` on((`r`.`CustomerID` = `c`.`CustomerID`))) left join `Bikes` `bi` on((`r`.`BikeID` = `bi`.`BikeID`))) join `Brands` `b` on((`bi`.`BrandID` = `b`.`BrandID`))) where (`r`.`returnDate` is null) order by `r`.`rentDate` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -828,7 +828,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_bike_stock` AS select `Bikes`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `Brand`,`Categories`.`CategoryName` AS `Category`,`Bikes`.`Quantity` AS `Quantity`,(select `RentPriceHist`.`HourlyPrice` from `RentPriceHist` where ((`RentPriceHist`.`BikeID` = `Bikes`.`BikeID`) and (`RentPriceHist`.`EndDate` is null))) AS `HourlyPrice` from ((`Bikes` join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) join `Categories` on((`Bikes`.`CategoryID` = `Categories`.`CategoryID`))) */;
+/*!50001 VIEW `view_bike_stock` AS select `bi`.`BikeID` AS `BikeID`,`br`.`BrandName` AS `Brand`,`c`.`CategoryName` AS `Category`,`bi`.`Quantity` AS `Quantity`,(select `rph`.`HourlyPrice` from `RentPriceHist` `rph` where ((`rph`.`BikeID` = `bi`.`BikeID`) and (`rph`.`EndDate` is null))) AS `HourlyPrice` from ((`Bikes` `bi` join `Brands` `br` on((`bi`.`BrandID` = `br`.`BrandID`))) join `Categories` `c` on((`bi`.`CategoryID` = `c`.`CategoryID`))) order by `bi`.`BikeID` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -900,7 +900,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_hist_price` AS select `RentPriceHist`.`RentPriceHistID` AS `RentPriceHistID`,`Bikes`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`RentPriceHist`.`HourlyPrice` AS `HourlyPrice`,`RentPriceHist`.`StartDate` AS `StartDate`,`RentPriceHist`.`EndDate` AS `EndDate` from ((`RentPriceHist` join `Bikes` on((`RentPriceHist`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) where (`RentPriceHist`.`EndDate` is not null) */;
+/*!50001 VIEW `view_hist_price` AS select `RentPriceHist`.`RentPriceHistID` AS `RentPriceHistID`,`Bikes`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`RentPriceHist`.`HourlyPrice` AS `HourlyPrice`,`RentPriceHist`.`StartDate` AS `StartDate`,`RentPriceHist`.`EndDate` AS `EndDate` from ((`RentPriceHist` join `Bikes` on((`RentPriceHist`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) where (`RentPriceHist`.`EndDate` is not null) order by `RentPriceHist`.`EndDate` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -918,7 +918,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_hist_rents` AS select `Rents`.`RentID` AS `RentID`,`Rents`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Rents`.`rentDate` AS `RentDate`,`Rents`.`returnDate` AS `ReturnDate` from (((`Rents` join `Customers` on((`Rents`.`CustomerID` = `Customers`.`CustomerID`))) join `Bikes` on((`Rents`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) where (`Rents`.`returnDate` is not null) */;
+/*!50001 VIEW `view_hist_rents` AS select `Rents`.`RentID` AS `RentID`,`Rents`.`BikeID` AS `BikeID`,`Brands`.`BrandName` AS `BrandName`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Rents`.`rentDate` AS `RentDate`,`Rents`.`returnDate` AS `ReturnDate` from (((`Rents` join `Customers` on((`Rents`.`CustomerID` = `Customers`.`CustomerID`))) join `Bikes` on((`Rents`.`BikeID` = `Bikes`.`BikeID`))) join `Brands` on((`Bikes`.`BrandID` = `Brands`.`BrandID`))) where (`Rents`.`returnDate` is not null) order by `Rents`.`returnDate` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -951,4 +951,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-07 23:45:00
+-- Dump completed on 2026-06-09 16:32:33
