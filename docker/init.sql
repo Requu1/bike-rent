@@ -22,7 +22,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 --
 
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '4a80bdac-51fe-11f1-a02f-5a720ea74ca4:1-183,
-e1b4976d-55c9-11f1-90f8-4616e74e22af:1-125';
+e1b4976d-55c9-11f1-90f8-4616e74e22af:1-134';
 
 --
 -- Table structure for table `Bikes`
@@ -218,7 +218,7 @@ DELIMITER ;;
     SELECT COUNT(*) INTO rents_count FROM Rents WHERE CustomerID = NEW.CustomerID AND ReturnDate IS NULL;
     IF rents_count >= 5 THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Nie mo┼╝na doda─ç rezerwacji, poniewa┼╝ klient ma ju┼╝ 5 rezerwacji';
+        SET MESSAGE_TEXT = 'Nie mozna dodac rezerwacji, poniewaz klient ma juz 5 rezerwacji';
     END IF;
 
 
@@ -405,7 +405,7 @@ BEGIN
 
     IF endDate_v < startDate_v THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT ='Data ko┼äcowa musi by─ç p├│┼║niejsza od startowej';
+        SET MESSAGE_TEXT ='Data koncowa musi byc pozniejsza od startowej';
     END IF;
 
 
@@ -707,7 +707,7 @@ BEGIN
     ELSE
 
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'To wypo┼╝yczenie zosta┼éo zako┼äczone lub nie istnieje.';
+        SET MESSAGE_TEXT = 'To wypozyczenie zostalo zakonczone lub nie istnieje.';
     END IF;
 END ;;
 DELIMITER ;
@@ -846,7 +846,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_brands` AS select `Brands`.`BrandID` AS `BrandID`,`Brands`.`BrandName` AS `BrandName` from `Brands` */;
+/*!50001 VIEW `view_brands` AS select `Brands`.`BrandID` AS `BrandID`,`Brands`.`BrandName` AS `BrandName` from `Brands` order by `Brands`.`BrandID` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -864,7 +864,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_categories` AS select `Categories`.`CategoryID` AS `CategoryID`,`Categories`.`CategoryName` AS `CategoryName` from `Categories` */;
+/*!50001 VIEW `view_categories` AS select `Categories`.`CategoryID` AS `CategoryID`,`Categories`.`CategoryName` AS `CategoryName` from `Categories` order by `Categories`.`CategoryID` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -882,7 +882,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`avnadmin`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_customers` AS select `Customers`.`CustomerID` AS `CustomerID`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Customers`.`Phone` AS `Phone` from `Customers` */;
+/*!50001 VIEW `view_customers` AS select `Customers`.`CustomerID` AS `CustomerID`,`Customers`.`Firstname` AS `Firstname`,`Customers`.`Surrname` AS `Surrname`,`Customers`.`Phone` AS `Phone` from `Customers` order by `Customers`.`CustomerID` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -951,4 +951,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-09 16:32:33
+-- Dump completed on 2026-06-09 17:24:36
