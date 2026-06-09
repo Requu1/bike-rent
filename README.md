@@ -1,15 +1,23 @@
-# Bike renting page
+# Aplikacja wypożyczalni rowerów
 
-### Authors:
+### Autorzy:
 
 Krzysztof Patla, Szymon Potępa
 
-#### Technologies used:
+#### Użyte technologie:
 
 Backend: Java + Spring
 Frontend: React + Vite + Tailwind
 
-#### Database: MySQL
+#### Baza danych: MySQL
+
+#### Opis wyboru technologii:
+
+MySQL: uproszczenie kluczowych operacji na bazie danych, dzięki zachowaniu relacyjnej struktury i spójności danych. Zabezpiecznie przed błędami wynikającymi z jednoczesnego działania wielu użytkowników - baza danych potrafi "zablokować" modyfikowane zasoby na ułamek sekundy.
+
+Java + Spring: Spring bardzo dobrze integruje się z bazami relacyjnymi i pełni rolę pośrednika, który obsługuje żądania HTTP, weryfikując je przed przekazaniem do bazy danych.
+
+React + Vite + Tailwind : dynamiczny, nowoczesny interfejs użytkownika, który działa płynnie bez ciągłego przeładowywania stron (Single Page Application). Vite zapewnia szybszą prace nad budową projektu, a Tailwind CSS uprościł tworzenie wyglądu strony.
 
 ---
 
