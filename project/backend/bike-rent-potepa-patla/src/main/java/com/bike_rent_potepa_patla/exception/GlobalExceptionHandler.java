@@ -1,7 +1,7 @@
 package com.bike_rent_potepa_patla.exception;
 
-import com.bike_rent_potepa_patla.dto.error.ErrorResponseDto;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,17 +20,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<ErrorResponseDto> handleDatabaseExceptions(DataAccessException ex) {
-        String errorMessage = ex.getMostSpecificCause().getMessage();
-        ErrorResponseDto error = ErrorResponseDto.builder()
-                .errorName("DATABASE_ERROR")
-                .errorMsg(errorMessage)
-                .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    public ResponseEntity<?> handleDatabaseExceptions(DataAccessException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMostSpecificCause().getMessage());
     }
 
     @ExceptionHandler(InvalidPhoneException.class)
-    public ResponseEntity<?> invalidPhoneException(InvalidPhoneException e){
+    public ResponseEntity<?> invalidPhoneException(InvalidPhoneException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> dataIntegrityViolationException(DataIntegrityViolationException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMostSpecificCause().getMessage());
     }
 }
