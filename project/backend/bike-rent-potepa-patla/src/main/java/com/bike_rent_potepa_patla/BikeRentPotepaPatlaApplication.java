@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BikeRentPotepaPatlaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BikeRentPotepaPatlaApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BikeRentPotepaPatlaApplication.class, args);
+    }
 
 }

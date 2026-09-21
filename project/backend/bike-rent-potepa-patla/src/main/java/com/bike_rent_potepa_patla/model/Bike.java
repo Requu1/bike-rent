@@ -10,21 +10,21 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-@Table(name="Bikes")
+@Table(name = "Bikes")
 public class Bike {
-    @Column(name="BikeID")
+    @Column(name = "BikeID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="BrandID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BrandID")
     private Brand brand;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CategoryID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CategoryID")
     private Category category;
 
-    @Column(name="Quantity",nullable = false)
+    @Column(name = "Quantity", nullable = false)
     private Integer quantity;
 }

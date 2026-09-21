@@ -17,20 +17,20 @@ public class BikeController {
     private final BikeService bikeService;
 
     @PostMapping
-    public ResponseEntity<BikeResponseDto>  addBike(@RequestBody BikeCreateDto bikeCreateDto){
+    public ResponseEntity<BikeResponseDto> addBike(@RequestBody BikeCreateDto bikeCreateDto) {
         return ResponseEntity.ok(bikeService.addBike(bikeCreateDto));
     }
 
     @PatchMapping("/{bikeId}/add-quantity")
-    public ResponseEntity<?> updateBikeQuantity(@PathVariable  Integer bikeId, @RequestParam Integer quantity){
-        bikeService.addBikeQuantity(bikeId,quantity);
+    public ResponseEntity<?> updateBikeQuantity(@PathVariable Integer bikeId, @RequestParam Integer quantity) {
+        bikeService.addBikeQuantity(bikeId, quantity);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<FilteredBikeDto>>  getFilteredBikes(@RequestParam(required = false) String categoryName,
-                                                                   @RequestParam(required = false) String brandName){
-        return ResponseEntity.ok(bikeService.filterBikesByCategoryAndBrand(categoryName,brandName));
+    public ResponseEntity<List<FilteredBikeDto>> getFilteredBikes(@RequestParam(required = false) String categoryName,
+                                                                  @RequestParam(required = false) String brandName) {
+        return ResponseEntity.ok(bikeService.filterBikesByCategoryAndBrand(categoryName, brandName));
     }
 
 }

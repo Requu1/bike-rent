@@ -9,48 +9,48 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ViewService {
     private final ViewRepository viewRepository;
 
-    public List<ViewActiveRentsDto> viewActiveRents(){
+    public List<ViewActiveRentsDto> viewActiveRents() {
         return viewRepository.viewActiveRents();
     }
 
-    public List<ViewBestSellersDto> viewBestSellers(){
+    public List<ViewBestSellersDto> viewBestSellers() {
         return viewRepository.viewBestSellers();
     }
 
-    public List<ViewBestSellingBrandsDto> viewBestSellingBrands(){
+    public List<ViewBestSellingBrandsDto> viewBestSellingBrands() {
         return viewRepository.viewBestSellingBrands();
     }
 
-    public List<ViewBikeStockDto>  viewBikeStock(){
+    public List<ViewBikeStockDto> viewBikeStock() {
         return viewRepository.viewBikeStock();
     }
 
-    public List<ViewCustomersDto> viewCustomers(){
+    public List<ViewCustomersDto> viewCustomers() {
         return viewRepository.viewCustomers();
     }
 
-    public List<ViewMostRentedCategoryDto> viewMostRentedCategory(){
+    public List<ViewMostRentedCategoryDto> viewMostRentedCategory() {
         return viewRepository.viewMostRentedCategory();
     }
 
-    public List<ViewHistPriceDto> viewHistPrice(){
+    public List<ViewHistPriceDto> viewHistPrice() {
         return viewRepository.viewHistPrice();
     }
 
-    public List<ViewHistRentsDto> viewHistRents(){
+    public List<ViewHistRentsDto> viewHistRents() {
         return viewRepository.viewHistRents();
     }
 
-    public List<ViewBrandsDto> viewBrands(){
+    public List<ViewBrandsDto> viewBrands() {
         return viewRepository.viewBrands();
     }
 
-    public List<ViewCategoriesDto> viewCategories(){
+    public List<ViewCategoriesDto> viewCategories() {
         return viewRepository.viewCategories();
     }
 }

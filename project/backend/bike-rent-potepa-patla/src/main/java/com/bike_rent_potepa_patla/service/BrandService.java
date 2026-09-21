@@ -15,17 +15,17 @@ public class BrandService {
     private final BrandRepository brandRepository;
 
     @Transactional
-    public BrandResponseDto addBrand(BrandCreateDto dto){
-        Integer newBrandId=brandRepository.addNewBrand(dto.brandName());
+    public BrandResponseDto addBrand(BrandCreateDto dto) {
+        Integer newBrandId = brandRepository.addNewBrand(dto.brandName());
         return BrandResponseDto.builder()
                 .id(newBrandId)
                 .brandName(dto.brandName())
                 .build();
     }
 
-    Brand findByName(String brandName){
-        Brand brand=brandRepository.findByBrandName(brandName);
-        if(brand==null){
+    Brand findByName(String brandName) {
+        Brand brand = brandRepository.findByBrandName(brandName);
+        if (brand == null) {
             throw new BrandNotFoundException("Brand not found");
         }
         return brand;

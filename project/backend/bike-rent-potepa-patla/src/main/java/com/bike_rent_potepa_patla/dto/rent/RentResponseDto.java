@@ -11,4 +11,5 @@ public record RentResponseDto(
         Integer customerId,
         LocalDateTime rentDate,
         LocalDateTime returnDate
-) {}
+) {
+}

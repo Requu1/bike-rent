@@ -20,7 +20,7 @@ public class RentPriceHistService {
 
     @Transactional
     public RentPriceResponseDto changeRentPrice(RentPriceCreateDto dto) {
-        Integer newRentPriceId=rentPriceHistRepository.changeRentPrice(dto.bikeId(),dto.hourlyPrice());
+        Integer newRentPriceId = rentPriceHistRepository.changeRentPrice(dto.bikeId(), dto.hourlyPrice());
         return RentPriceResponseDto.builder()
                 .rentPriceId(newRentPriceId)
                 .bikeId(dto.bikeId())
@@ -31,17 +31,17 @@ public class RentPriceHistService {
     }
 
     @Transactional
-    public Integer getRentTotalPrice(Integer rentId){
+    public Integer getRentTotalPrice(Integer rentId) {
         return rentPriceHistRepository.getRentalPrice(rentId);
     }
 
     @Transactional
-    public BigDecimal getAvgBikeRentPrice(Integer bikeId, LocalDate startDate, LocalDate endDate){
-        return rentPriceHistRepository.avgBikeRentPrice(bikeId,startDate.atStartOfDay(),endDate.atTime(LocalTime.MAX));
+    public BigDecimal getAvgBikeRentPrice(Integer bikeId, LocalDate startDate, LocalDate endDate) {
+        return rentPriceHistRepository.avgBikeRentPrice(bikeId, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
     }
 
-    private LocalDate findStartDateForNewRentPrice(Integer rentPriceId){
-        RentPriceHist rentPrice=rentPriceHistRepository.findRentPriceHistById(rentPriceId);
+    private LocalDate findStartDateForNewRentPrice(Integer rentPriceId) {
+        RentPriceHist rentPrice = rentPriceHistRepository.findRentPriceHistById(rentPriceId);
         return rentPrice.getStartDate();
     }
 

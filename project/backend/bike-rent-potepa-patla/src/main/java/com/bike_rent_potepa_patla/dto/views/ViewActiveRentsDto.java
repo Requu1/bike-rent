@@ -10,4 +10,5 @@ public record ViewActiveRentsDto(
         String brandName,
         LocalDateTime rentDate,
         Integer rentPrice
-) { }
+) {
+}

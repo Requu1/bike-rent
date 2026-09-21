@@ -4,4 +4,5 @@ public record BikeCreateDto(
         String brandName,
         String categoryName,
         Integer hourlyPrice
-) { }
+) {
+}

@@ -17,7 +17,7 @@ public class BrandController {
     private final BrandService brandService;
 
     @PostMapping
-    public ResponseEntity<BrandResponseDto> addBrand(@RequestBody BrandCreateDto dto){
+    public ResponseEntity<BrandResponseDto> addBrand(@RequestBody BrandCreateDto dto) {
         return ResponseEntity.ok(brandService.addBrand(dto));
     }
 }

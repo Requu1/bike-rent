@@ -7,4 +7,5 @@ public record RentsForCustomerDto(
         Integer bikeId,
         LocalDateTime rentDate,
         LocalDateTime returnDate
-) { }
+) {
+}

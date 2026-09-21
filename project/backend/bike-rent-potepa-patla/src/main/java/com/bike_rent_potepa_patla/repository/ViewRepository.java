@@ -15,12 +15,12 @@ public class ViewRepository {
 
     public List<ViewActiveRentsDto> viewActiveRents() {
         String sql = "select * from view_active_rents";
-        return jdbcTemplate.query(sql,new DataClassRowMapper<>(ViewActiveRentsDto.class));
+        return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewActiveRentsDto.class));
     }
 
     public List<ViewBestSellersDto> viewBestSellers() {
         String sql = "select * from view_bestsellers";
-        return jdbcTemplate.query(sql,new DataClassRowMapper<>(ViewBestSellersDto.class));
+        return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewBestSellersDto.class));
     }
 
     public List<ViewBestSellingBrandsDto> viewBestSellingBrands() {
@@ -33,32 +33,32 @@ public class ViewRepository {
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewBikeStockDto.class));
     }
 
-    public List<ViewCustomersDto> viewCustomers(){
+    public List<ViewCustomersDto> viewCustomers() {
         String sql = "select * from view_customers";
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewCustomersDto.class));
     }
 
-    public List<ViewMostRentedCategoryDto> viewMostRentedCategory(){
+    public List<ViewMostRentedCategoryDto> viewMostRentedCategory() {
         String sql = "select * from view_most_rented_category";
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewMostRentedCategoryDto.class));
     }
 
-    public List<ViewHistPriceDto> viewHistPrice(){
+    public List<ViewHistPriceDto> viewHistPrice() {
         String sql = "select * from view_hist_price";
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewHistPriceDto.class));
     }
 
-    public List<ViewHistRentsDto> viewHistRents(){
+    public List<ViewHistRentsDto> viewHistRents() {
         String sql = "select * from view_hist_rents";
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewHistRentsDto.class));
     }
 
-    public List<ViewBrandsDto> viewBrands(){
+    public List<ViewBrandsDto> viewBrands() {
         String sql = "select * from view_brands";
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewBrandsDto.class));
     }
 
-    public List<ViewCategoriesDto> viewCategories(){
+    public List<ViewCategoriesDto> viewCategories() {
         String sql = "select * from view_categories";
         return jdbcTemplate.query(sql, new DataClassRowMapper<>(ViewCategoriesDto.class));
     }

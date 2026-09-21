@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -36,11 +37,11 @@ class RentServiceTest {
 
         AtomicBoolean isBikeRented = new AtomicBoolean(false);
 
-        when(rentRepository.addNewRent(eq(bikeId), anyInt())).thenAnswer(invocation -> {
+        when(rentRepository.addNewRent(eq(bikeId), anyInt())).thenAnswer(_ -> {
             if (isBikeRented.compareAndSet(false, true)) {
                 return 1;
             } else {
-                throw new RuntimeException("Rower niedostępny - brak na stanie (Constraint Violation)");
+                throw new RuntimeException("Bike not available - not in stock (Constraint Violation)");
             }
         });
 
@@ -80,7 +81,7 @@ class RentServiceTest {
                 failureCount.incrementAndGet();
             } finally {
                 doneLatch.countDown();
-        }
+            }
         };
 
         // WHEN
@@ -92,8 +93,8 @@ class RentServiceTest {
         doneLatch.await();
 
         // THEN
-        assertEquals(1, successCount.get(), "Tylko jedno wypożyczenie powinno się udać");
-        assertEquals(1, failureCount.get(), "Jedno wypożyczenie powinno zostać odrzucone");
+        assertEquals(1, successCount.get(), "Only one rent can succeed");
+        assertEquals(1, failureCount.get(), "The other rent should be rejected");
 
         verify(rentRepository, times(2)).addNewRent(eq(bikeId), anyInt());
         verify(rentRepository, times(1)).findRentById(anyInt());
@@ -107,12 +108,12 @@ class RentServiceTest {
         AtomicBoolean isAlreadyReturned = new AtomicBoolean(false);
         AtomicInteger simulatedBikeQuantity = new AtomicInteger(5);
 
-        doAnswer(invocation -> {
+        doAnswer(_ -> {
             if (isAlreadyReturned.compareAndSet(false, true)) {
                 simulatedBikeQuantity.incrementAndGet();
                 return null;
             } else {
-                throw new RuntimeException("To wypozyczenie zostalo zakonczone lub nie istnieje.");
+                throw new RuntimeException("This rent has ended or does not exists");
             }
         }).when(rentRepository).endRent(rentIdToReturn);
 
@@ -147,10 +148,10 @@ class RentServiceTest {
         doneLatch.await();
 
         // THEN
-        assertEquals(1, successCount.get(), "Tylko jedna próba zwrotu powinna się udać.");
-        assertEquals(1, failureCount.get(), "Druga próba zwrotu powinna rzucić wyjątek.");
+        assertEquals(1, successCount.get(), "Only one bike return can succeed");
+        assertEquals(1, failureCount.get(), "Second try to return the bike should throw exception");
 
-        assertEquals(6, simulatedBikeQuantity.get(), "Ilość rowerów (quantity) powinna zwiększyć się tylko o 1.");
+        assertEquals(6, simulatedBikeQuantity.get(), "Bike quantity should increase by one");
         verify(rentRepository, times(2)).endRent(rentIdToReturn);
     }
 

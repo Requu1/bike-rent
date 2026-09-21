@@ -17,7 +17,7 @@ public class ViewController {
     private final ViewService viewService;
 
     @GetMapping("/active-rents")
-    public ResponseEntity<List<ViewActiveRentsDto>> viewActiveRents(){
+    public ResponseEntity<List<ViewActiveRentsDto>> viewActiveRents() {
         return ResponseEntity.ok(viewService.viewActiveRents());
     }
 

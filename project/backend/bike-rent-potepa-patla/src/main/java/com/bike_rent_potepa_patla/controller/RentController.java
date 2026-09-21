@@ -18,23 +18,23 @@ public class RentController {
     private final RentService rentService;
 
     @GetMapping
-    public ResponseEntity<List<RentsForCustomerDto>> getRentsForCustomer(@RequestParam Integer customerId){
+    public ResponseEntity<List<RentsForCustomerDto>> getRentsForCustomer(@RequestParam Integer customerId) {
         return ResponseEntity.ok(rentService.getRentListForCustomer(customerId));
     }
 
     @GetMapping("/income")
-    public ResponseEntity<Integer> getIncome(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
-        return ResponseEntity.ok(rentService.getIncome(startDate,endDate));
+    public ResponseEntity<Integer> getIncome(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        return ResponseEntity.ok(rentService.getIncome(startDate, endDate));
     }
 
     @PatchMapping("/{rentId}/end")
-    public ResponseEntity<?> endRent(@PathVariable Integer rentId){
+    public ResponseEntity<?> endRent(@PathVariable Integer rentId) {
         rentService.endRent(rentId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<RentResponseDto> addRent(@RequestBody RentCreateDto dto){
+    public ResponseEntity<RentResponseDto> addRent(@RequestBody RentCreateDto dto) {
         return ResponseEntity.ok(rentService.addRent(dto));
     }
 }

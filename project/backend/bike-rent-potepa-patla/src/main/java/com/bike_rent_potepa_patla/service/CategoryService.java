@@ -15,8 +15,8 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public CategoryResponseDto addCategory(CategoryCreateDto dto){
-        Integer newCategoryId=categoryRepository.addNewCategory(dto.name());
+    public CategoryResponseDto addCategory(CategoryCreateDto dto) {
+        Integer newCategoryId = categoryRepository.addNewCategory(dto.name());
         return CategoryResponseDto.builder()
                 .categoryId(newCategoryId)
                 .name(dto.name())
@@ -24,8 +24,8 @@ public class CategoryService {
     }
 
     Category findByName(String categoryName) {
-        Category category= categoryRepository.findByCategoryName(categoryName);
-        if(category==null){
+        Category category = categoryRepository.findByCategoryName(categoryName);
+        if (category == null) {
             throw new CategoryNotFoundException("Category not found");
         }
         return category;

@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
-    @Procedure(procedureName="AddCategory_p")
-    Integer addNewCategory(@Param("categoryName_v")String categoryName);
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    @Procedure(procedureName = "AddCategory_p")
+    Integer addNewCategory(@Param("categoryName_v") String categoryName);
 
     Category findByCategoryName(String categoryName);
 }

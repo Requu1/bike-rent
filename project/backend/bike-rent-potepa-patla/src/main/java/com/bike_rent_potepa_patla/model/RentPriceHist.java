@@ -12,24 +12,24 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Builder
-@Table(name="RentPriceHist")
+@Table(name = "RentPriceHist")
 public class RentPriceHist {
-    @Column(name="RentPriceHistID")
+    @Column(name = "RentPriceHistID")
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="BikeID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BikeID")
     private Bike bike;
 
-    @Column(name="HourlyPrice",nullable = false)
+    @Column(name = "HourlyPrice", nullable = false)
     private Integer hourlyPrice;
 
-    @Column(name="StartDate",nullable = false)
+    @Column(name = "StartDate", nullable = false)
     private LocalDate startDate;
 
-    @Column(name="EndDate",nullable = true)
+    @Column(name = "EndDate")
     private LocalDate endDate;
 
 }

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BrandNotFoundException.class)
-    public ResponseEntity<?> brandNotFoundException(BrandNotFoundException e){
+    public ResponseEntity<?> brandNotFoundException(BrandNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<?> categoryNotFoundException(CategoryNotFoundException e){
+    public ResponseEntity<?> categoryNotFoundException(CategoryNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 

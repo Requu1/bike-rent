@@ -8,4 +8,5 @@ public record BikeResponseDto(
         String brandName,
         String categoryName,
         Integer hourlyPrice
-) { }
+) {
+}

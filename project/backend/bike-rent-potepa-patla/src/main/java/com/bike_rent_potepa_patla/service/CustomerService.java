@@ -21,7 +21,7 @@ public class CustomerService {
             throw new InvalidPhoneException("Invalid phone format");
         }
 
-        Integer newCustomerId=customerRepository.addNewCustomer(dto.firstName(),dto.surrName(),dto.phone());
+        Integer newCustomerId = customerRepository.addNewCustomer(dto.firstName(), dto.surrName(), dto.phone());
         return CustomerResponseDto.builder()
                 .customerId(newCustomerId)
                 .firstName(dto.firstName())
@@ -31,7 +31,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public FilteredCustomerDto getFilteredCustomer(String phone){
+    public FilteredCustomerDto getFilteredCustomer(String phone) {
         String fixedPhone = phone.replace(" ", "+");
         return customerRepository.filterCustomerByPhone(fixedPhone);
     }

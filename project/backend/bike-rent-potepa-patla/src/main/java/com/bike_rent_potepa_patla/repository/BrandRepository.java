@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand,Long> {
-    @Procedure(procedureName="AddBrand_p")
-    Integer addNewBrand(@Param("brandName_v")String brandName);
+public interface BrandRepository extends JpaRepository<Brand, Long> {
+    @Procedure(procedureName = "AddBrand_p")
+    Integer addNewBrand(@Param("brandName_v") String brandName);
 
     Brand findByBrandName(String brandName);
 }

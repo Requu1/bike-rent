@@ -11,25 +11,25 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Builder
-@Table(name="Rents")
+@Table(name = "Rents")
 public class Rent {
-    @Column(name="RentID")
+    @Column(name = "RentID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="BikeID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BikeID")
     private Bike bike;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CustomerID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CustomerID")
     private Customer customer;
 
-    @Column(name="RentDate",nullable = false)
+    @Column(name = "RentDate", nullable = false)
     private LocalDateTime rentDate;
 
-    @Column(name="ReturnDate",nullable = true)
+    @Column(name = "ReturnDate")
     private LocalDateTime returnDate;
 
 }

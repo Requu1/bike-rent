@@ -20,7 +20,7 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<FilteredCustomerDto> getFilteredCustomer(@RequestParam String phone){
+    public ResponseEntity<FilteredCustomerDto> getFilteredCustomer(@RequestParam String phone) {
         return ResponseEntity.ok(customerService.getFilteredCustomer(phone));
     }
 }

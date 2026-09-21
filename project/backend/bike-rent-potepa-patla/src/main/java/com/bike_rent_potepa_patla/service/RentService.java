@@ -20,7 +20,7 @@ public class RentService {
 
     @Transactional
     public RentResponseDto addRent(RentCreateDto dto) {
-        Integer newRentId=rentRepository.addNewRent(dto.bikeId(),dto.customerId());
+        Integer newRentId = rentRepository.addNewRent(dto.bikeId(), dto.customerId());
         return RentResponseDto.builder()
                 .rentId(newRentId)
                 .bikeId(dto.bikeId())
@@ -31,17 +31,17 @@ public class RentService {
     }
 
     @Transactional
-    public void endRent(Integer rentId){
+    public void endRent(Integer rentId) {
         rentRepository.endRent(rentId);
     }
 
     @Transactional
-    public List<RentsForCustomerDto> getRentListForCustomer(Integer customerId){
+    public List<RentsForCustomerDto> getRentListForCustomer(Integer customerId) {
         return rentRepository.getCurrentRentsForCustomer(customerId);
     }
 
     @Transactional
-    public Integer getIncome(LocalDate startDate, LocalDate endDate){
-        return rentRepository.getIncome(startDate.atStartOfDay(),endDate.atTime(LocalTime.MAX));
+    public Integer getIncome(LocalDate startDate, LocalDate endDate) {
+        return rentRepository.getIncome(startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
     }
 }

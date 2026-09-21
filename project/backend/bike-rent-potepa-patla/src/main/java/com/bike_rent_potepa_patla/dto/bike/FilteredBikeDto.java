@@ -6,4 +6,5 @@ import lombok.Builder;
 public record FilteredBikeDto(
         Integer bikeId,
         Integer quantity
-) { }
+) {
+}

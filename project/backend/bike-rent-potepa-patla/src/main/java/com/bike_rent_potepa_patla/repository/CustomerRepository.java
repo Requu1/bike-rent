@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer,Long> {
-    @Procedure(procedureName="AddCustomer_p")
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+    @Procedure(procedureName = "AddCustomer_p")
     Integer addNewCustomer
-            (@Param("firstname_v")String firstname,@Param("surrname_v")String lastname,@Param("phone_v")String phone);
+            (@Param("firstname_v") String firstname, @Param("surrname_v") String lastname, @Param("phone_v") String phone);
 
-    @Query(value="CALL FilterCustomer_p(:customerPhone)",nativeQuery = true)
-    FilteredCustomerDto filterCustomerByPhone(@Param("customerPhone")String phone);
+    @Query(value = "CALL FilterCustomer_p(:customerPhone)", nativeQuery = true)
+    FilteredCustomerDto filterCustomerByPhone(@Param("customerPhone") String phone);
 }

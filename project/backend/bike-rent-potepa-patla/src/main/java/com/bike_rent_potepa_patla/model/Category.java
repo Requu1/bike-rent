@@ -9,13 +9,13 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-@Table(name="Categories")
+@Table(name = "Categories")
 public class Category {
-    @Column(name="CategoryID")
+    @Column(name = "CategoryID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="CategoryName",nullable = false)
+    @Column(name = "CategoryName", nullable = false)
     private String categoryName;
 }

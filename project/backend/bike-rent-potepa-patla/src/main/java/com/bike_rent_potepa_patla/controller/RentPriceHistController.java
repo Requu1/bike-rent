@@ -18,18 +18,18 @@ public class RentPriceHistController {
 
 
     @PostMapping
-    public ResponseEntity<RentPriceResponseDto> changeRentPrice(@RequestBody RentPriceCreateDto dto){
+    public ResponseEntity<RentPriceResponseDto> changeRentPrice(@RequestBody RentPriceCreateDto dto) {
         return ResponseEntity.ok(rentPriceHistService.changeRentPrice(dto));
     }
 
     @GetMapping("/total")
-    public ResponseEntity<Integer> getRentTotalPrice(@RequestParam Integer rentId){
+    public ResponseEntity<Integer> getRentTotalPrice(@RequestParam Integer rentId) {
         return ResponseEntity.ok(rentPriceHistService.getRentTotalPrice(rentId));
     }
 
     @GetMapping("/avg-bike-rent-price")
     public ResponseEntity<BigDecimal> getAvgBikeRentPrice(@RequestParam Integer bikeId, @RequestParam LocalDate startDate,
-                                                          @RequestParam LocalDate endDate){
-        return ResponseEntity.ok(rentPriceHistService.getAvgBikeRentPrice(bikeId,startDate,endDate));
+                                                          @RequestParam LocalDate endDate) {
+        return ResponseEntity.ok(rentPriceHistService.getAvgBikeRentPrice(bikeId, startDate, endDate));
     }
 }

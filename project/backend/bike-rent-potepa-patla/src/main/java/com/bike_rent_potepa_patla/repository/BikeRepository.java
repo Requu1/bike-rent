@@ -11,14 +11,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BikeRepository extends JpaRepository<Bike,Integer> {
-    @Procedure(procedureName="AddBike_p")
+public interface BikeRepository extends JpaRepository<Bike, Integer> {
+    @Procedure(procedureName = "AddBike_p")
     Integer addNewBikeWithNewPriceHist
-            (@Param("brandId_v")Integer brandId,@Param("categoryId_v")Integer categoryId,@Param("hourly_price_v")Integer hourlyPrice);
+            (@Param("brandId_v") Integer brandId, @Param("categoryId_v") Integer categoryId, @Param("hourly_price_v") Integer hourlyPrice);
 
-    @Procedure(procedureName="AddQuantity_p")
-    void addBikeQuantity(@Param("quantity_v")int quantity,@Param("bikeID_v")Integer bikeID);
+    @Procedure(procedureName = "AddQuantity_p")
+    void addBikeQuantity(@Param("quantity_v") int quantity, @Param("bikeID_v") Integer bikeID);
 
-    @Query(value="CALL FilterBike_p(:categoryName_v,:brandName_v)",nativeQuery = true)
-    List<FilteredBikeDto> getBikesByCategoryAndBrand(@Param("categoryName_v")String categoryName, @Param("brandName_v")String brandName);
+    @Query(value = "CALL FilterBike_p(:categoryName_v,:brandName_v)", nativeQuery = true)
+    List<FilteredBikeDto> getBikesByCategoryAndBrand(@Param("categoryName_v") String categoryName, @Param("brandName_v") String brandName);
 }
