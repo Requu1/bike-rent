@@ -1,70 +1,69 @@
-# Aplikacja wypożyczalni rowerów
+# Bike Rental Application
 
-### Autorzy:
+### Authors:
 
 Krzysztof Patla, Szymon Potępa
 
-#### Użyte technologie:
+#### Technologies used:
 
 Backend: Java + Spring
+
 Frontend: React + Vite + Tailwind
 
-#### Baza danych: MySQL
+#### Database: 
+MySQL
 
-#### Opis wyboru technologii:
+#### Description of technology choice:
 
-MySQL: uproszczenie kluczowych operacji na bazie danych, dzięki zachowaniu relacyjnej struktury i spójności danych. Zabezpiecznie przed błędami wynikającymi z jednoczesnego działania wielu użytkowników - baza danych potrafi "zablokować" modyfikowane zasoby na ułamek sekundy.
+MySQL: Simplifies key database operations by maintaining a relational structure and data consistency. Protects against errors resulting from simultaneous actions by multiple users - the database can "lock" modified resources for a fraction of a second.
 
-Java + Spring: Spring bardzo dobrze integruje się z bazami relacyjnymi i pełni rolę pośrednika, który obsługuje żądania HTTP, weryfikując je przed przekazaniem do bazy danych.
+Java + Spring: Spring integrates very well with relational databases and acts as an intermediary that handles HTTP requests, verifying them before passing them to the database.
 
-React + Vite + Tailwind : dynamiczny, nowoczesny interfejs użytkownika, który działa płynnie bez ciągłego przeładowywania stron (Single Page Application). Vite zapewnia szybszą prace nad budową projektu, a Tailwind CSS uprościł tworzenie wyglądu strony.
+React + Vite + Tailwind: A dynamic, modern user interface that runs smoothly without constant page reloads (Single Page Application). Vite ensures faster project build times, and Tailwind CSS simplified the UI creation.
 
----
+#### Purpose of the application:
 
-Aplikacja dla pracownika wypożyczalni rowerów.
+An application for a bike rental employee.
 
-Umożliwia ona zarządzanie magazynem rowerów (dodawanie, przeglądanie, zmiana cen , średnia cena wypożyczeń z danego czasu dla danego roweru), składanie rezerwacji, przeglądanie klientów i historycznych cen rowerów jak i historycznych wypożyczeń.
+It allows for managing the bike inventory (adding, browsing, changing prices, calculating the average rental price for a given bike over a specific period), making reservations, browsing customers, as well as viewing historical bike prices and historical rentals.
 
-Oblicza ona na bieżąco aktualny koszt dla danego wypożyczenia i może obliczyć przychód wypożyczalni z zadanego czasu.
+It continuously calculates the current cost for a given rental and can calculate the rental's revenue for a specified time period.
 
----
 
-### Uruchamianie
+### Running the application
 
-aby pobrać wszystkie potrzebne pakiety trzeba uruchomić
+To download all necessary packages, run:
 
 `npm install`
 
-aby pobrać bazę danych należy mieć pobranego Dockera i uruchomić komendy
+To download the database, you need to have Docker installed and run the following commands:
 
-`cd 'ścieżka do projektu'/docker`
+`cd 'path to project'/docker`
 `docker-compose up -d`
 
-kontener powinien się uruchomić samodzielnie
+The container should start automatically.
 
-aby uruchomić backend należy wpisać w terminalu
+To start the backend, type in the terminal:
 
-`cd 'ścieżka do projektu'/project/backend/bike-rent-potepa-patla`
-`./gradlew bootRun` lub `gradlew.bat bootRun`
+`cd 'path to project'/project/backend/bike-rent-potepa-patla`
+`./gradlew bootRun` or `gradlew.bat bootRun`
 
-(gdy pasek naładuje się do 80%, oznacza to że baza danych zaczęła działać)
+To start the project's frontend, type in the terminal:
 
-aby uruchomić frontend projektu należy wpisać w terminalu
-
-`cd 'ścieżka do projektu'/project/frontend`
+`cd 'path to project'/project/frontend`
 `npm run dev`
 
-oraz wpisać
+and type
 `o`
-lub uruchomić localhosta wypisanego przez terminal (można też nacisnąć link)
+or open the localhost URL printed in the terminal (you can also click the link)
 
 ---
 
-### Baza danych ma następującą strukturę
+### The database has the following structure
 
 ![alt text](erd/diagram.png)
 
-### Warunki integralnościowe dla poszczególnych tabel:
+### Integrity constraints for individual tables:
 
 #### Bikes:
 
@@ -124,7 +123,7 @@ ALTER TABLE RentPriceHist ADD CONSTRAINT fk_rentprice_bike FOREIGN KEY (BikeID) 
 ALTER TABLE RentPriceHist ADD CONSTRAINT chk_hourly_price_positive CHECK (HourlyPrice > 0);
 ```
 
-### Trigger dla tabeli Rents:
+### Trigger for the Rents table:
 
 - AddRent_tr
 
@@ -159,7 +158,7 @@ END;
 
 ```
 
-### Funkcje:
+### Functions:
 
 - AvgBikeRentPrice_f
 
@@ -230,7 +229,7 @@ BEGIN
 END;
 ```
 
-### Procedury:
+### Procedures:
 
 - AddBike_p
 
@@ -391,7 +390,7 @@ BEGIN
 end;
 ```
 
-### Widoki:
+### Views:
 
 - view_active_rents
 
